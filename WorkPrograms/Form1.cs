@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using Xceed.Words.NET;
+using System.IO;
 
 namespace WorkPrograms
 {
@@ -19,7 +18,21 @@ namespace WorkPrograms
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                DialogResult res = openFileDialogSelectFile.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    
+                    //SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);                    
+                }
+                else
+                    throw new Exception("Файл не выбран");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

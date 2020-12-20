@@ -29,13 +29,14 @@ namespace WorkPrograms
         /// </summary>
         private void InitializeComponent()
         {
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialogSelectFile = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
+            this.labelNameOfWorkPlanFile = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // openFileDialog1
+            // openFileDialogSelectFile
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialogSelectFile.FileName = "openFileDialog1";
             // 
             // buttonOpenExcel
             // 
@@ -47,22 +48,34 @@ namespace WorkPrograms
             this.buttonOpenExcel.UseVisualStyleBackColor = true;
             this.buttonOpenExcel.Click += new System.EventHandler(this.buttonOpenExcel_Click);
             // 
+            // labelNameOfWorkPlanFile
+            // 
+            this.labelNameOfWorkPlanFile.AutoSize = true;
+            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(155, 43);
+            this.labelNameOfWorkPlanFile.Name = "labelNameOfWorkPlanFile";
+            this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(92, 13);
+            this.labelNameOfWorkPlanFile.TabIndex = 1;
+            this.labelNameOfWorkPlanFile.Text = "Файл не выбран";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 261);
+            this.Controls.Add(this.labelNameOfWorkPlanFile);
             this.Controls.Add(this.buttonOpenExcel);
             this.Name = "Form1";
             this.Text = "WorkPrograms";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialogSelectFile;
         private System.Windows.Forms.Button buttonOpenExcel;
+        private System.Windows.Forms.Label labelNameOfWorkPlanFile;
     }
 }
 
