@@ -20,32 +20,32 @@ namespace WorkPrograms
         public static string subjectName = "";
         public static int creditUnits = 0;
         public static int studyHours = 0;
-        public static int independentWork = 0;
         public static string test = "";
         public static string subjectCompetencies = "";
 
+        public static int sumLectures = 0;
+        public static int sumWorkshops = 0;
+        public static int sumIndependentWork = 0;
 
-        /*public static string auditoryLessons = "";       
-        public static string lectures = "";
+        /*public static string auditoryLessons = "";              
         public static string LaboratoryExercises = "";
-        public static string workshops = "";
         public static string independentWorkBySemester = "";
         public static string Exam = "";*/
 
+        public static string typesOfLessons = "";
         public static string semesters = "";
         public static string courses = "";
-        public static Dictionary<string, string> SemesterData = new Dictionary<string, string>();
-        public static string[] NameSemesterData = new string[]
+        public static Dictionary<string, string> semesterData = new Dictionary<string, string>();
+        public static string[] keysForSemesterData = new string[]
         {
             "",
             "auditoryLessons",
             "lectures",
-            "LaboratoryExercises",
+            "laboratoryExercises",
             "workshops",
             "independentWorkBySemester",
-            "Exam"
+            "exam"
         };
-
 
         public WorkPrograms()
         {
@@ -54,12 +54,14 @@ namespace WorkPrograms
 
         public static void ClearData()
         {
-            SemesterData.Clear();
+            semesterData.Clear();
             semesters = "";
             courses = "";
             test = "";
+            sumLectures = 0;
+            sumWorkshops = 0;
+            typesOfLessons = "";
         }
-
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
@@ -85,8 +87,7 @@ namespace WorkPrograms
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
         {
-            ClearData();
-            CreateSemesters(worksheetPlan, index);
+
             foreach (var item in semesters)
             {
 
@@ -110,15 +111,76 @@ namespace WorkPrograms
                     string s3 = worksheetPlan.Cells[(a * 7 + 17 + i)][index].Value;
                     if (s3 != null)
                     {
-                        if (!SemesterData.ContainsKey(NameSemesterData[i]))
-                            SemesterData.Add(NameSemesterData[i], s3);
+                        if (!semesterData.ContainsKey(keysForSemesterData[i]))
+                            semesterData.Add(keysForSemesterData[i], s3);
                         else
-                            SemesterData[NameSemesterData[i]] += "/" + s3;
+                            semesterData[keysForSemesterData[i]] += "/" + s3;
+                    }
+                    else if (i == 6)
+                    {
+                        if (!semesterData.ContainsKey(keysForSemesterData[i]))
+                            semesterData.Add(keysForSemesterData[i], "-");
+                        else
+                            semesterData[keysForSemesterData[i]] += "/-";
                     }
                 }
             }
         }
+        public static void CreateCourses()
+        {
+            int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1]) / 2));
+            for (int i = 0; i < a; i++)
+                courses += i + 1 + "/";
+            courses.Trim('/');
+        }
 
+        public static void CreateTeats()
+        {
+            string s = "";
+            for (int i = 0, j = 0; i < semesters.Length - 1; i++)
+                if (semesters[i] == test[j])
+                {
+                    s += "+/";
+                    j++;
+                }
+                else
+                    s += "-/";
+            test = s.Remove(s.Length - 1);
+        }
+
+        public static void CreateSemesters()
+        {
+            string s = "";
+            for (int i = 0; i < semesters.Length - 1; i++)
+                s += semesters[i] + "/";
+            semesters = s.Remove(s.Length - 1);
+        }
+
+        public static void CountSumLecturesAndPractices(Excel.Worksheet worksheetPlan, int index)
+        {
+            for (int i = 17; i < 73; i+=7)
+            {
+                sumLectures += Convert.ToInt32(worksheetPlan.Cells[i+2][index].Value);
+                sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
+            }        
+        }
+
+        public static void CreateTypesOfLessons() 
+        {
+            var list = new List<string>();
+            if (sumLectures!=0)
+                list.Add("лекционных");
+            if (sumWorkshops!=0)
+                list.Add("практических");
+            if (semesterData.ContainsKey(keysForSemesterData[3]))
+                list.Add("лабораторных");
+            if (list.Count==1)
+                typesOfLessons = list[0];
+            else if (list.Count == 2)
+                typesOfLessons = list[0] + ", " + list[1];
+            else if (list.Count == 3)
+                typesOfLessons = list[0] + ", " + list[1] +"и "+list[2];
+        }
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
@@ -135,10 +197,16 @@ namespace WorkPrograms
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value);
             studyHours = int.Parse(worksheetPlan.Cells[11][index].Value);
-            independentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
+            sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
+            ClearData();
+            CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
-
+            CreateCourses();
+            CreateTeats();
+            CreateSemesters();
+            CountSumLecturesAndPractices(worksheetPlan, index);
+            CreateTypesOfLessons();
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
         {
