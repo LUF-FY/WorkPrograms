@@ -24,10 +24,101 @@ namespace WorkPrograms
         public static string test = "";
         public static string subjectCompetencies = "";
 
+
+        /*public static string auditoryLessons = "";       
+        public static string lectures = "";
+        public static string LaboratoryExercises = "";
+        public static string workshops = "";
+        public static string independentWorkBySemester = "";
+        public static string Exam = "";*/
+
+        public static string semesters = "";
+        public static string courses = "";
+        public static Dictionary<string, string> SemesterData = new Dictionary<string, string>();
+        public static string[] NameSemesterData = new string[] 
+        {
+            "",
+            "auditoryLessons", 
+            "lectures",
+            "LaboratoryExercises",
+            "workshops",
+            "independentWorkBySemester",
+            "Exam" 
+        };
+            
+
         public WorkPrograms()
         {
             InitializeComponent();
         }
+
+        public static void ClearData()
+        {
+            SemesterData.Clear();
+            semesters = "";
+            courses = "";
+            test = "";
+        }
+
+
+        public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
+        {
+            string GradedTest = worksheetPlan.Cells[6][index].Value;
+            string testCopy = worksheetPlan.Cells[5][index].Value;
+            if (testCopy != null && GradedTest != null)
+            {
+                if (testCopy.CompareTo(GradedTest) == 1)
+                    test = testCopy + GradedTest;
+                else
+                    test = GradedTest + testCopy;
+            }
+
+            string ExamCopy = worksheetPlan.Cells[4][index].Value;
+            if (ExamCopy != null && test != null)
+            {
+                if (ExamCopy.CompareTo(test) == 1)
+                    semesters = ExamCopy + test;
+                else
+                    semesters = test + ExamCopy;
+            }
+        }
+
+        public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
+        {
+            ClearData();
+            CreateSemesters(worksheetPlan, index);
+            foreach (var item in semesters)
+            {
+
+                /*if (worksheetPlan.Cells[(a * 7 + 18)][index].Value != null)
+                    auditoryLessons += worksheetPlan.Cells[(a * 7 + 18)][index].Value + "/";
+                if (worksheetPlan.Cells[(a * 7 + 19)][index].Value != null)
+                    lectures += worksheetPlan.Cells[(a * 7 + 19)][index].Value + "/";
+                if (worksheetPlan.Cells[(a * 7 + 20)][index].Value != null)
+                    LaboratoryExercises += worksheetPlan.Cells[(a * 7 + 20)][index].Value + "/";
+                if (worksheetPlan.Cells[(a * 7 + 21)][index].Value != null)
+                    workshops += worksheetPlan.Cells[(a * 7 + 21)][index].Value + "/";
+                if (worksheetPlan.Cells[(a * 7 + 22)][index].Value != null)
+                    independentWorkBySemester += worksheetPlan.Cells[(a * 7 + 22)][index].Value+ "/";
+                if (worksheetPlan.Cells[(a * 7 + 23)][index].Value!=null)
+                    Exam += worksheetPlan.Cells[(a * 7 + 23)][index].Value + "/";
+                */
+
+                int a = Convert.ToInt32(item);              
+                for (int i = 1; i < 7; i++)
+                {
+                    string s3 = worksheetPlan.Cells[(a * 7 + 17 + i)][index].Value;
+                    if (s3 != null)
+                    {
+                        if (!SemesterData.ContainsKey(NameSemesterData[i]))
+                            SemesterData.Add(NameSemesterData[i], s3);
+                        else
+                            SemesterData[NameSemesterData[i]] += "/" + s3;
+                    }
+                }
+            }
+        }
+
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
@@ -45,9 +136,9 @@ namespace WorkPrograms
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value);
             studyHours = int.Parse(worksheetPlan.Cells[11][index].Value);
             independentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
-            test = worksheetPlan.Cells[5][index].Value;
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
-
+            FillDictionary(worksheetPlan, index);
+            
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
         {
