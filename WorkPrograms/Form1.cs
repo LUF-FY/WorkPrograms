@@ -22,6 +22,7 @@ namespace WorkPrograms
         public static int studyHours = 0;
         public static int independentWork = 0;
         public static string test = "";
+        public static string subjectCompetencies = "";
 
         public WorkPrograms()
         {
@@ -45,6 +46,7 @@ namespace WorkPrograms
             studyHours = int.Parse(worksheetPlan.Cells[11][index].Value);
             independentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
             test = worksheetPlan.Cells[5][index].Value;
+            subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
 
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
@@ -63,7 +65,7 @@ namespace WorkPrograms
             return dic;
         }
 
-        private List<string> SelectCompetencies(Excel.Worksheet worksheet, Excel.Worksheet worksheet2)
+        private string SelectCompetencies(Excel.Worksheet worksheet, Excel.Worksheet worksheet2)
         {
             // Ищем в листе "Компетенции" нужные компетенции и закидываем в список.
             var resultList = new List<string>();
@@ -78,14 +80,10 @@ namespace WorkPrograms
                         resultList.Add("-" + dic[item] + " " + $"({item})");
                 }
             }
-            return resultList;
+            var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
+            return competencies;
         }
 
-        /*что делает Стас
-         *  var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-         * 
-         * 
-        */
         public static int TotalSize(Excel.Worksheet worksheet)
         {
             // Находим кол-во строк.
@@ -123,7 +121,7 @@ namespace WorkPrograms
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
-                        PrepareData(_Excel.worksheetWorkPlanPlan, i);
+                        PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
                         //WriteCompetencyInFile(_Excel.worksheetWorkPlanComp, _Excel.worksheetWorkPlanPlan);
                         //isExam = false;
                         //isTest = false;
