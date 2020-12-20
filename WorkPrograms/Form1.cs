@@ -31,8 +31,9 @@ namespace WorkPrograms
         {
             // берём информацию из листа Титул
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            direction = worksheetTitle.Cells[2][18].Value.Split(new string[] { "Профиль", "Профили", "Направление" })[0].Trim(' ');
-            profile = worksheetTitle.Cells[2][18].Value.Split(new string[] { "Профиль", "Профили", "Направление" })[1].Trim(' ');
+            var s0 = worksheetTitle.Cells[2][18].Value.Split(new string[] { "Профиль", "Профили", "Направление" });
+            direction = s0[0].Trim(' ');
+            profile = s0[1].Trim(' ');
             var s1 = worksheetTitle.Cells[20][31].Value.Split("от");
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split("от");
