@@ -39,7 +39,7 @@ namespace WorkPrograms
             // 
             // buttonOpenExcel
             // 
-            this.buttonOpenExcel.Location = new System.Drawing.Point(27, 36);
+            this.buttonOpenExcel.Location = new System.Drawing.Point(28, 41);
             this.buttonOpenExcel.Name = "buttonOpenExcel";
             this.buttonOpenExcel.Size = new System.Drawing.Size(110, 26);
             this.buttonOpenExcel.TabIndex = 0;
