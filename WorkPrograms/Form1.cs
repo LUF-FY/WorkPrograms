@@ -27,11 +27,8 @@ namespace WorkPrograms
         public static int sumWorkshops = 0;
         public static int sumIndependentWork = 0;
 
-        /*public static string auditoryLessons = "";              
-        public static string LaboratoryExercises = "";
-        public static string independentWorkBySemester = "";
-        public static string Exam = "";*/
-
+        public static string courseWork = "";
+        public static string consulting = "";
         public static string typesOfLessons = "";
         public static string semesters = "";
         public static string courses = "";
@@ -61,6 +58,7 @@ namespace WorkPrograms
             sumLectures = 0;
             sumWorkshops = 0;
             typesOfLessons = "";
+            consulting = "";
         }
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
@@ -90,21 +88,6 @@ namespace WorkPrograms
 
             foreach (var item in semesters)
             {
-
-                /*if (worksheetPlan.Cells[(a * 7 + 18)][index].Value != null)
-                    auditoryLessons += worksheetPlan.Cells[(a * 7 + 18)][index].Value + "/";
-                if (worksheetPlan.Cells[(a * 7 + 19)][index].Value != null)
-                    lectures += worksheetPlan.Cells[(a * 7 + 19)][index].Value + "/";
-                if (worksheetPlan.Cells[(a * 7 + 20)][index].Value != null)
-                    LaboratoryExercises += worksheetPlan.Cells[(a * 7 + 20)][index].Value + "/";
-                if (worksheetPlan.Cells[(a * 7 + 21)][index].Value != null)
-                    workshops += worksheetPlan.Cells[(a * 7 + 21)][index].Value + "/";
-                if (worksheetPlan.Cells[(a * 7 + 22)][index].Value != null)
-                    independentWorkBySemester += worksheetPlan.Cells[(a * 7 + 22)][index].Value+ "/";
-                if (worksheetPlan.Cells[(a * 7 + 23)][index].Value!=null)
-                    Exam += worksheetPlan.Cells[(a * 7 + 23)][index].Value + "/";
-                */
-
                 int a = Convert.ToInt32(item);
                 for (int i = 1; i < 7; i++)
                 {
@@ -181,6 +164,20 @@ namespace WorkPrograms
             else if (list.Count == 3)
                 typesOfLessons = list[0] + ", " + list[1] +"и "+list[2];
         }
+
+        public static void CreateConsulting()
+        {
+            string[] s = semesterData[keysForSemesterData[6]].Split('/');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i]!="-")
+                    consulting += "+/";
+                else
+                    consulting += "-/";
+            }
+            consulting = consulting.Remove(consulting.Length - 1);
+        }
+
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
@@ -196,12 +193,15 @@ namespace WorkPrograms
             // берём информацию из листа План
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value);
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
+                courseWork = worksheetPlan.Cells[7][index].Value;
             studyHours = int.Parse(worksheetPlan.Cells[11][index].Value);
             sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
+            CreateConsulting();
             CreateCourses();
             CreateTeats();
             CreateSemesters();
