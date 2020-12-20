@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Xceed.Words.NET;
 using System.IO;
 
-namespace Competencies
+namespace WorkPrograms
 {
     /* Заполняем ComboBox предметов и выбираем файл с расширением xls.*/
 

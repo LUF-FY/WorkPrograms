@@ -9,9 +9,9 @@ using System.IO;
 
 namespace WorkPrograms
 {
-    public partial class Form1 : Form
+    public partial class WorkPrograms : Form
     {
-        public Form1()
+        public WorkPrograms()
         {
             InitializeComponent();
         }
@@ -23,8 +23,7 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    
-                    //SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);                    
+                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);                    
                 }
                 else
                     throw new Exception("Файл не выбран");

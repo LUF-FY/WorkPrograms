@@ -16,12 +16,12 @@ namespace WorkPrograms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-            /*if (_Excel.xlApp != null)
+            Application.Run(new WorkPrograms());
+            if (_Excel.xlApp != null)
             {
                 _Excel.xlApp.Quit();
                 _Excel.ClearExcel();
-            }*/
+            }
         }
     }
 }

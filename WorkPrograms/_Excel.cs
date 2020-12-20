@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 
-namespace Competencies
+namespace WorkPrograms
 {
     class _Excel
     {

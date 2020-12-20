@@ -1,7 +1,7 @@
 ﻿
 namespace WorkPrograms
 {
-    partial class Form1
+    partial class WorkPrograms
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -57,14 +57,14 @@ namespace WorkPrograms
             this.labelNameOfWorkPlanFile.TabIndex = 1;
             this.labelNameOfWorkPlanFile.Text = "Файл не выбран";
             // 
-            // Form1
+            // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 261);
             this.Controls.Add(this.labelNameOfWorkPlanFile);
             this.Controls.Add(this.buttonOpenExcel);
-            this.Name = "Form1";
+            this.Name = "WorkPrograms";
             this.Text = "WorkPrograms";
             this.ResumeLayout(false);
             this.PerformLayout();
