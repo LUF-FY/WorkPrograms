@@ -32,6 +32,8 @@ namespace WorkPrograms
             this.openFileDialogSelectFile = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.labelNameOfWorkPlanFile = new System.Windows.Forms.Label();
+            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.labelLoading = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openFileDialogSelectFile
@@ -57,11 +59,32 @@ namespace WorkPrograms
             this.labelNameOfWorkPlanFile.TabIndex = 1;
             this.labelNameOfWorkPlanFile.Text = "Файл не выбран";
             // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.Location = new System.Drawing.Point(12, 134);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(560, 115);
+            this.buttonGenerate.TabIndex = 2;
+            this.buttonGenerate.Text = "Сформировать";
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            // 
+            // labelLoading
+            // 
+            this.labelLoading.AutoSize = true;
+            this.labelLoading.Location = new System.Drawing.Point(24, 118);
+            this.labelLoading.Name = "labelLoading";
+            this.labelLoading.Size = new System.Drawing.Size(35, 13);
+            this.labelLoading.TabIndex = 3;
+            this.labelLoading.Text = "label1";
+            // 
             // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 261);
+            this.Controls.Add(this.labelLoading);
+            this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.labelNameOfWorkPlanFile);
             this.Controls.Add(this.buttonOpenExcel);
             this.Name = "WorkPrograms";
@@ -76,6 +99,8 @@ namespace WorkPrograms
         private System.Windows.Forms.OpenFileDialog openFileDialogSelectFile;
         private System.Windows.Forms.Button buttonOpenExcel;
         private System.Windows.Forms.Label labelNameOfWorkPlanFile;
+        private System.Windows.Forms.Button buttonGenerate;
+        private System.Windows.Forms.Label labelLoading;
     }
 }
 
