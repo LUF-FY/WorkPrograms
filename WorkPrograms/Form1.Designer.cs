@@ -42,9 +42,10 @@ namespace WorkPrograms
             // 
             // buttonOpenExcel
             // 
-            this.buttonOpenExcel.Location = new System.Drawing.Point(28, 41);
+            this.buttonOpenExcel.Font = new System.Drawing.Font("Arial Narrow", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonOpenExcel.Location = new System.Drawing.Point(25, 12);
             this.buttonOpenExcel.Name = "buttonOpenExcel";
-            this.buttonOpenExcel.Size = new System.Drawing.Size(110, 26);
+            this.buttonOpenExcel.Size = new System.Drawing.Size(174, 60);
             this.buttonOpenExcel.TabIndex = 0;
             this.buttonOpenExcel.Text = "Открыть файл";
             this.buttonOpenExcel.UseVisualStyleBackColor = true;
@@ -53,17 +54,20 @@ namespace WorkPrograms
             // labelNameOfWorkPlanFile
             // 
             this.labelNameOfWorkPlanFile.AutoSize = true;
-            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(155, 43);
+            this.labelNameOfWorkPlanFile.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(221, 32);
             this.labelNameOfWorkPlanFile.Name = "labelNameOfWorkPlanFile";
-            this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(92, 13);
+            this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(117, 20);
             this.labelNameOfWorkPlanFile.TabIndex = 1;
             this.labelNameOfWorkPlanFile.Text = "Файл не выбран";
             // 
             // buttonGenerate
             // 
-            this.buttonGenerate.Location = new System.Drawing.Point(12, 134);
+            this.buttonGenerate.Font = new System.Drawing.Font("Arial Narrow", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.buttonGenerate.Location = new System.Drawing.Point(133, 143);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(560, 115);
+            this.buttonGenerate.Size = new System.Drawing.Size(280, 50);
             this.buttonGenerate.TabIndex = 2;
             this.buttonGenerate.Text = "Сформировать";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -72,11 +76,12 @@ namespace WorkPrograms
             // labelLoading
             // 
             this.labelLoading.AutoSize = true;
-            this.labelLoading.Location = new System.Drawing.Point(24, 118);
+            this.labelLoading.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelLoading.Location = new System.Drawing.Point(220, 208);
             this.labelLoading.Name = "labelLoading";
-            this.labelLoading.Size = new System.Drawing.Size(35, 13);
+            this.labelLoading.Size = new System.Drawing.Size(89, 25);
             this.labelLoading.TabIndex = 3;
-            this.labelLoading.Text = "label1";
+            this.labelLoading.Text = "Загрузка";
             // 
             // WorkPrograms
             // 
