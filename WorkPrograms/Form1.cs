@@ -118,6 +118,9 @@ namespace WorkPrograms
                             semesterData[keysForSemesterData[i]] += "/-";
                     }
                 }
+                for (int i = 1; i < 7; i++)
+                    if (!semesterData.ContainsKey(keysForSemesterData[i]))
+                        semesterData[keysForSemesterData[i]] = "-";
             }
         }
         public static void CreateCourses()
