@@ -72,7 +72,7 @@ namespace WorkPrograms
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
             semesters = "";
-            string GradedTest = worksheetPlan.Cells[6][index].Value;
+            /*string GradedTest = worksheetPlan.Cells[6][index].Value;
             string testCopy = worksheetPlan.Cells[5][index].Value;
             if (testCopy != null && GradedTest != null)
             {
@@ -94,7 +94,7 @@ namespace WorkPrograms
             }
             else
                 semesters = test + ExamCopy;
-            if (semesters == "")
+            if (semesters == "")*/
                 for (int i = 18, number = 1; i < 70; i += 7)
                 {
                     if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
@@ -132,16 +132,24 @@ namespace WorkPrograms
                         semesterData[keysForSemesterData[i]] = "-";
             }
         }
-        public static void CreateCourses()
+        public static void CreateCourses(Excel.Worksheet worksheetPlan, int index)
         {
-            int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
+            /*int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
             int b = Convert.ToInt32(Math.Floor(Convert.ToDouble(semesters[0].ToString()) / 2));
-            for (int i = b; i < a; i++)
+            for (int i = b; i <= a; i++)
                 courses += i + 1 + "/";
             if (semesters.Length==1)
                 courses = a.ToString();
             else
-                courses = courses.Remove(courses.Length - 1);
+                courses = courses.Remove(courses.Length - 1);*/
+            for (int i = 18, number = 1; i < 70; i += 14)
+            {
+                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value)||
+                    !string.IsNullOrEmpty(worksheetPlan.Cells[i+7][index].Value))
+                    courses += number+"/";
+                number++;
+            }
+            courses = courses.Remove(courses.Length - 1);
         }
 
         public static void CreateTeats()
@@ -272,7 +280,7 @@ namespace WorkPrograms
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
             CreateConsulting();
-            CreateCourses();
+            CreateCourses(worksheetPlan, index);
             CreateTeats();//
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
