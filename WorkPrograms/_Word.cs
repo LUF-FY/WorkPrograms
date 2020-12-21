@@ -13,26 +13,36 @@ namespace WorkPrograms
 
         public void FillPattern()
         {
-            DocX document = DocX.Load(path);
+            DocX document = DocX.Load("WordPattern.docx");
             string[] replaceableStrings = new string[]
             {
                 WorkPrograms.subjectName, WorkPrograms.direction, WorkPrograms.profile,
                 WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.chair,  
                 WorkPrograms.creditUnits.ToString(), WorkPrograms.studyHours.ToString(),
                 WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
-                WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork
+                WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork,
+                WorkPrograms.competencies
             };
-            foreach(var el in replaceableStrings)
+            string[] namesOfReplaceableStrings = new string[]
             {
-                string s = "$" + el + "$";
-                document.ReplaceText(s, el);
+                nameof(WorkPrograms.subjectName), nameof(WorkPrograms.direction), nameof(WorkPrograms.profile),
+                nameof(WorkPrograms.standard), nameof(WorkPrograms.protocol), nameof(WorkPrograms.chair),
+                nameof(WorkPrograms.creditUnits), nameof(WorkPrograms.studyHours),
+                nameof(WorkPrograms.courses), nameof(WorkPrograms.semesters), nameof(WorkPrograms.sumIndependentWork),
+                nameof(WorkPrograms.typesOfLessons), nameof(WorkPrograms.test), nameof(WorkPrograms.consulting), nameof(WorkPrograms.courseWork),
+                nameof(WorkPrograms.competencies)
+            };
+            for (int i = 0; i < replaceableStrings.Count(); i++)
+            {
+                string s = "$" + namesOfReplaceableStrings[i] + "$";
+                document.ReplaceText(s, replaceableStrings[i]);
             }
             foreach(var el in WorkPrograms.semesterData)
             {
                 if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
             }
-            document.Save();
+            document.SaveAs(path);
         }
     }
 }

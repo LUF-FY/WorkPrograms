@@ -26,6 +26,8 @@ namespace WorkPrograms
         public static string subjectIndex = "";
         public static string directionAbbreviation = "";
         public static string startYear = "";
+        public static string competencies = "";
+        public static Dictionary<string, string> competenciesDic = new Dictionary<string, string>();
 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
@@ -231,6 +233,8 @@ namespace WorkPrograms
             protocol = s2[1].Trim(' ') + " г., " + s2[0].Trim(' ');
             chair = worksheetTitle.Cells[2][26].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
+            competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
+            competencies = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             // берём информацию из листа План
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
@@ -266,7 +270,7 @@ namespace WorkPrograms
             return dic;
         }
 
-        private string SelectCompetencies(Excel.Worksheet worksheet, Excel.Worksheet worksheet2)
+        private static string SelectCompetencies(Excel.Worksheet worksheet)
         {
             // Ищем в листе "Компетенции" нужные компетенции и закидываем в список.
             var resultList = new List<string>();
