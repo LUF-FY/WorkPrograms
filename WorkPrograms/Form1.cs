@@ -11,6 +11,7 @@ namespace WorkPrograms
 {
     public partial class WorkPrograms : Form
     {
+        public static string path = "";
 
         public static string direction = "";
         public static string profile = "";
@@ -22,6 +23,9 @@ namespace WorkPrograms
         public static int studyHours = 0;
         public static string test = "";
         public static string subjectCompetencies = "";
+        public static string subjectIndex = "";
+        public static string directionAbbreviation = "";
+        public static string startYear = "";
 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
@@ -72,6 +76,8 @@ namespace WorkPrograms
                 else
                     test = GradedTest + testCopy;
             }
+            else
+                test = GradedTest + testCopy;
 
             string ExamCopy = worksheetPlan.Cells[4][index].Value;
             if (ExamCopy != null && test != null)
@@ -81,6 +87,9 @@ namespace WorkPrograms
                 else
                     semesters = test + ExamCopy;
             }
+            else
+                semesters = test + ExamCopy;
+
         }
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
@@ -88,7 +97,7 @@ namespace WorkPrograms
 
             foreach (var item in semesters)
             {
-                int a = Convert.ToInt32(item);
+                int a = Convert.ToInt32(item - '0') - 1;
                 for (int i = 1; i < 7; i++)
                 {
                     string s3 = worksheetPlan.Cells[(a * 7 + 17 + i)][index].Value;
@@ -178,26 +187,59 @@ namespace WorkPrograms
             consulting = consulting.Remove(consulting.Length - 1);
         }
 
+        public static string SelectAbbreviation()
+        {
+            //Создаем аббревиатуры направлений.
+            string directionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value;
+            string abbreviation = "";
+            if (directionName.Contains("  "))
+                directionName.Replace("  ", " ");
+            string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
+            if (splittedDirectionName[2] == "Прикладная")
+                abbreviation = "ПМ";
+            else if (splittedDirectionName[2] == "Информатика")
+                abbreviation = "ИВТ";
+            else if (splittedDirectionName[2] == "Педагогическое")
+                abbreviation = "ПОМИ";
+            else
+                abbreviation = "МАТ";
+            //for (int i = 2; i < directionName.Length; i++)
+            //{
+            //    if (directionName[i] != "Профиль")
+            //    {
+            //        if (directionName[i].Length > 1)
+            //            abbreviation += Char.ToUpper(directionName[i][0]);
+            //    }
+            //    else
+            //        break;
+            //}
+            return abbreviation;
+        }
+
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            var s0 = worksheetTitle.Cells[2][18].Value.Split(new string[] { "Профиль", "Профили", "Направление" });
-            direction = s0[0].Trim(' ');
-            profile = s0[1].Trim(' ');
-            var s1 = worksheetTitle.Cells[20][31].Value.Split("от");
+            string[] separators = new string[] { "Профиль", "Профили", "Направление" };
+            var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
+            directionAbbreviation = SelectAbbreviation();
+            direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
+            profile = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+            var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
-            var s2 = worksheetTitle.Cells[1][13].Value.Split("от");
+            var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
             protocol = s2[1].Trim(' ') + " г., " + s2[0].Trim(' ');
             chair = worksheetTitle.Cells[2][26].Value.Trim(' ');
+            startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
             // берём информацию из листа План
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
-                creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value);
+                creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
-                courseWork = worksheetPlan.Cells[7][index].Value;
-            studyHours = int.Parse(worksheetPlan.Cells[11][index].Value);
-            sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value);
+                courseWork = worksheetPlan.Cells[7][index].Value.Trim(' ');
+            studyHours = int.Parse(worksheetPlan.Cells[11][index].Value.Trim(' '));
+            sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value.Trim(' '));
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
+            subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
@@ -268,12 +310,44 @@ namespace WorkPrograms
             }
         }
 
+        public static string RemoveExtraChars(string s)
+        {
+            //Удаляем лишние символы из названий предметов.
+            string str = null;
+            foreach (var item in s)
+            {
+                if (item == ':')
+                    str += ' ';
+                else
+                    str += item;
+            }
+            return str;
+        }
+
+        private void WriteInFile()
+        {
+            string subjectInPath = "";
+            if (subjectName.Contains(':'))
+                subjectInPath = RemoveExtraChars(subjectName);
+            else
+                subjectInPath = subjectName;
+            path = folderBrowserDialogChooseFolder.SelectedPath + @subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
+            var resultDoc = new _Word();
+            resultDoc.path = path;
+            resultDoc.FillPattern();
+            //var resultList = SelectCompetencies(worksheet, plan);
+            //DocX resultDoc = DocX.Create(path);
+            //var resultDoc = DocX.Create(path);
+            //var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
+            //_Word.CreateWordTemplate(competencies, resultDoc);
+            //resultDoc.Save();
+        }
+
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
             try
-            {
-                
+            {                
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
                 labelLoading.Text = "Загрузка...";                
                 for (int i = 6; i <= lastRow; i++)
@@ -281,12 +355,31 @@ namespace WorkPrograms
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
                         PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
-                        //WriteCompetencyInFile(_Excel.worksheetWorkPlanComp, _Excel.worksheetWorkPlanPlan);
-                        //isExam = false;
-                        //isTest = false;
+                        WriteInFile();
                     }
                 }
                 labelLoading.Text = "Загрузка завершена";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult res = folderBrowserDialogChooseFolder.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    labelNameOfFolder.Text = "Загрузка...";
+                    path = folderBrowserDialogChooseFolder.SelectedPath;
+                    labelNameOfFolder.Text = path;
+                    buttonGenerate.Enabled = true;
+                }
+                else
+                    throw new Exception("Путь не выбран");
             }
             catch (Exception ex)
             {
