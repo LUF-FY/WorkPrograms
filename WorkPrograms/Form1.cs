@@ -31,7 +31,7 @@ namespace WorkPrograms
 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
-        public static int sumIndependentWork = 0;
+        public static string sumIndependentWork = "";
 
         public static string courseWork = "";
         public static string consulting = "";
@@ -255,7 +255,8 @@ namespace WorkPrograms
             else
                 courseWork = "-";
             studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
-            sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value.Trim(' '));
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
+                sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             ClearData();
@@ -370,7 +371,7 @@ namespace WorkPrograms
             {                
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
                 labelLoading.Text = "Загрузка...";                
-                for (int i = 6; i <= lastRow; i++)
+                for (int i = 95; i <= lastRow; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
