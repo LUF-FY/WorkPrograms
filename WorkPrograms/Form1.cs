@@ -243,6 +243,8 @@ namespace WorkPrograms
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
                 courseWork = worksheetPlan.Cells[7][index].Value.Trim(' ');
+            else
+                courseWork = "-";
             studyHours = int.Parse(worksheetPlan.Cells[11][index].Value.Trim(' '));
             sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value.Trim(' '));
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
