@@ -361,7 +361,7 @@ namespace WorkPrograms
             var resultDoc = new _Word();
             resultDoc.path = path;
             var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanPlan);
+            //competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanPlan);
             resultDoc.FillPattern(competencies);
             //var resultList = SelectCompetencies(worksheet, plan);
             //DocX resultDoc = DocX.Create(path);
