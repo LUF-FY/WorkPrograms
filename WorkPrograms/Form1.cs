@@ -120,7 +120,7 @@ namespace WorkPrograms
         }
         public static void CreateCourses()
         {
-            int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1]) / 2));
+            int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
             for (int i = 0; i < a; i++)
                 courses += i + 1 + "/";
             courses.Trim('/');
