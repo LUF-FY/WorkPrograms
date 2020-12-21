@@ -69,6 +69,7 @@ namespace WorkPrograms
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
+            semesters = "";
             string GradedTest = worksheetPlan.Cells[6][index].Value;
             string testCopy = worksheetPlan.Cells[5][index].Value;
             if (testCopy != null && GradedTest != null)
@@ -91,7 +92,13 @@ namespace WorkPrograms
             }
             else
                 semesters = test + ExamCopy;
-
+            if (semesters == "")
+                for (int i = 18, number = 1; i < 70; i += 7)
+                {
+                    if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
+                        semesters += number;
+                    number++;
+                }
         }
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
