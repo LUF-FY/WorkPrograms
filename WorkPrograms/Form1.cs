@@ -71,6 +71,7 @@ namespace WorkPrograms
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
+            semesters = "";
             string GradedTest = worksheetPlan.Cells[6][index].Value;
             string testCopy = worksheetPlan.Cells[5][index].Value;
             if (testCopy != null && GradedTest != null)
@@ -93,7 +94,13 @@ namespace WorkPrograms
             }
             else
                 semesters = test + ExamCopy;
-
+            if (semesters == "")
+                for (int i = 18, number = 1; i < 70; i += 7)
+                {
+                    if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
+                        semesters += number;
+                    number++;
+                }
         }
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
@@ -372,8 +379,7 @@ namespace WorkPrograms
             try
             {                
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
-                labelLoading.Text = "Загрузка...";
-                progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
+                labelLoading.Text = "Загрузка...";                
                 for (int i = 6; i <= lastRow; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
