@@ -129,17 +129,25 @@ namespace WorkPrograms
             int b = Convert.ToInt32(Math.Floor(Convert.ToDouble(semesters[0].ToString()) / 2));
             for (int i = b; i < a; i++)
                 courses += i + 1 + "/";
-            courses = courses.Remove(courses.Length - 1);
+            if (semesters.Length==1)
+                courses = a.ToString();
+            else
+                courses = courses.Remove(courses.Length - 1);
         }
 
         public static void CreateTeats()
         {
             string s = "";
             for (int i = 0, j = 0; i < semesters.Length; i++)
-                if (semesters[i] == test[j])
+                if (j < test.Length)
                 {
-                    s += "+/";
-                    j++;
+                    if (semesters[i] == test[j])
+                    {
+                        s += "+/";
+                        j++;
+                    }
+                    else
+                        s += "-/";
                 }
                 else
                     s += "-/";
