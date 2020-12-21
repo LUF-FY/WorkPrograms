@@ -36,12 +36,12 @@ namespace WorkPrograms
         public static string[] keysForSemesterData = new string[]
         {
             "",
-            "auditoryLessons",
-            "lectures",
-            "laboratoryExercises",
-            "workshops",
-            "independentWorkBySemester",
-            "exam"
+            "$auditoryLessons$",
+            "$lectures$",
+            "$laboratoryExercises$",
+            "$workshops$",
+            "$independentWorkBySemester$",
+            "$exam$"
         };
 
         public WorkPrograms()
