@@ -20,13 +20,13 @@ namespace WorkPrograms
         public static string chair = "";
         public static string subjectName = "";
         public static int creditUnits = 0;
-        public static int studyHours = 0;
+        public static string studyHours = "";
         public static string test = "";
         public static string subjectCompetencies = "";
         public static string subjectIndex = "";
         public static string directionAbbreviation = "";
         public static string startYear = "";
-        public static string competencies = "";
+        public static string edForm = "";
         public static Dictionary<string, string> competenciesDic = new Dictionary<string, string>();
 
         public static int sumLectures = 0;
@@ -176,7 +176,7 @@ namespace WorkPrograms
             else if (list.Count == 2)
                 typesOfLessons = list[0] + ", " + list[1];
             else if (list.Count == 3)
-                typesOfLessons = list[0] + ", " + list[1] +"и "+list[2];
+                typesOfLessons = list[0] + ", " + list[1] +" и "+list[2];
         }
 
         public static void CreateConsulting()
@@ -236,8 +236,8 @@ namespace WorkPrograms
             protocol = s2[1].Trim(' ') + " г., " + s2[0].Trim(' ');
             chair = worksheetTitle.Cells[2][26].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
-            competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
-            competencies = SelectCompetencies(_Excel.worksheetWorkPlanComp);
+            var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
+            edForm = s3[1].Trim(' ') + " " + s3[0];
             // берём информацию из листа План
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
                 creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
@@ -245,7 +245,7 @@ namespace WorkPrograms
                 courseWork = worksheetPlan.Cells[7][index].Value.Trim(' ');
             else
                 courseWork = "-";
-            studyHours = int.Parse(worksheetPlan.Cells[11][index].Value.Trim(' '));
+            studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
             sumIndependentWork = int.Parse(worksheetPlan.Cells[14][index].Value.Trim(' '));
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
@@ -275,7 +275,7 @@ namespace WorkPrograms
             return dic;
         }
 
-        private static string SelectCompetencies(Excel.Worksheet worksheet)
+        private static List<string> SelectCompetencies(Excel.Worksheet worksheet)
         {
             // Ищем в листе "Компетенции" нужные компетенции и закидываем в список.
             var resultList = new List<string>();
@@ -290,8 +290,7 @@ namespace WorkPrograms
                         resultList.Add("-" + dic[item] + " " + $"({item})");
                 }
             }
-            var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            return competencies;
+            return resultList;
         }
 
         public static int TotalSize(Excel.Worksheet worksheet)
@@ -341,9 +340,12 @@ namespace WorkPrograms
             else
                 subjectInPath = subjectName;
             path = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
+            var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
             resultDoc.path = path;
-            resultDoc.FillPattern();
+            var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
+            competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanPlan);
+            resultDoc.FillPattern(competencies);
             //var resultList = SelectCompetencies(worksheet, plan);
             //DocX resultDoc = DocX.Create(path);
             //var resultDoc = DocX.Create(path);
