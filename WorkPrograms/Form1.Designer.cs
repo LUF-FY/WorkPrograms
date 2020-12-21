@@ -29,6 +29,7 @@ namespace WorkPrograms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.openFileDialogSelectFile = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.labelNameOfWorkPlanFile = new System.Windows.Forms.Label();
@@ -37,6 +38,9 @@ namespace WorkPrograms
             this.buttonOpenFolder = new System.Windows.Forms.Button();
             this.labelNameOfFolder = new System.Windows.Forms.Label();
             this.folderBrowserDialogChooseFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialogSelectFile
@@ -68,7 +72,7 @@ namespace WorkPrograms
             // 
             this.buttonGenerate.Font = new System.Drawing.Font("Arial Narrow", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.buttonGenerate.Location = new System.Drawing.Point(130, 175);
+            this.buttonGenerate.Location = new System.Drawing.Point(121, 175);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(280, 50);
             this.buttonGenerate.TabIndex = 2;
@@ -80,7 +84,7 @@ namespace WorkPrograms
             // 
             this.labelLoading.AutoSize = true;
             this.labelLoading.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelLoading.Location = new System.Drawing.Point(220, 228);
+            this.labelLoading.Location = new System.Drawing.Point(220, 266);
             this.labelLoading.Name = "labelLoading";
             this.labelLoading.Size = new System.Drawing.Size(89, 25);
             this.labelLoading.TabIndex = 3;
@@ -109,11 +113,23 @@ namespace WorkPrograms
             this.labelNameOfFolder.TabIndex = 5;
             this.labelNameOfFolder.Text = "Папка не выбрана";
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 232);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(570, 23);
+            this.progressBar1.TabIndex = 6;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 261);
+            this.ClientSize = new System.Drawing.Size(584, 300);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.labelNameOfFolder);
             this.Controls.Add(this.buttonOpenFolder);
             this.Controls.Add(this.labelLoading);
@@ -122,6 +138,7 @@ namespace WorkPrograms
             this.Controls.Add(this.buttonOpenExcel);
             this.Name = "WorkPrograms";
             this.Text = "WorkPrograms";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,6 +154,8 @@ namespace WorkPrograms
         private System.Windows.Forms.Button buttonOpenFolder;
         private System.Windows.Forms.Label labelNameOfFolder;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogChooseFolder;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
 

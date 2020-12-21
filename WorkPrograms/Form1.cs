@@ -50,6 +50,8 @@ namespace WorkPrograms
             "$exam$"
         };
 
+        public static int MaxValueOfProgressBar=0;
+
         public WorkPrograms()
         {
             InitializeComponent();
@@ -279,6 +281,7 @@ namespace WorkPrograms
                 {
                     string key = worksheet.Cells[2][i].Value;
                     dic[key] = worksheet.Cells[4][i].Value;
+
                 }
             }
             return dic;
