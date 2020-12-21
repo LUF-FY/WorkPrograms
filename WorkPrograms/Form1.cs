@@ -50,7 +50,7 @@ namespace WorkPrograms
             "$exam$"
         };
 
-        public static int MaxValueOfProgressBar=0;
+        //public static int maxValueOfProgressBar=0;
 
         public WorkPrograms()
         {
@@ -282,7 +282,6 @@ namespace WorkPrograms
                 {
                     string key = worksheet.Cells[2][i].Value;
                     dic[key] = worksheet.Cells[4][i].Value;
-
                 }
             }
             return dic;
@@ -373,13 +372,15 @@ namespace WorkPrograms
             try
             {                
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
-                labelLoading.Text = "Загрузка...";                
-                for (int i = 95; i <= lastRow; i++)
+                labelLoading.Text = "Загрузка...";
+                progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
+                for (int i = 6; i <= lastRow; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
                         PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
                         WriteInFile();
+                        progressBar1.Value++;
                     }
                 }
                 labelLoading.Text = "Загрузка завершена";
@@ -409,6 +410,17 @@ namespace WorkPrograms
             {
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
+        {
+            int lastRow = TotalSize(worksheet);
+            int maxValueOfProgressBar = 0;
+            for (int i = 6; i < lastRow; i++)
+            {
+                if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                    maxValueOfProgressBar++;
+            }
+            return maxValueOfProgressBar;
         }
     }
 }
