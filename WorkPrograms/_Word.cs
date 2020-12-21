@@ -20,7 +20,7 @@ namespace WorkPrograms
                 WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.chair,  
                 WorkPrograms.creditUnits.ToString(), WorkPrograms.studyHours.ToString(),
                 WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
-                WorkPrograms.typesOfLessons, WorkPrograms.test
+                WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork
             };
             foreach(var el in replaceableStrings)
             {
