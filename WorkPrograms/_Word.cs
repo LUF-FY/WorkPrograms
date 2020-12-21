@@ -35,7 +35,7 @@ namespace WorkPrograms
             for (int i = 0; i < replaceableStrings.Count(); i++)
             {
                 string s = "";
-                if (replaceableStrings[i] == WorkPrograms.creditUnits.ToString())
+                if (i == 6)
                 {
                     s = "$" + namesOfReplaceableStrings[i] + "$";
                     string s2 = ChangeDeclination(WorkPrograms.creditUnits);
