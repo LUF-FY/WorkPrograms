@@ -41,15 +41,14 @@ namespace WorkPrograms
             // 
             // openFileDialogSelectFile
             // 
-            this.openFileDialogSelectFile.FileName = "openFileDialog1";
+            this.openFileDialogSelectFile.Filter = "Excel|*.xls|Excel|*.xlsx";
             // 
             // buttonOpenExcel
             // 
             this.buttonOpenExcel.Font = new System.Drawing.Font("Arial Narrow", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonOpenExcel.Location = new System.Drawing.Point(33, 15);
-            this.buttonOpenExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonOpenExcel.Location = new System.Drawing.Point(25, 12);
             this.buttonOpenExcel.Name = "buttonOpenExcel";
-            this.buttonOpenExcel.Size = new System.Drawing.Size(232, 74);
+            this.buttonOpenExcel.Size = new System.Drawing.Size(174, 60);
             this.buttonOpenExcel.TabIndex = 0;
             this.buttonOpenExcel.Text = "Открыть файл";
             this.buttonOpenExcel.UseVisualStyleBackColor = true;
@@ -59,10 +58,9 @@ namespace WorkPrograms
             // 
             this.labelNameOfWorkPlanFile.AutoSize = true;
             this.labelNameOfWorkPlanFile.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(295, 39);
-            this.labelNameOfWorkPlanFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(221, 32);
             this.labelNameOfWorkPlanFile.Name = "labelNameOfWorkPlanFile";
-            this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(146, 24);
+            this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(117, 20);
             this.labelNameOfWorkPlanFile.TabIndex = 1;
             this.labelNameOfWorkPlanFile.Text = "Файл не выбран";
             // 
@@ -70,10 +68,9 @@ namespace WorkPrograms
             // 
             this.buttonGenerate.Font = new System.Drawing.Font("Arial Narrow", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.buttonGenerate.Location = new System.Drawing.Point(173, 215);
-            this.buttonGenerate.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonGenerate.Location = new System.Drawing.Point(130, 175);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(373, 62);
+            this.buttonGenerate.Size = new System.Drawing.Size(280, 50);
             this.buttonGenerate.TabIndex = 2;
             this.buttonGenerate.Text = "Сформировать";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -83,19 +80,19 @@ namespace WorkPrograms
             // 
             this.labelLoading.AutoSize = true;
             this.labelLoading.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelLoading.Location = new System.Drawing.Point(293, 281);
-            this.labelLoading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelLoading.Location = new System.Drawing.Point(220, 228);
             this.labelLoading.Name = "labelLoading";
-            this.labelLoading.Size = new System.Drawing.Size(109, 31);
+            this.labelLoading.Size = new System.Drawing.Size(89, 25);
             this.labelLoading.TabIndex = 3;
             this.labelLoading.Text = "Загрузка";
             // 
             // buttonOpenFolder
             // 
             this.buttonOpenFolder.Font = new System.Drawing.Font("Arial Narrow", 10.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonOpenFolder.Location = new System.Drawing.Point(33, 122);
+            this.buttonOpenFolder.Location = new System.Drawing.Point(25, 99);
+            this.buttonOpenFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
-            this.buttonOpenFolder.Size = new System.Drawing.Size(232, 64);
+            this.buttonOpenFolder.Size = new System.Drawing.Size(174, 52);
             this.buttonOpenFolder.TabIndex = 4;
             this.buttonOpenFolder.Text = "Выбрать папку";
             this.buttonOpenFolder.UseVisualStyleBackColor = true;
@@ -105,24 +102,24 @@ namespace WorkPrograms
             // 
             this.labelNameOfFolder.AutoSize = true;
             this.labelNameOfFolder.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNameOfFolder.Location = new System.Drawing.Point(299, 142);
+            this.labelNameOfFolder.Location = new System.Drawing.Point(224, 115);
+            this.labelNameOfFolder.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelNameOfFolder.Name = "labelNameOfFolder";
-            this.labelNameOfFolder.Size = new System.Drawing.Size(160, 24);
+            this.labelNameOfFolder.Size = new System.Drawing.Size(128, 20);
             this.labelNameOfFolder.TabIndex = 5;
             this.labelNameOfFolder.Text = "Папка не выбрана";
             // 
             // WorkPrograms
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 321);
+            this.ClientSize = new System.Drawing.Size(584, 261);
             this.Controls.Add(this.labelNameOfFolder);
             this.Controls.Add(this.buttonOpenFolder);
             this.Controls.Add(this.labelLoading);
             this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.labelNameOfWorkPlanFile);
             this.Controls.Add(this.buttonOpenExcel);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "WorkPrograms";
             this.Text = "WorkPrograms";
             this.ResumeLayout(false);
