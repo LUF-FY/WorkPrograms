@@ -73,7 +73,7 @@ namespace WorkPrograms
             string testCopy = worksheetPlan.Cells[5][index].Value;
             if (testCopy != null && GradedTest != null)
             {
-                if (testCopy.CompareTo(GradedTest) == 1)
+                if (testCopy.CompareTo(GradedTest) == -1)
                     test = testCopy + GradedTest;
                 else
                     test = GradedTest + testCopy;
@@ -84,7 +84,7 @@ namespace WorkPrograms
             string ExamCopy = worksheetPlan.Cells[4][index].Value;
             if (ExamCopy != null && test != null)
             {
-                if (ExamCopy.CompareTo(test) == 1)
+                if (ExamCopy.CompareTo(test) == -1)
                     semesters = ExamCopy + test;
                 else
                     semesters = test + ExamCopy;
@@ -126,9 +126,10 @@ namespace WorkPrograms
         public static void CreateCourses()
         {
             int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
-            for (int i = 0; i < a; i++)
+            int b = Convert.ToInt32(Math.Floor(Convert.ToDouble(semesters[0].ToString()) / 2));
+            for (int i = b; i < a; i++)
                 courses += i + 1 + "/";
-            courses.Trim('/');
+            courses = courses.Remove(courses.Length - 1);
         }
 
         public static void CreateTeats()
@@ -254,7 +255,7 @@ namespace WorkPrograms
             FillDictionary(worksheetPlan, index);
             CreateConsulting();
             CreateCourses();
-            CreateTeats();
+            CreateTeats();//
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
