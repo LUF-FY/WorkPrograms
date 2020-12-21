@@ -129,7 +129,7 @@ namespace WorkPrograms
         public static void CreateTeats()
         {
             string s = "";
-            for (int i = 0, j = 0; i < semesters.Length - 1; i++)
+            for (int i = 0, j = 0; i < semesters.Length; i++)
                 if (semesters[i] == test[j])
                 {
                     s += "+/";
@@ -143,7 +143,7 @@ namespace WorkPrograms
         public static void CreateSemesters()
         {
             string s = "";
-            for (int i = 0; i < semesters.Length - 1; i++)
+            for (int i = 0; i < semesters.Length; i++)
                 s += semesters[i] + "/";
             semesters = s.Remove(s.Length - 1);
         }
@@ -331,7 +331,7 @@ namespace WorkPrograms
                 subjectInPath = RemoveExtraChars(subjectName);
             else
                 subjectInPath = subjectName;
-            path = folderBrowserDialogChooseFolder.SelectedPath + @subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
+            path = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
             var resultDoc = new _Word();
             resultDoc.path = path;
             resultDoc.FillPattern();
