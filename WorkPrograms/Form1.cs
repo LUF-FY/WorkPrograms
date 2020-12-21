@@ -378,7 +378,7 @@ namespace WorkPrograms
             {                
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
                 labelLoading.Text = "Загрузка...";                
-                for (int i = 95; i <= lastRow; i++)
+                for (int i = 6; i <= lastRow; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
