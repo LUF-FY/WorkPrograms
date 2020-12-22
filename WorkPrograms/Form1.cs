@@ -6,6 +6,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using Xceed.Words.NET;
 using System.IO;
+using System.Drawing;
 
 namespace WorkPrograms
 {
@@ -27,7 +28,7 @@ namespace WorkPrograms
         public static string directionAbbreviation = "";
         public static string startYear = "";
         public static string edForm = "";
-
+        public static bool isInteractiveWatch = false; 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
         public static string sumIndependentWork = "";
@@ -66,6 +67,7 @@ namespace WorkPrograms
             sumWorkshops = 0;
             typesOfLessons = "";
             consulting = "";
+            isInteractiveWatch = false;
         }
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
@@ -269,8 +271,8 @@ namespace WorkPrograms
             var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
-            protocol = s2[1].Trim(' ') + " г., " + s2[0].Trim(' ');
-            chair = worksheetTitle.Cells[2][26].Value.Trim(' ');
+            protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
+            chair = worksheetTitle.Cells[75][index].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
             var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
             edForm = s3[1].Trim(' ') + " " + s3[0];
@@ -284,6 +286,8 @@ namespace WorkPrograms
             studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
                 sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
+                isInteractiveWatch = true;
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             ClearData();
@@ -409,6 +413,7 @@ namespace WorkPrograms
                     }
                 }
                 labelLoading.Text = "Загрузка завершена";
+                MessageBox.Show("Загрузка завершена");
             }
             catch (Exception ex)
             {
