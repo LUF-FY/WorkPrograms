@@ -31,6 +31,7 @@ namespace WorkPrograms
         public static bool isInteractiveWatch = false; 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
+        public static int sumLaboratoryExercises = 0;
         public static string sumIndependentWork = "";
 
         public static string courseWork = "";
@@ -210,6 +211,7 @@ namespace WorkPrograms
             for (int i = 17; i < 73; i+=7)
             {
                 sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
                 sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
             }        
         }
