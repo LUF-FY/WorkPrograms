@@ -152,8 +152,19 @@ namespace WorkPrograms
             courses = courses.Remove(courses.Length - 1);
         }
 
-        public static void CreateTeats()
+        public static void CreateTeats(Excel.Worksheet worksheetPlan, int index)
         {
+            string GradedTest = worksheetPlan.Cells[6][index].Value;
+            string testCopy = worksheetPlan.Cells[5][index].Value;
+            if (testCopy != null && GradedTest != null)
+            {
+                if (testCopy.CompareTo(GradedTest) == -1)
+                    test = testCopy + GradedTest;
+                else
+                    test = GradedTest + testCopy;
+            }
+            else
+                test = GradedTest + testCopy;
             string s = "";
             for (int i = 0, j = 0; i < semesters.Length; i++)
                 if (j < test.Length)
@@ -183,7 +194,7 @@ namespace WorkPrograms
         {
             for (int i = 17; i < 73; i+=7)
             {
-                sumLectures += Convert.ToInt32(worksheetPlan.Cells[i+2][index].Value);
+                sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
                 sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
             }        
         }
@@ -281,7 +292,7 @@ namespace WorkPrograms
             FillDictionary(worksheetPlan, index);
             CreateConsulting();
             CreateCourses(worksheetPlan, index);
-            CreateTeats();//
+            CreateTeats(worksheetPlan, index);//
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();

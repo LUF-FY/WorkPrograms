@@ -30,7 +30,7 @@ namespace WorkPrograms
                 nameof(WorkPrograms.creditUnits), nameof(WorkPrograms.studyHours),
                 nameof(WorkPrograms.courses), nameof(WorkPrograms.semesters), nameof(WorkPrograms.sumIndependentWork),
                 nameof(WorkPrograms.typesOfLessons), nameof(WorkPrograms.test), nameof(WorkPrograms.consulting), nameof(WorkPrograms.courseWork),
-                nameof(competencies), nameof(WorkPrograms.edForm), nameof(WorkPrograms.sumWorkshops), nameof(WorkPrograms.sumLectures)
+                nameof(competencies), nameof(WorkPrograms.edForm), nameof(WorkPrograms.sumLectures), nameof(WorkPrograms.sumWorkshops)
             };
             for (int i = 0; i < replaceableStrings.Count(); i++)
             {
