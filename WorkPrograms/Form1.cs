@@ -106,7 +106,6 @@ namespace WorkPrograms
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
         {
-
             foreach (var item in semesters)
             {
                 int a = Convert.ToInt32(item - '0') - 1;
@@ -133,6 +132,21 @@ namespace WorkPrograms
                         semesterData[keysForSemesterData[i]] = "-";
             }
         }
+
+        public static void CreateIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index)
+        {
+            string s = ""; 
+            for (int i = 17; i < 70; i+=7)
+            {
+                int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
+                int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
+                s += (lec + pra + lab) + "/";
+            }
+            semesterData[keysForSemesterData[5]] = s.Remove(s.Length-1);
+        }
+
+
         public static void CreateCourses(Excel.Worksheet worksheetPlan, int index)
         {
             /*int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
@@ -279,7 +293,7 @@ namespace WorkPrograms
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
             protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
-            chair = worksheetTitle.Cells[75][index].Value.Trim(' ');
+            chair = worksheetPlan.Cells[74][index].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
             var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
             edForm = s3[1].Trim(' ') + " " + s3[0];
@@ -300,9 +314,10 @@ namespace WorkPrograms
             ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
+
             CreateConsulting();
             CreateCourses(worksheetPlan, index);
-            CreateTeats(worksheetPlan, index);//
+            CreateTeats(worksheetPlan, index);
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
