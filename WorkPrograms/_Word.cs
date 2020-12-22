@@ -17,11 +17,11 @@ namespace WorkPrograms
             string[] replaceableStrings = new string[]
             {
                 WorkPrograms.subjectName, WorkPrograms.direction, WorkPrograms.profile,
-                WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.chair,  
+                WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.chair,
                 WorkPrograms.creditUnits.ToString(), WorkPrograms.studyHours,
                 WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
                 WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork,
-                competencies, WorkPrograms.edForm
+                competencies, WorkPrograms.edForm, WorkPrograms.sumLectures.ToString(), WorkPrograms.sumWorkshops.ToString()
             };
             string[] namesOfReplaceableStrings = new string[]
             {
@@ -30,7 +30,7 @@ namespace WorkPrograms
                 nameof(WorkPrograms.creditUnits), nameof(WorkPrograms.studyHours),
                 nameof(WorkPrograms.courses), nameof(WorkPrograms.semesters), nameof(WorkPrograms.sumIndependentWork),
                 nameof(WorkPrograms.typesOfLessons), nameof(WorkPrograms.test), nameof(WorkPrograms.consulting), nameof(WorkPrograms.courseWork),
-                nameof(competencies), nameof(WorkPrograms.edForm)
+                nameof(competencies), nameof(WorkPrograms.edForm), nameof(WorkPrograms.sumWorkshops), nameof(WorkPrograms.sumLectures)
             };
             for (int i = 0; i < replaceableStrings.Count(); i++)
             {
