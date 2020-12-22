@@ -314,7 +314,7 @@ namespace WorkPrograms
             ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
-
+            CreateIndependentWorkBySemester(worksheetPlan, index);
             CreateConsulting();
             CreateCourses(worksheetPlan, index);
             CreateTeats(worksheetPlan, index);
