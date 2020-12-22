@@ -61,7 +61,13 @@ namespace WorkPrograms
                 if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
             }
+
             CreateTable(competenciesDic, document);
+            if (!WorkPrograms.isInteractiveWatch)
+            {
+                Xceed.Document.NET.Table delTable = document.Tables[3];
+                delTable.Remove();
+            }
             document.SaveAs(path);
         }
 
