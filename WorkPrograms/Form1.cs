@@ -27,7 +27,6 @@ namespace WorkPrograms
         public static string directionAbbreviation = "";
         public static string startYear = "";
         public static string edForm = "";
-        public static Dictionary<string, string> competenciesDic = new Dictionary<string, string>();
 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
@@ -325,7 +324,7 @@ namespace WorkPrograms
                 if (!string.IsNullOrEmpty(item))
                 {
                     if (dic.ContainsKey(item))
-                        resultList.Add("-" + dic[item] + " " + $"({item})");
+                        resultList.Add($"{item}" + " -" + dic[item]);
                 }
             }
             return resultList;
@@ -382,8 +381,8 @@ namespace WorkPrograms
             var resultDoc = new _Word();
             resultDoc.path = path;
             var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            //competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanPlan);
-            resultDoc.FillPattern(competencies);
+            var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
+            resultDoc.FillPattern(competencies, competenciesDic);
             //var resultList = SelectCompetencies(worksheet, plan);
             //DocX resultDoc = DocX.Create(path);
             //var resultDoc = DocX.Create(path);
