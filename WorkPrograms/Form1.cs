@@ -265,7 +265,14 @@ namespace WorkPrograms
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
             directionAbbreviation = SelectAbbreviation();
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
-            profile = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+            try
+            {
+                profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+            }
+            catch
+            {
+                profile = "";
+            }
             var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
