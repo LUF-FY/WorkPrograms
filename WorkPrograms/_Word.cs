@@ -36,16 +36,24 @@ namespace WorkPrograms
 
             for (int i = 0; i < replaceableStrings.Count(); i++)
             {
-                string s = "";
+                string s = "$" + namesOfReplaceableStrings[i] + "$";
+                string s2 = replaceableStrings[i];
                 if (i == 6)
                 {
                     s = "$" + namesOfReplaceableStrings[i] + "$";
-                    string s2 = ChangeDeclination(WorkPrograms.creditUnits);
-                    document.ReplaceText(s, s2);
+                    s2 = ChangeDeclination(WorkPrograms.creditUnits);
                 }
-                else
-                    s = "$" + namesOfReplaceableStrings[i] + "$";
-                document.ReplaceText(s, replaceableStrings[i]);
+                else if (i == 18)
+                {
+                    if (int.Parse(replaceableStrings[i]) == 0 && WorkPrograms.sumLaboratoryExercises != 0)
+                    {
+                        document.ReplaceText("$labOrPract$", "лаб");
+                        s2 = WorkPrograms.sumLaboratoryExercises.ToString();
+                    }
+                    else
+                        document.ReplaceText("$labOrPract$", "пр");
+                }
+                document.ReplaceText(s, s2);
             }
 
             foreach(var el in WorkPrograms.semesterData)
