@@ -72,7 +72,7 @@ namespace WorkPrograms
             // 
             this.buttonGenerate.Font = new System.Drawing.Font("Arial Narrow", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.buttonGenerate.Location = new System.Drawing.Point(121, 175);
+            this.buttonGenerate.Location = new System.Drawing.Point(142, 176);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(280, 50);
             this.buttonGenerate.TabIndex = 2;
@@ -84,17 +84,18 @@ namespace WorkPrograms
             // 
             this.labelLoading.AutoSize = true;
             this.labelLoading.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelLoading.Location = new System.Drawing.Point(220, 266);
+            this.labelLoading.Location = new System.Drawing.Point(223, 266);
             this.labelLoading.Name = "labelLoading";
             this.labelLoading.Size = new System.Drawing.Size(89, 25);
             this.labelLoading.TabIndex = 3;
             this.labelLoading.Text = "Загрузка";
+            this.labelLoading.Visible = false;
             // 
             // buttonOpenFolder
             // 
             this.buttonOpenFolder.Font = new System.Drawing.Font("Arial Narrow", 10.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonOpenFolder.Location = new System.Drawing.Point(25, 99);
-            this.buttonOpenFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonOpenFolder.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
             this.buttonOpenFolder.Size = new System.Drawing.Size(174, 52);
             this.buttonOpenFolder.TabIndex = 4;
