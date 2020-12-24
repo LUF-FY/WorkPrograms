@@ -6,6 +6,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using Xceed.Words.NET;
 using System.IO;
+using System.Drawing;
 
 namespace WorkPrograms
 {
@@ -27,9 +28,10 @@ namespace WorkPrograms
         public static string directionAbbreviation = "";
         public static string startYear = "";
         public static string edForm = "";
-
+        public static bool isInteractiveWatch = false; 
         public static int sumLectures = 0;
         public static int sumWorkshops = 0;
+        public static int sumLaboratoryExercises = 0;
         public static string sumIndependentWork = "";
 
         public static string courseWork = "";
@@ -66,6 +68,7 @@ namespace WorkPrograms
             sumWorkshops = 0;
             typesOfLessons = "";
             consulting = "";
+            isInteractiveWatch = false;
         }
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
@@ -104,7 +107,6 @@ namespace WorkPrograms
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
         {
-
             foreach (var item in semesters)
             {
                 int a = Convert.ToInt32(item - '0') - 1;
@@ -131,6 +133,21 @@ namespace WorkPrograms
                         semesterData[keysForSemesterData[i]] = "-";
             }
         }
+
+        public static void CreateIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index)
+        {
+            string s = ""; 
+            for (int i = 17; i < 70; i+=7)
+            {
+                int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
+                int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
+                s += (lec + pra + lab) + "/";
+            }
+            semesterData[keysForSemesterData[5]] = s.Remove(s.Length-1);
+        }
+
+
         public static void CreateCourses(Excel.Worksheet worksheetPlan, int index)
         {
             /*int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
@@ -194,6 +211,7 @@ namespace WorkPrograms
             for (int i = 17; i < 73; i+=7)
             {
                 sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
                 sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
             }        
         }
@@ -265,12 +283,19 @@ namespace WorkPrograms
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
             directionAbbreviation = SelectAbbreviation();
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
-            profile = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+            try
+            {
+                profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+            }
+            catch
+            {
+                profile = "";
+            }
             var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
-            protocol = s2[1].Trim(' ') + " г., " + s2[0].Trim(' ');
-            chair = worksheetTitle.Cells[2][26].Value.Trim(' ');
+            protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
+            chair = worksheetPlan.Cells[74][index].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
             var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
             edForm = s3[1].Trim(' ') + " " + s3[0];
@@ -284,14 +309,17 @@ namespace WorkPrograms
             studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
                 sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
+                isInteractiveWatch = true;
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
+            CreateIndependentWorkBySemester(worksheetPlan, index);
             CreateConsulting();
             CreateCourses(worksheetPlan, index);
-            CreateTeats(worksheetPlan, index);//
+            CreateTeats(worksheetPlan, index);
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
@@ -409,6 +437,7 @@ namespace WorkPrograms
                     }
                 }
                 labelLoading.Text = "Загрузка завершена";
+                MessageBox.Show("Загрузка завершена");
             }
             catch (Exception ex)
             {
