@@ -137,14 +137,24 @@ namespace WorkPrograms
         public static void CreateIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index)
         {
             string s = ""; 
+            int count = 1;
             for (int i = 17; i < 70; i+=7)
             {
                 int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
                 int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
                 int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
-                s += (lec + pra + lab) + "/";
+                if (semesters.Contains(count.ToString()))
+                {
+                    if (lec + pra + lab != 0)
+                        s += (lec + pra + lab) + "/";
+                    else
+                        s += "-/";        
+                }
+                count++;
             }
-            semesterData[keysForSemesterData[5]] = s.Remove(s.Length-1);
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            semesterData[keysForSemesterData[5]] = s;
         }
 
 
@@ -424,9 +434,10 @@ namespace WorkPrograms
         {
             //Создаем файлы .            
             try
-            {                
+            {
+                labelLoading.Visible = true;
+                labelLoading.Text = "Загрузка...";             
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
-                labelLoading.Text = "Загрузка...";
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 for (int i = 6; i <= lastRow; i++)
                 {
