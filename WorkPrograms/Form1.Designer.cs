@@ -30,6 +30,7 @@ namespace WorkPrograms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkPrograms));
             this.openFileDialogSelectFile = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.labelNameOfWorkPlanFile = new System.Windows.Forms.Label();
@@ -73,8 +74,10 @@ namespace WorkPrograms
             // 
             // buttonGenerate
             // 
+            this.buttonGenerate.Enabled = false;
             this.buttonGenerate.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.errorProvider1.SetIconAlignment(this.buttonGenerate, System.Windows.Forms.ErrorIconAlignment.TopLeft);
             this.buttonGenerate.Location = new System.Drawing.Point(23, 198);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(140, 31);
@@ -93,11 +96,14 @@ namespace WorkPrograms
             this.labelLoading.Name = "labelLoading";
             this.labelLoading.Size = new System.Drawing.Size(70, 16);
             this.labelLoading.TabIndex = 3;
+
+            this.labelLoading.Visible = false;
             this.labelLoading.Text = "Ожидание";
             // 
             // buttonOpenFolder
             // 
             this.buttonOpenFolder.BackColor = System.Drawing.Color.Transparent;
+            this.buttonOpenFolder.Enabled = false;
             this.buttonOpenFolder.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonOpenFolder.Location = new System.Drawing.Point(23, 119);
             this.buttonOpenFolder.Margin = new System.Windows.Forms.Padding(2);
@@ -165,8 +171,10 @@ namespace WorkPrograms
             this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.labelNameOfWorkPlanFile);
             this.Controls.Add(this.buttonOpenExcel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "WorkPrograms";
             this.Text = "WorkPrograms";
+            this.TransparencyKey = System.Drawing.Color.Transparent;
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

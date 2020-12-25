@@ -372,7 +372,8 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);                    
+                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);
+                    buttonOpenFolder.Enabled = true;
                 }
                 else
                     throw new Exception("Файл не выбран");
