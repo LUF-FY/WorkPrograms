@@ -154,7 +154,7 @@ namespace WorkPrograms
             }
             if (s.Length != 0)
                 s = s.Remove(s.Length - 1);
-            semesterData[keysForSemesterData[5]] = s;
+            semesterData[keysForSemesterData[1]] = s;
         }
 
 
