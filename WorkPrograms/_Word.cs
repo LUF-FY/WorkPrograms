@@ -17,9 +17,8 @@ namespace WorkPrograms
             string[] replaceableStrings = new string[]
             {
                 WorkPrograms.subjectName, WorkPrograms.direction, WorkPrograms.profile,
-                WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.chair,
-                WorkPrograms.creditUnits.ToString(), WorkPrograms.studyHours,
-                WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
+                WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.creditUnits.ToString(), 
+                WorkPrograms.studyHours, WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
                 WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork,
                 competencies, WorkPrograms.edForm, WorkPrograms.sumLectures.ToString(), WorkPrograms.sumWorkshops.ToString()
             };
@@ -27,7 +26,7 @@ namespace WorkPrograms
             string[] namesOfReplaceableStrings = new string[]
             {
                 nameof(WorkPrograms.subjectName), nameof(WorkPrograms.direction), nameof(WorkPrograms.profile),
-                nameof(WorkPrograms.standard), nameof(WorkPrograms.protocol), nameof(WorkPrograms.chair),
+                nameof(WorkPrograms.standard), nameof(WorkPrograms.protocol),
                 nameof(WorkPrograms.creditUnits), nameof(WorkPrograms.studyHours),
                 nameof(WorkPrograms.courses), nameof(WorkPrograms.semesters), nameof(WorkPrograms.sumIndependentWork),
                 nameof(WorkPrograms.typesOfLessons), nameof(WorkPrograms.test), nameof(WorkPrograms.consulting), nameof(WorkPrograms.courseWork),
@@ -38,12 +37,12 @@ namespace WorkPrograms
             {
                 string s = "$" + namesOfReplaceableStrings[i] + "$";
                 string s2 = replaceableStrings[i];
-                if (i == 6)
+                if (namesOfReplaceableStrings[i] == nameof(WorkPrograms.creditUnits))
                 {
                     s = "$" + namesOfReplaceableStrings[i] + "$";
                     s2 = ChangeDeclination(WorkPrograms.creditUnits);
                 }
-                else if (i == 18)
+                else if (namesOfReplaceableStrings[i] == nameof(WorkPrograms.sumWorkshops))
                 {
                     if (int.Parse(replaceableStrings[i]) == 0 && WorkPrograms.sumLaboratoryExercises != 0)
                     {

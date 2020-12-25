@@ -18,7 +18,6 @@ namespace WorkPrograms
         public static string profile = "";
         public static string standard = "";
         public static string protocol = "";
-        public static string chair = "";
         public static string subjectName = "";
         public static int creditUnits = 0;
         public static string studyHours = "";
@@ -288,6 +287,7 @@ namespace WorkPrograms
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
+            ClearData();
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
             string[] separators = new string[] { "Профиль", "Профили", "Направление" };
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
@@ -305,7 +305,6 @@ namespace WorkPrograms
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
             protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
-            chair = worksheetPlan.Cells[74][index].Value.Trim(' ');
             startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
             var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
             edForm = s3[1].Trim(' ') + " " + s3[0];
@@ -323,7 +322,6 @@ namespace WorkPrograms
                 isInteractiveWatch = true;
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
-            ClearData();
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
             CreateIndependentWorkBySemester(worksheetPlan, index);
