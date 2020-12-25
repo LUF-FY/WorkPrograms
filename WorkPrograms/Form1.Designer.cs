@@ -53,7 +53,7 @@ namespace WorkPrograms
             // 
             this.buttonOpenExcel.BackColor = System.Drawing.Color.Transparent;
             this.buttonOpenExcel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonOpenExcel.Location = new System.Drawing.Point(25, 32);
+            this.buttonOpenExcel.Location = new System.Drawing.Point(23, 40);
             this.buttonOpenExcel.Name = "buttonOpenExcel";
             this.buttonOpenExcel.Size = new System.Drawing.Size(140, 30);
             this.buttonOpenExcel.TabIndex = 0;
@@ -65,7 +65,7 @@ namespace WorkPrograms
             // 
             this.labelNameOfWorkPlanFile.AutoSize = true;
             this.labelNameOfWorkPlanFile.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(169, 41);
+            this.labelNameOfWorkPlanFile.Location = new System.Drawing.Point(169, 49);
             this.labelNameOfWorkPlanFile.Name = "labelNameOfWorkPlanFile";
             this.labelNameOfWorkPlanFile.Size = new System.Drawing.Size(100, 15);
             this.labelNameOfWorkPlanFile.TabIndex = 1;
@@ -75,7 +75,7 @@ namespace WorkPrograms
             // 
             this.buttonGenerate.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonGenerate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.buttonGenerate.Location = new System.Drawing.Point(25, 205);
+            this.buttonGenerate.Location = new System.Drawing.Point(23, 198);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(140, 31);
             this.buttonGenerate.TabIndex = 2;
@@ -89,17 +89,17 @@ namespace WorkPrograms
             this.labelLoading.BackColor = System.Drawing.Color.Transparent;
             this.labelLoading.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelLoading.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelLoading.Location = new System.Drawing.Point(169, 187);
+            this.labelLoading.Location = new System.Drawing.Point(169, 180);
             this.labelLoading.Name = "labelLoading";
-            this.labelLoading.Size = new System.Drawing.Size(61, 16);
+            this.labelLoading.Size = new System.Drawing.Size(70, 16);
             this.labelLoading.TabIndex = 3;
-            this.labelLoading.Text = "Загрузка";
+            this.labelLoading.Text = "Ожидание";
             // 
             // buttonOpenFolder
             // 
             this.buttonOpenFolder.BackColor = System.Drawing.Color.Transparent;
             this.buttonOpenFolder.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonOpenFolder.Location = new System.Drawing.Point(25, 105);
+            this.buttonOpenFolder.Location = new System.Drawing.Point(23, 119);
             this.buttonOpenFolder.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOpenFolder.Name = "buttonOpenFolder";
             this.buttonOpenFolder.Size = new System.Drawing.Size(140, 30);
@@ -112,7 +112,7 @@ namespace WorkPrograms
             // 
             this.labelNameOfFolder.AutoSize = true;
             this.labelNameOfFolder.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNameOfFolder.Location = new System.Drawing.Point(169, 114);
+            this.labelNameOfFolder.Location = new System.Drawing.Point(167, 128);
             this.labelNameOfFolder.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelNameOfFolder.Name = "labelNameOfFolder";
             this.labelNameOfFolder.Size = new System.Drawing.Size(113, 15);
@@ -122,7 +122,7 @@ namespace WorkPrograms
             // progressBar1
             // 
             this.progressBar1.BackColor = System.Drawing.SystemColors.Control;
-            this.progressBar1.Location = new System.Drawing.Point(171, 206);
+            this.progressBar1.Location = new System.Drawing.Point(169, 199);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(401, 30);
             this.progressBar1.TabIndex = 6;
@@ -135,7 +135,7 @@ namespace WorkPrograms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(22, 12);
+            this.label1.Location = new System.Drawing.Point(20, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(247, 17);
             this.label1.TabIndex = 7;
@@ -145,7 +145,7 @@ namespace WorkPrograms
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(22, 86);
+            this.label2.Location = new System.Drawing.Point(20, 100);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(316, 17);
             this.label2.TabIndex = 8;
@@ -155,7 +155,7 @@ namespace WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 261);
+            this.ClientSize = new System.Drawing.Size(584, 251);
             this.Controls.Add(this.labelLoading);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);

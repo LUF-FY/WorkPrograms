@@ -438,6 +438,7 @@ namespace WorkPrograms
                 }
                 labelLoading.Text = "Загрузка завершена";
                 MessageBox.Show("Загрузка завершена");
+                Reset();
             }
             catch (Exception ex)
             {
@@ -475,6 +476,15 @@ namespace WorkPrograms
                     maxValueOfProgressBar++;
             }
             return maxValueOfProgressBar;
+        }
+
+        void Reset()
+        {
+            progressBar1.Value = 0;
+            progressBar1.Maximum = 0;
+            labelLoading.Text = "Ожидание";
+            labelNameOfFolder.Text = "Папка не выбрана";
+            labelNameOfWorkPlanFile.Text = "Файл не выбран";
         }
     }
 }
