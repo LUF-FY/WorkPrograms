@@ -36,6 +36,7 @@ namespace WorkPrograms
         static string blockName = "";
         static string studyProgram = "";
         static string director = "А.М. Дигурова";
+        static string position = "Проректор по УР";
 
         static string courseWork = "";
         static string consulting = "";
@@ -361,7 +362,10 @@ namespace WorkPrograms
                 semesters = "-";
             }
             else if (studyProgram == "магистратуры")
+            {
                 director = "Л.А. Агузарова";
+                position = "Первый проректор";
+            }
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
         {
