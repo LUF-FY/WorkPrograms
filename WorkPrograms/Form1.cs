@@ -346,6 +346,11 @@ namespace WorkPrograms
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
+            if(studyProgram== "аспирантуры")
+            {
+                courses = semesters;
+                semesters = "-";
+            }
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
         {
