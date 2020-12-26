@@ -438,11 +438,7 @@ namespace WorkPrograms
 
         private void WriteInFile()
         {
-            string subjectInPath = "";
-            if (subjectName.Contains(':'))
-                subjectInPath = RemoveExtraChars(subjectName);
-            else
-                subjectInPath = subjectName;
+            string subjectInPath = RemoveExtraChars(subjectName);
             filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
             var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
