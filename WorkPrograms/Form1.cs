@@ -339,7 +339,7 @@ namespace WorkPrograms
                 sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
                 interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
-            subjectCompetencies = worksheetPlan.Cells[lastColumn][index].Value.Trim(' ');
+            subjectCompetencies = worksheetPlan.Cells[lastColumn + 2][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             subjectIndexDecoding = DecodeSubjectIndex(worksheetPlan, index);
 
