@@ -253,6 +253,10 @@ namespace WorkPrograms
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
+            else if (profile.Contains("логика"))
+                abbreviation += "МЛ";
+            else if (profile.Contains("уравнения"))
+                abbreviation += "ДУ";
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
             else if (splittedDirectionName.Contains("Информатика"))
@@ -302,7 +306,8 @@ namespace WorkPrograms
             ClearData();
             studyProgram = worksheetTitle.Cells[6][14].Value.Trim(' ').Replace("  ", " ").Split()[2];
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            string[] separators = new string[] { "Профиль", "Профиль:", "Профили", "Направление" };
+            string[] separators = new string[] {"Направленность программы", "Направление подготовки", "Профиль", 
+                "Профиль:", "Профили", "Направление"};
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
             try
