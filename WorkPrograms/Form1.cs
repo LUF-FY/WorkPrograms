@@ -75,30 +75,8 @@ namespace WorkPrograms
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
             semesters = "";
-            /*string GradedTest = worksheetPlan.Cells[6][index].Value;
-            string testCopy = worksheetPlan.Cells[5][index].Value;
-            if (testCopy != null && GradedTest != null)
-            {
-                if (testCopy.CompareTo(GradedTest) == -1)
-                    test = testCopy + GradedTest;
-                else
-                    test = GradedTest + testCopy;
-            }
-            else
-                test = GradedTest + testCopy;
-
-            string ExamCopy = worksheetPlan.Cells[4][index].Value;
-            if (ExamCopy != null && test != null)
-            {
-                if (ExamCopy.CompareTo(test) == -1)
-                    semesters = ExamCopy + test;
-                else
-                    semesters = test + ExamCopy;
-            }
-            else
-                semesters = test + ExamCopy;
-            if (semesters == "")*/
-                for (int i = 18, number = 1; i < 70; i += 7)
+            int lastColoumn = TotalSizeColumn(worksheetPlan);
+                for (int i = 18, number = 1; i < lastColoumn; i += 7)
                 {
                     if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
                         semesters += number;
@@ -319,6 +297,8 @@ namespace WorkPrograms
             return subjectIndexDecoding;
         }
 
+
+
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
@@ -358,6 +338,7 @@ namespace WorkPrograms
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             subjectIndexDecoding = DecodeSubjectIndex(worksheetPlan, index);
+
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
             CreateIndependentWorkBySemester(worksheetPlan, index);
@@ -372,7 +353,7 @@ namespace WorkPrograms
         {
             // Закидываем в словарь компетенции из листа "Компетенции".
             var dic = new Dictionary<string, string>();
-            int lastRow = TotalSize(worksheet);
+            int lastRow = TotalSizeRow(worksheet);
             for (int i = 3; i < lastRow; i++)
             {
                 if (!string.IsNullOrEmpty(worksheet.Cells[2][i].Value))
@@ -402,12 +383,20 @@ namespace WorkPrograms
             return resultList;
         }
 
-        public static int TotalSize(Excel.Worksheet worksheet)
+        public static int TotalSizeRow(Excel.Worksheet worksheet)
         {
             // Находим кол-во строк.
             var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
             return lastCell.Row;
         }
+
+        public static int TotalSizeColumn(Excel.Worksheet worksheet)
+        {
+            // Находим кол-во столбцов.
+            var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
+            return lastCell.Column;
+        }
+
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
@@ -486,7 +475,7 @@ namespace WorkPrograms
             {
                 labelLoading.Visible = true;
                 labelLoading.Text = "Загрузка...";             
-                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
+                int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 for (int i = 6; i <= lastRow; i++)
                 {
@@ -529,7 +518,7 @@ namespace WorkPrograms
         }
         static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
         {
-            int lastRow = TotalSize(worksheet);
+            int lastRow = TotalSizeRow(worksheet);
             int maxValueOfProgressBar = 0;
             for (int i = 6; i <= lastRow; i++)
             {
