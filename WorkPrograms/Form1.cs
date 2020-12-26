@@ -482,7 +482,7 @@ namespace WorkPrograms
                 labelLoading.Text = "Загрузка...";             
                 int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
-                for (int i = 30; i <= 30; i++)
+                for (int i = 6; i <= lastRow; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
