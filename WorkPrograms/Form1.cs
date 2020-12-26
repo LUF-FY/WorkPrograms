@@ -34,6 +34,7 @@ namespace WorkPrograms
         public static int sumLaboratoryExercises = 0;
         static string sumIndependentWork = "";
         static string blockName = "";
+        static string studyProgram = "";
 
         static string courseWork = "";
         static string consulting = "";
@@ -242,10 +243,11 @@ namespace WorkPrograms
         {
             //Создаем аббревиатуры направлений.
             string directionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value;
-            string abbreviation = "";
-            string studyProgram = _Excel.worksheetWorkPlanTitlePage.Cells[6][14].Value.Trim(' ').Replace("  ", " ");
-            if (studyProgram.Split()[2] == "магистратуры")
+            string abbreviation = "";            
+            if (studyProgram == "магистратуры")
                 abbreviation = "МАГИ_";
+            else if (studyProgram == "аспирантуры")
+                abbreviation = "АСПИР_";
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
@@ -298,10 +300,10 @@ namespace WorkPrograms
             // берём информацию из листа Титул
             int lastColumn = TotalSizeColumn(worksheetPlan);
             ClearData();
+            studyProgram = worksheetTitle.Cells[6][14].Value.Trim(' ').Replace("  ", " ").Split()[2];
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
             string[] separators = new string[] { "Профиль", "Профиль:", "Профили", "Направление" };
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
-            directionAbbreviation = SelectAbbreviation();
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
             try
             {
@@ -311,6 +313,7 @@ namespace WorkPrograms
             {
                 profile = "";
             }
+            directionAbbreviation = SelectAbbreviation();
             var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
