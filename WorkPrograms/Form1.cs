@@ -351,7 +351,7 @@ namespace WorkPrograms
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
-            if(studyProgram== "аспирантуры")
+            if(studyProgram == "аспирантуры")
             {
                 courses = semesters;
                 semesters = "-";
