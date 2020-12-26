@@ -11,38 +11,20 @@ namespace WorkPrograms
     {
         public string path;
 
-        public void FillPattern(string competencies, Dictionary<string, string> competenciesDic)
+        public void FillPattern(Dictionary<string, string> competenciesDic, string[] replaceableStrings, 
+            string[] namesOfReplaceableStrings, Dictionary<string, string> semesterData, bool isInteractiveWatch)
         {
             DocX document = DocX.Load("WordPattern.docx");
-            string[] replaceableStrings = new string[]
-            {
-                WorkPrograms.subjectName, WorkPrograms.direction, WorkPrograms.profile,
-                WorkPrograms.standard, WorkPrograms.protocol, WorkPrograms.creditUnits.ToString(), 
-                WorkPrograms.studyHours, WorkPrograms.courses, WorkPrograms.semesters, WorkPrograms.sumIndependentWork.ToString(),
-                WorkPrograms.typesOfLessons, WorkPrograms.test, WorkPrograms.consulting, WorkPrograms.courseWork,
-                competencies, WorkPrograms.edForm, WorkPrograms.sumLectures.ToString(), WorkPrograms.sumWorkshops.ToString()
-            };
-
-            string[] namesOfReplaceableStrings = new string[]
-            {
-                nameof(WorkPrograms.subjectName), nameof(WorkPrograms.direction), nameof(WorkPrograms.profile),
-                nameof(WorkPrograms.standard), nameof(WorkPrograms.protocol),
-                nameof(WorkPrograms.creditUnits), nameof(WorkPrograms.studyHours),
-                nameof(WorkPrograms.courses), nameof(WorkPrograms.semesters), nameof(WorkPrograms.sumIndependentWork),
-                nameof(WorkPrograms.typesOfLessons), nameof(WorkPrograms.test), nameof(WorkPrograms.consulting), nameof(WorkPrograms.courseWork),
-                nameof(competencies), nameof(WorkPrograms.edForm), nameof(WorkPrograms.sumLectures), nameof(WorkPrograms.sumWorkshops)
-            };
-
             for (int i = 0; i < replaceableStrings.Count(); i++)
             {
                 string s = "$" + namesOfReplaceableStrings[i] + "$";
                 string s2 = replaceableStrings[i];
-                if (namesOfReplaceableStrings[i] == nameof(WorkPrograms.creditUnits))
+                if (namesOfReplaceableStrings[i] == "creditUnits")
                 {
                     s = "$" + namesOfReplaceableStrings[i] + "$";
-                    s2 = ChangeDeclination(WorkPrograms.creditUnits);
+                    s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
                 }
-                else if (namesOfReplaceableStrings[i] == nameof(WorkPrograms.sumWorkshops))
+                else if (namesOfReplaceableStrings[i] == "sumWorkshops")
                 {
                     if (int.Parse(replaceableStrings[i]) == 0 && WorkPrograms.sumLaboratoryExercises != 0)
                     {
@@ -55,14 +37,14 @@ namespace WorkPrograms
                 document.ReplaceText(s, s2);
             }
 
-            foreach(var el in WorkPrograms.semesterData)
+            foreach(var el in semesterData)
             {
                 if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
             }
 
             CreateTable(competenciesDic, document);
-            if (!WorkPrograms.isInteractiveWatch)
+            if (!isInteractiveWatch)
             {
                 Xceed.Document.NET.Table delTable = document.Tables[3];
                 delTable.Remove();
@@ -90,17 +72,6 @@ namespace WorkPrograms
                     }
                 }
             }
-            //foreach (var el in competenciesDic)
-            //{
-
-            //    var row = compTable.InsertRow();
-            //    row.Cells[0].Paragraphs[0].Append(el.Key);
-            //    row.Cells[1].Paragraphs[0].Append(el.Value);
-            //    for (int i = 2; i < compTable.ColumnCount; i++)
-            //    {
-            //        row.Cells[i].Paragraphs[0].Append("Вставка").Highlight(Xceed.Document.NET.Highlight.cyan);
-            //    }
-            //}
         }
 
         private string ChangeDeclination(int creditUnits)

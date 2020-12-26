@@ -12,34 +12,34 @@ namespace WorkPrograms
 {
     public partial class WorkPrograms : Form
     {
-        public static string path = "";
+        static string filePath = "";
 
-        public static string direction = "";
-        public static string profile = "";
-        public static string standard = "";
-        public static string protocol = "";
-        public static string subjectName = "";
-        public static int creditUnits = 0;
-        public static string studyHours = "";
-        public static string test = "";
+        static string direction = "";
+        static string profile = "";
+        static string standard = "";
+        static string protocol = "";
+        static string subjectName = "";
+        static int creditUnits = 0;
+        static string studyHours = "";
+        static string test = "";
         public static string subjectCompetencies = "";
-        public static string subjectIndex = "";
-        public static string directionAbbreviation = "";
-        public static string startYear = "";
-        public static string edForm = "";
-        public static bool isInteractiveWatch = false; 
-        public static int sumLectures = 0;
-        public static int sumWorkshops = 0;
+        static string subjectIndex = "";
+        static string directionAbbreviation = "";
+        static string startYear = "";
+        static string edForm = "";
+        static string interactiveWatch = ""; 
+        static int sumLectures = 0;
+        static int sumWorkshops = 0;
         public static int sumLaboratoryExercises = 0;
-        public static string sumIndependentWork = "";
+        static string sumIndependentWork = "";
 
-        public static string courseWork = "";
-        public static string consulting = "";
-        public static string typesOfLessons = "";
-        public static string semesters = "";
-        public static string courses = "";
-        public static Dictionary<string, string> semesterData = new Dictionary<string, string>();
-        public static string[] keysForSemesterData = new string[]
+        static string courseWork = "";
+        static string consulting = "";
+        static string typesOfLessons = "";
+        static string semesters = "";
+        static string courses = "";
+        static Dictionary<string, string> semesterData = new Dictionary<string, string>();
+        static string[] keysForSemesterData = new string[]
         {
             "",
             "$auditoryLessons$",
@@ -67,7 +67,7 @@ namespace WorkPrograms
             sumWorkshops = 0;
             typesOfLessons = "";
             consulting = "";
-            isInteractiveWatch = false;
+            interactiveWatch = "";
         }
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
@@ -319,7 +319,7 @@ namespace WorkPrograms
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
                 sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
-                isInteractiveWatch = true;
+                interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             CreateSemesters(worksheetPlan, index);
@@ -408,24 +408,38 @@ namespace WorkPrograms
 
         private void WriteInFile()
         {
+
             string subjectInPath = "";
             if (subjectName.Contains(':'))
                 subjectInPath = RemoveExtraChars(subjectName);
             else
                 subjectInPath = subjectName;
-            path = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
+            filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
             var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
-            resultDoc.path = path;
+            resultDoc.path = filePath;
             var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
-            resultDoc.FillPattern(competencies, competenciesDic);
-            //var resultList = SelectCompetencies(worksheet, plan);
-            //DocX resultDoc = DocX.Create(path);
-            //var resultDoc = DocX.Create(path);
-            //var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            //_Word.CreateWordTemplate(competencies, resultDoc);
-            //resultDoc.Save();
+            var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp); 
+            string[] replaceableStrings = new string[]
+            {
+                subjectName, direction, profile,
+                standard, protocol, creditUnits.ToString(),
+                studyHours, courses, semesters, sumIndependentWork.ToString(),
+                typesOfLessons, test, consulting, courseWork,
+                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch
+            };
+            string[] namesOfReplaceableStrings = new string[]
+            {
+                nameof(subjectName), nameof(direction), nameof(profile),
+                nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
+                nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
+                nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
+                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch)
+            };
+            bool isInteractiveWatch = true;
+            if (string.IsNullOrEmpty(interactiveWatch))
+                isInteractiveWatch = false;
+            resultDoc.FillPattern(competenciesDic, replaceableStrings, namesOfReplaceableStrings, semesterData, isInteractiveWatch);
         }
 
         private void buttonGenerate_Click(object sender, EventArgs e)
@@ -464,8 +478,8 @@ namespace WorkPrograms
                 if (res == DialogResult.OK)
                 {
                     labelNameOfFolder.Text = "Загрузка...";
-                    path = folderBrowserDialogChooseFolder.SelectedPath;
-                    labelNameOfFolder.Text = path;
+                    filePath = folderBrowserDialogChooseFolder.SelectedPath;
+                    labelNameOfFolder.Text = filePath;
                     buttonGenerate.Enabled = true;
                 }
                 else
