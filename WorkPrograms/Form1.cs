@@ -243,17 +243,20 @@ namespace WorkPrograms
             //Создаем аббревиатуры направлений.
             string directionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value;
             string abbreviation = "";
+            string studyProgram = _Excel.worksheetWorkPlanTitlePage.Cells[6][14].Value.Trim(' ').Replace("  ", " ");
+            if (studyProgram.Split()[2] == "магистратуры")
+                abbreviation = "МАГИ_";
             if (directionName.Contains("  "))
-                directionName.Replace("  ", " ");
+                directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
-                abbreviation = "ПМ";
+                abbreviation += "ПМ";
             else if (splittedDirectionName.Contains("Информатика"))
-                abbreviation = "ИВТ";
+                abbreviation += "ИВТ";
             else if (splittedDirectionName.Contains("Педагогическое"))
-                abbreviation = "ПОМИ";
+                abbreviation += "ПОМИ";
             else
-                abbreviation = "МАТ";
+                abbreviation += "МАТ";
             return abbreviation;
         }
 
@@ -296,7 +299,7 @@ namespace WorkPrograms
             int lastColumn = TotalSizeColumn(worksheetPlan);
             ClearData();
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            string[] separators = new string[] { "Профиль", "Профили", "Направление" };
+            string[] separators = new string[] { "Профиль", "Профиль:", "Профили", "Направление" };
             var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
             directionAbbreviation = SelectAbbreviation();
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
