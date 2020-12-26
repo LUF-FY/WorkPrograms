@@ -466,7 +466,7 @@ namespace WorkPrograms
                 studyHours, courses, semesters, sumIndependentWork.ToString(),
                 typesOfLessons, test, consulting, courseWork,
                 competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch,
-                subjectIndex, subjectIndexDecoding, director
+                subjectIndex, subjectIndexDecoding, director, position
             };
             string[] namesOfReplaceableStrings = new string[]
             {
@@ -475,7 +475,7 @@ namespace WorkPrograms
                 nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
                 nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
                 nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch),
-                nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director)
+                nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position)
             };
             bool isInteractiveWatch = true;
             if (string.IsNullOrEmpty(interactiveWatch))
