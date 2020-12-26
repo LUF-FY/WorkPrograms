@@ -76,12 +76,12 @@ namespace WorkPrograms
         {
             semesters = "";
             int lastColoumn = TotalSizeColumn(worksheetPlan);
-                for (int i = 18, number = 1; i < lastColoumn; i += 7)
-                {
-                    if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
-                        semesters += number;
-                    number++;
-                }
+            for (int i = 18, number = 1; i < lastColoumn - 3; i += 7)
+            {
+                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
+                    semesters += number;
+                number++;
+            }
         }
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
@@ -117,7 +117,8 @@ namespace WorkPrograms
         {
             string s = ""; 
             int count = 1;
-            for (int i = 17; i < 70; i+=7)
+            int lastColoumn = TotalSizeColumn(worksheetPlan);
+            for (int i = 17; i < lastColoumn - 3; i+=7)
             {
                 int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
                 int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
@@ -147,7 +148,8 @@ namespace WorkPrograms
                 courses = a.ToString();
             else
                 courses = courses.Remove(courses.Length - 1);*/
-            for (int i = 18, number = 1; i < 70; i += 14)
+            int lastColoumn = TotalSizeColumn(worksheetPlan);
+            for (int i = 18, number = 1; i < lastColoumn - 3; i += 14)
             {
                 if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value)||
                     !string.IsNullOrEmpty(worksheetPlan.Cells[i+7][index].Value))
@@ -197,7 +199,8 @@ namespace WorkPrograms
 
         public static void CountSumLecturesAndPractices(Excel.Worksheet worksheetPlan, int index)
         {
-            for (int i = 17; i < 73; i+=7)
+            int lastColoumn = TotalSizeColumn(worksheetPlan);
+            for (int i = 17; i < lastColoumn - 3; i+=7)
             {
                 sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
                 sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
