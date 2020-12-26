@@ -300,8 +300,6 @@ namespace WorkPrograms
             return subjectIndexDecoding;
         }
 
-
-
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
