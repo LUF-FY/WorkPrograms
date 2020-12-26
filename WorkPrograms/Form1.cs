@@ -284,23 +284,45 @@ namespace WorkPrograms
             return abbreviation;
         }
 
+
+        /// <summary>
+        /// Получает направление и профиль
+        /// </summary>
+        /// <param name="worksheetTitle">Титульный лист</param>
+        /// <returns>Массив {напрвление, профиль}</returns>
+        string[] GetDirectionAndProfile(Excel.Worksheet worksheetTitle)
+        {
+            var separators = new string[] { "Профиль", "Профили", "Направление" }; //разделители направления и профиля
+            var directionAndProfile = worksheetTitle.Cells[2][18].Value.Split(separators, StringSplitOptions.RemoveEmptyEntries); //Сплит по разделителям
+            var direction = directionAndProfile[0].Trim(' ', ',', ':'); //Получить направление
+            string profile = "";
+            if (directionAndProfile.Length > 1)
+                profile = "Профиль: " + directionAndProfile[1].Trim(' '); //Получить профиль, если он есть
+            return new string[] {direction, profile};
+        }
+
+
+        Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle, int index)
+        {
+            var dic = new Dictionary<string, string>();
+            dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
+            dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
+            
+            return dic;
+        }
+
+        /// <summary>
+        /// Собирает всю информацию о дисциплине
+        /// </summary>
+        /// <param name="worksheetPlan"></param>
+        /// <param name="worksheetTitle"></param>
+        /// <param name="index"></param>
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
             ClearData();
-            subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            string[] separators = new string[] { "Профиль", "Профили", "Направление" };
-            var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
             directionAbbreviation = SelectAbbreviation();
-            direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
-            try
-            {
-                profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
-            }
-            catch
-            {
-                profile = "";
-            }
+            subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
             var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
             var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
@@ -366,6 +388,11 @@ namespace WorkPrograms
             return resultList;
         }
 
+        /// <summary>
+        /// Находит количество строк в листе Excel файла
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns></returns>
         public static int TotalSize(Excel.Worksheet worksheet)
         {
             // Находим кол-во строк.
@@ -373,24 +400,7 @@ namespace WorkPrograms
             return lastCell.Row;
         }
 
-        private void buttonOpenExcel_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DialogResult res = openFileDialogSelectFile.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);
-                    buttonOpenFolder.Enabled = true;
-                }
-                else
-                    throw new Exception("Файл не выбран");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        
 
         public static string RemoveExtraChars(string s)
         {
@@ -442,18 +452,69 @@ namespace WorkPrograms
             resultDoc.FillPattern(competenciesDic, replaceableStrings, namesOfReplaceableStrings, semesterData, isInteractiveWatch);
         }
 
+        /// <summary>
+        /// Выбор Excel файла с учебным планом, и выбор нужных страниц 
+        /// </summary>
+        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        { 
+            try
+            {
+                DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
+                if (res == DialogResult.OK) //Если файл выбран
+                {
+                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile); //Выбор нужных листов
+                    buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
+                }
+                else
+                    throw new Exception("Файл не выбран");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Выбор папки создания шаблонов рабочих программ, и сохранение путя
+        /// </summary>
+        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult res = folderBrowserDialogChooseFolder.ShowDialog(); //Выбор папки
+                if (res == DialogResult.OK) //Если папка выбрана
+                {
+                    labelNameOfFolder.Text = "Загрузка..."; // изменение лейбла состояния
+                    filePath = folderBrowserDialogChooseFolder.SelectedPath; // сохранение путя
+                    labelNameOfFolder.Text = filePath; //изменение лейбла на путь
+                    buttonGenerate.Enabled = true; //Разблокировка кнопки для свормировывания шаблонов
+                }
+                else
+                    throw new Exception("Путь не выбран");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Создание шаблонов
+        /// </summary>
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
             try
             {
-                labelLoading.Visible = true;
-                labelLoading.Text = "Загрузка...";             
-                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan);
-                progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
-                for (int i = 6; i <= lastRow; i++)
+                
+                labelLoading.Visible = true; // лейбл состояния стал виден
+                labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
+
+                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan); // Найти последнюю строку листа, Excel файла
+                MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow); // Найти максимум прогресс бара
+                for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
                 {
-                    if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                    if (IsDiscipline(i))
                     {
                         PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
                         WriteInFile();
@@ -469,37 +530,21 @@ namespace WorkPrograms
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Возвращает true если это дисциплина, иначе возвращает falce
+        /// </summary>
+        /// <param name="index"> номер строки </param>
+        public bool IsDiscipline(int index) => 
+            _Excel.worksheetWorkPlanPlan.Cells[74][index].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
 
-        private void buttonOpenFolder_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DialogResult res = folderBrowserDialogChooseFolder.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    labelNameOfFolder.Text = "Загрузка...";
-                    filePath = folderBrowserDialogChooseFolder.SelectedPath;
-                    labelNameOfFolder.Text = filePath;
-                    buttonGenerate.Enabled = true;
-                }
-                else
-                    throw new Exception("Путь не выбран");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
-        {
-            int lastRow = TotalSize(worksheet);
+
+        public void MaxValueOfProgressBar(Excel.Worksheet worksheet, int lastRow)
+        {            
             int maxValueOfProgressBar = 0;
             for (int i = 6; i <= lastRow; i++)
-            {
-                if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                if (IsDiscipline(i))
                     maxValueOfProgressBar++;
-            }
-            return maxValueOfProgressBar;
+            progressBar1.Maximum = maxValueOfProgressBar;
         }
 
         void Reset()
