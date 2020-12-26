@@ -302,6 +302,7 @@ namespace WorkPrograms
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
+            int lastColumn = TotalSizeColumn(worksheetPlan);
             ClearData();
             subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
             string[] separators = new string[] { "Профиль", "Профили", "Направление" };
@@ -335,7 +336,7 @@ namespace WorkPrograms
                 sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
                 interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
-            subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
+            subjectCompetencies = worksheetPlan.Cells[lastColumn][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
             subjectIndexDecoding = DecodeSubjectIndex(worksheetPlan, index);
 
@@ -423,7 +424,8 @@ namespace WorkPrograms
             string str = null;
             foreach (var item in s)
             {
-                if (item == ':')
+                if (item == ':' || item == '\\' || item == '|' || item == '/' || 
+                        item == '*' || item == '?' || item == '"' || item == '>' || item == '<')
                     str += ' ';
                 else
                     str += item;
@@ -477,7 +479,7 @@ namespace WorkPrograms
                 labelLoading.Text = "Загрузка...";             
                 int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
-                for (int i = 6; i <= lastRow; i++)
+                for (int i = 30; i <= 30; i++)
                 {
                     if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
