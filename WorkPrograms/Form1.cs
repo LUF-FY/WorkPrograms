@@ -246,24 +246,14 @@ namespace WorkPrograms
             if (directionName.Contains("  "))
                 directionName.Replace("  ", " ");
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
-            if (splittedDirectionName[2] == "Прикладная" || splittedDirectionName[1] == "Прикладная")
+            if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation = "ПМ";
-            else if (splittedDirectionName[2] == "Информатика" || splittedDirectionName[1] == "Информатика")
+            else if (splittedDirectionName.Contains("Информатика"))
                 abbreviation = "ИВТ";
-            else if (splittedDirectionName[2] == "Педагогическое"|| splittedDirectionName[1] == "Педагогическое")
+            else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation = "ПОМИ";
             else
                 abbreviation = "МАТ";
-            //for (int i = 2; i < directionName.Length; i++)
-            //{
-            //    if (directionName[i] != "Профиль")
-            //    {
-            //        if (directionName[i].Length > 1)
-            //            abbreviation += Char.ToUpper(directionName[i][0]);
-            //    }
-            //    else
-            //        break;
-            //}
             return abbreviation;
         }
 
