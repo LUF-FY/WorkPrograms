@@ -33,6 +33,7 @@ namespace WorkPrograms
         static int sumWorkshops = 0;
         public static int sumLaboratoryExercises = 0;
         static string sumIndependentWork = "";
+        static string blockName = "";
 
         static string courseWork = "";
         static string consulting = "";
@@ -287,7 +288,6 @@ namespace WorkPrograms
 
         private static string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
         {
-            string blockName = "";
             string subsectionName = "";
             string blockCode1 = "";
             string blockCode2 = "";
