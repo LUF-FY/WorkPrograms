@@ -253,10 +253,10 @@ namespace WorkPrograms
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
-            else if (splittedDirectionName.Contains("Информатика"))
-                abbreviation += "ИВТ";
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
+            else if (splittedDirectionName.Contains("Информатика"))
+                abbreviation += "ИВТ";
             else
                 abbreviation += "МАТ";
             return abbreviation;
