@@ -44,6 +44,7 @@ namespace WorkPrograms
             }
 
             CreateTable(competenciesDic, document);
+
             if (!isInteractiveWatch)
             {
                 Xceed.Document.NET.Table delTable = document.Tables[3];

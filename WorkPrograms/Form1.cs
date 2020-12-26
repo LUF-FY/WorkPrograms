@@ -24,6 +24,7 @@ namespace WorkPrograms
         static string test = "";
         public static string subjectCompetencies = "";
         static string subjectIndex = "";
+        static string subjectIndexDecoding = "";
         static string directionAbbreviation = "";
         static string startYear = "";
         static string edForm = "";
@@ -284,6 +285,40 @@ namespace WorkPrograms
             return abbreviation;
         }
 
+        private static string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
+        {
+            string blockName = "";
+            string subsectionName = "";
+            string blockCode1 = "";
+            string blockCode2 = "";
+            string[] s = subjectIndex.Split('.');
+            subjectIndexDecoding = "";
+            int i = index;
+            if (s[0].ToLower() != blockCode1 || s[1].ToLower() != blockCode2)
+            {
+                while (!string.IsNullOrEmpty(worksheet.Cells[2][i].Value))
+                    i--;
+                blockCode1 = s[0].ToLower();
+                blockCode2 = s[1].ToLower();
+                if (!string.IsNullOrEmpty(worksheet.Cells[1][i - 1].Value))
+                {
+                    string[] str = worksheet.Cells[1][i - 1].Value.Trim(' ').Split('.');
+                    blockName = str[0] + ". " + str[1] + ". ";
+                    subsectionName = worksheet.Cells[1][i].Value.Trim(' ');
+                }
+                else
+                    subsectionName = worksheet.Cells[1][i].Value.Trim(' ');
+            }
+            if (!string.IsNullOrEmpty(blockName) && !string.IsNullOrEmpty(subsectionName))
+                subjectIndexDecoding += blockName + subsectionName + ". ";
+            if (s.Length > 2)
+            {
+                if (s[2].ToLower() == "дв")
+                    subjectIndexDecoding += "Дисциплины по выбору.";
+            }
+            return subjectIndexDecoding;
+        }
+
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
             // берём информацию из листа Титул
@@ -322,6 +357,7 @@ namespace WorkPrograms
                 interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
             subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
             subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
+            subjectIndexDecoding = DecodeSubjectIndex(worksheetPlan, index);
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
             CreateIndependentWorkBySemester(worksheetPlan, index);
@@ -408,7 +444,6 @@ namespace WorkPrograms
 
         private void WriteInFile()
         {
-
             string subjectInPath = "";
             if (subjectName.Contains(':'))
                 subjectInPath = RemoveExtraChars(subjectName);
@@ -426,7 +461,8 @@ namespace WorkPrograms
                 standard, protocol, creditUnits.ToString(),
                 studyHours, courses, semesters, sumIndependentWork.ToString(),
                 typesOfLessons, test, consulting, courseWork,
-                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch
+                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch,
+                subjectIndex, subjectIndexDecoding
             };
             string[] namesOfReplaceableStrings = new string[]
             {
@@ -434,7 +470,8 @@ namespace WorkPrograms
                 nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
                 nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
                 nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
-                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch)
+                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch),
+                nameof(subjectIndex), nameof(subjectIndexDecoding)
             };
             bool isInteractiveWatch = true;
             if (string.IsNullOrEmpty(interactiveWatch))
