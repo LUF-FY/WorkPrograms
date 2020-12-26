@@ -38,6 +38,7 @@ namespace WorkPrograms
         static string courseWork = "";
         static string consulting = "";
         static string typesOfLessons = "";
+        static List<int> semestersList = new List<int>();
         static string semesters = "";
         static string courses = "";
         static Dictionary<string, string> semesterData = new Dictionary<string, string>();
@@ -62,7 +63,7 @@ namespace WorkPrograms
         public static void ClearData()
         {
             semesterData.Clear();
-            semesters = "";
+            semestersList.Clear();
             courses = "";
             test = "";
             sumLectures = 0;
@@ -74,21 +75,20 @@ namespace WorkPrograms
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
-            semesters = "";
             int lastColoumn = TotalSizeColumn(worksheetPlan);
             for (int i = 18, number = 1; i < lastColoumn - 3; i += 7)
             {
                 if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
-                    semesters += number;
+                    semestersList.Add(number);
                 number++;
             }
         }
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
         {
-            foreach (var item in semesters)
+            foreach (var item in semestersList)
             {
-                int a = Convert.ToInt32(item - '0') - 1;
+                int a = item - 1;
                 for (int i = 1; i < 7; i++)
                 {
                     string s3 = worksheetPlan.Cells[(a * 7 + 17 + i)][index].Value;
@@ -123,7 +123,7 @@ namespace WorkPrograms
                 int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
                 int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
                 int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
-                if (semesters.Contains(count.ToString()))
+                if (semestersList.Contains(count))
                 {
                     if (lec + pra + lab != 0)
                         s += (lec + pra + lab) + "/";
@@ -173,10 +173,10 @@ namespace WorkPrograms
             else
                 test = GradedTest + testCopy;
             string s = "";
-            for (int i = 0, j = 0; i < semesters.Length; i++)
+            for (int i = 0, j = 0; i < semestersList.Count; i++)
                 if (j < test.Length)
                 {
-                    if (semesters[i] == test[j])
+                    if (semestersList[i] == test[j])
                     {
                         s += "+/";
                         j++;
@@ -192,8 +192,8 @@ namespace WorkPrograms
         public static void CreateSemesters()
         {
             string s = "";
-            for (int i = 0; i < semesters.Length; i++)
-                s += semesters[i] + "/";
+            for (int i = 0; i < semestersList.Count; i++)
+                s += semestersList[i] + "/";
             semesters = s.Remove(s.Length - 1);
         }
 
@@ -477,10 +477,11 @@ namespace WorkPrograms
                 labelLoading.Visible = true;
                 labelLoading.Text = "Загрузка...";             
                 int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
+                int lastColumn = TotalSizeColumn(_Excel.worksheetWorkPlanPlan);
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 for (int i = 6; i <= lastRow; i++)
                 {
-                    if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                    if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn+1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     {
                         PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
                         WriteInFile();
@@ -520,10 +521,11 @@ namespace WorkPrograms
         static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
         {
             int lastRow = TotalSizeRow(worksheet);
+            int lastColumn = TotalSizeColumn(worksheet);
             int maxValueOfProgressBar = 0;
             for (int i = 6; i <= lastRow; i++)
             {
-                if (_Excel.worksheetWorkPlanPlan.Cells[74][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn+1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                     maxValueOfProgressBar++;
             }
             return maxValueOfProgressBar;
