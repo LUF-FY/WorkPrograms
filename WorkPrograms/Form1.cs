@@ -302,14 +302,75 @@ namespace WorkPrograms
         }
 
 
-        Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle, int index)
+        string GetStandart(Excel.Worksheet worksheetTitle)
+        {
+            var s = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries); 
+            return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
+        }
+
+        string GetProtocol(Excel.Worksheet worksheetTitle)
+        {
+            var s = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
+            return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
+        }
+
+        string GetEdForm(Excel.Worksheet worksheetTitle)
+        {
+            var s = worksheetTitle.Cells[1][31].Value.Split(':');
+            return s[1].Trim(' ') + " " + s[0];
+        }
+
+        Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle)
         {
             var dic = new Dictionary<string, string>();
             dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
             dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
-            
+            dic.Add("$standart$", GetStandart(worksheetTitle));
+            dic.Add("$protocol$", GetProtocol(worksheetTitle));
+            dic.Add("$edForm$", GetEdForm(worksheetTitle));
             return dic;
         }
+
+
+        string GetSubjectName(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[3][index].Value.Trim(' ');
+
+        string GetCreditUnits(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[8][index].Value.Trim(' ');
+
+        string GetStudyHours(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
+
+        string GetSumIndependentWork(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[14][index].Value.Trim(' ');
+
+        string GetInteractiveWatch(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[16][index].Value.Trim(' ');
+
+        string GetSubjectCompetencies(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[75][index].Value.Trim(' ');
+
+        string GetSubgectIndex(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[2][index].Value.Trim(' ');
+
+        string GetCourseWork(Excel.Worksheet worksheetPlan, int index)
+        {
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
+                return worksheetPlan.Cells[7][index].Value.Trim(' ');
+            else
+                return "-";
+        }
+
+        Dictionary<string, string> PrepareDataFromSheetPlan(Excel.Worksheet worksheetPlan, int index)
+        {
+            //dic.Add("$$",);
+            var dic = new Dictionary<string, string>();
+            dic.Add("$subjectName$", GetSubjectName(worksheetPlan, index));
+            dic.Add("$creditUnits$", GetCreditUnits(worksheetPlan, index));
+            dic.Add("$studyHours$", GetStudyHours(worksheetPlan, index));
+            dic.Add("$sumIndependentWork$", GetSumIndependentWork(worksheetPlan, index));
+            dic.Add("$interactiveWatch$", GetInteractiveWatch(worksheetPlan, index));
+            dic.Add("$subjectCompetencies$", GetSubjectCompetencies(worksheetPlan, index));
+            dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
+            dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
+
+            return dic;
+        }
+
+
 
         /// <summary>
         /// Собирает всю информацию о дисциплине
@@ -322,28 +383,9 @@ namespace WorkPrograms
             // берём информацию из листа Титул
             ClearData();
             directionAbbreviation = SelectAbbreviation();
-            subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
-            standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
-            var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
-            protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
-            startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
-            var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
-            edForm = s3[1].Trim(' ') + " " + s3[0];
-            // берём информацию из листа План
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
-                creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
-                courseWork = worksheetPlan.Cells[7][index].Value.Trim(' ');
-            else
-                courseWork = "-";
-            studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
-                sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
-                interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
-            subjectCompetencies = worksheetPlan.Cells[75][index].Value.Trim(' ');
-            subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
+            startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');//nazvanie     
+            // берём информацию из листа План           
+
             CreateSemesters(worksheetPlan, index);
             FillDictionary(worksheetPlan, index);
             CreateIndependentWorkBySemester(worksheetPlan, index);
@@ -418,7 +460,6 @@ namespace WorkPrograms
 
         private void WriteInFile()
         {
-
             string subjectInPath = "";
             if (subjectName.Contains(':'))
                 subjectInPath = RemoveExtraChars(subjectName);
