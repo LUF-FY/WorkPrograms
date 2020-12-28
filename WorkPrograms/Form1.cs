@@ -61,196 +61,85 @@ namespace WorkPrograms
             InitializeComponent();
         }
 
-        public static void ClearData()
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        string GetStudyProgram(Excel.Worksheet worksheetTitle)
         {
-            semesterData.Clear();
-            semestersList.Clear();
-            courses = "";
-            test = "";
-            sumLectures = 0;
-            sumWorkshops = 0;
-            typesOfLessons = "";
-            consulting = "";
-            interactiveWatch = "";
+            var s = worksheetTitle.Cells[6][14].Value;
+            return s.Trim(' ').Replace("  ", " ").Split()[2];
         }
 
-        public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
+        /// <summary>
+        /// Получает направление и профиль
+        /// </summary>
+        /// <param name="worksheetTitle">Титульный лист</param>
+        /// <returns>Массив {напрвление, профиль}</returns>
+        string[] GetDirectionAndProfile(Excel.Worksheet worksheetTitle)
         {
-            int lastColoumn = TotalSizeColumn(worksheetPlan);
-            for (int i = 18, number = 1; i < lastColoumn - 3; i += 7)
-            {
-                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
-                    semestersList.Add(number);
-                number++;
-            }
+            string[] separators = new string[] {"Направленность программы", "Направление подготовки", "Профиль",
+                "Профиль:", "Профили", "Направление"}; //разделители направления и профиля
+            var directionAndProfile = worksheetTitle.Cells[2][18].Value.Split(separators, StringSplitOptions.RemoveEmptyEntries); //Сплит по разделителям
+            var direction = directionAndProfile[0].Trim(' ', ',', ':'); //Получить направление
+            string profile = "";
+            if (directionAndProfile.Length > 1)
+                profile = "Профиль: " + directionAndProfile[1].Trim(' '); //Получить профиль, если он есть
+            return new string[] { direction, profile };
         }
 
-        public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
+        string GetStandart(Excel.Worksheet worksheetTitle)
         {
-            foreach (var item in semestersList)
-            {
-                int a = item - 1;
-                for (int i = 1; i < 7; i++)
-                {
-                    string s3 = worksheetPlan.Cells[(a * 7 + 17 + i)][index].Value;
-                    if (s3 != null)
-                    {
-                        if (!semesterData.ContainsKey(keysForSemesterData[i]))
-                            semesterData.Add(keysForSemesterData[i], s3);
-                        else
-                            semesterData[keysForSemesterData[i]] += "/" + s3;
-                    }
-                    else if (i == 6)
-                    {
-                        if (!semesterData.ContainsKey(keysForSemesterData[i]))
-                            semesterData.Add(keysForSemesterData[i], "-");
-                        else
-                            semesterData[keysForSemesterData[i]] += "/-";
-                    }
-                }
-                for (int i = 1; i < 7; i++)
-                    if (!semesterData.ContainsKey(keysForSemesterData[i]))
-                        semesterData[keysForSemesterData[i]] = "-";
-            }
+            var s = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
+            return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
         }
 
-        public static void CreateIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index)
+        string GetProtocol(Excel.Worksheet worksheetTitle)
         {
-            string s = ""; 
-            int count = 1;
-            int lastColoumn = TotalSizeColumn(worksheetPlan);
-            for (int i = 17; i < lastColoumn - 3; i+=7)
-            {
-                int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
-                int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
-                int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
-                if (semestersList.Contains(count))
-                {
-                    if (lec + pra + lab != 0)
-                        s += (lec + pra + lab) + "/";
-                    else
-                        s += "-/";        
-                }
-                count++;
-            }
-            if (s.Length != 0)
-                s = s.Remove(s.Length - 1);
-            semesterData[keysForSemesterData[1]] = s;
+            var s = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
+            return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
         }
 
-
-        public static void CreateCourses(Excel.Worksheet worksheetPlan, int index)
+        string GetEdForm(Excel.Worksheet worksheetTitle)
         {
-            /*int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
-            int b = Convert.ToInt32(Math.Floor(Convert.ToDouble(semesters[0].ToString()) / 2));
-            for (int i = b; i <= a; i++)
-                courses += i + 1 + "/";
-            if (semesters.Length==1)
-                courses = a.ToString();
-            else
-                courses = courses.Remove(courses.Length - 1);*/
-            int lastColoumn = TotalSizeColumn(worksheetPlan);
-            for (int i = 18, number = 1; i < lastColoumn - 3; i += 14)
-            {
-                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value)||
-                    !string.IsNullOrEmpty(worksheetPlan.Cells[i+7][index].Value))
-                    courses += number+"/";
-                number++;
-            }
-            courses = courses.Remove(courses.Length - 1);
+            var s = worksheetTitle.Cells[1][31].Value.Split(':');
+            return s[1].Trim(' ') + " " + s[0];
         }
 
-        public static void CreateTeats(Excel.Worksheet worksheetPlan, int index)
-        {
-            string GradedTest = worksheetPlan.Cells[6][index].Value;
-            string testCopy = worksheetPlan.Cells[5][index].Value;
-            if (testCopy != null && GradedTest != null)
-            {
-                if (testCopy.CompareTo(GradedTest) == -1)
-                    test = testCopy + GradedTest;
-                else
-                    test = GradedTest + testCopy;
-            }
-            else
-                test = GradedTest + testCopy;
-            string s = "";
-            for (int i = 0, j = 0; i < semestersList.Count; i++)
-                if (j < test.Length)
-                {
-                    if (semestersList[i] == test[j])
-                    {
-                        s += "+/";
-                        j++;
-                    }
-                    else
-                        s += "-/";
-                }
-                else
-                    s += "-/";
-            test = s.Remove(s.Length - 1);
-        }
-
-        public static void CreateSemesters()
-        {
-            string s = "";
-            for (int i = 0; i < semestersList.Count; i++)
-                s += semestersList[i] + "/";
-            semesters = s.Remove(s.Length - 1);
-        }
-
-        public static void CountSumLecturesAndPractices(Excel.Worksheet worksheetPlan, int index)
-        {
-            int lastColoumn = TotalSizeColumn(worksheetPlan);
-            for (int i = 17; i < lastColoumn - 3; i+=7)
-            {
-                sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
-                sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
-                sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
-            }        
-        }
-
-        public static void CreateTypesOfLessons() 
-        {
-            var list = new List<string>();
-            if (sumLectures!=0)
-                list.Add("лекционных");
-            if (sumWorkshops!=0)
-                list.Add("практических");
-            if (semesterData.ContainsKey(keysForSemesterData[3]))
-                list.Add("лабораторных");
-            if (list.Count==1)
-                typesOfLessons = list[0];
-            else if (list.Count == 2)
-                typesOfLessons = list[0] + ", " + list[1];
-            else if (list.Count == 3)
-                typesOfLessons = list[0] + ", " + list[1] +" и "+list[2];
-        }
-
-        public static void CreateConsulting()
-        {
-            string[] s = semesterData[keysForSemesterData[6]].Split('/');
-            for (int i = 0; i < s.Length; i++)
-            {
-                if (s[i]!="-")
-                    consulting += "+/";
-                else
-                    consulting += "-/";
-            }
-            consulting = consulting.Remove(consulting.Length - 1);
-        }
-
-        public static string SelectAbbreviation()
+        string GetDirectionAbbreviation(Excel.Worksheet worksheetTitle)
         {
             //Создаем аббревиатуры направлений.
-            string directionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value;
-            string abbreviation = "";            
+            string directionName = worksheetTitle.Cells[2][18].Value;
+            string abbreviation = "";
             if (studyProgram == "магистратуры")
                 abbreviation = "МАГИ_";
             else if (studyProgram == "аспирантуры")
                 abbreviation = "АСПИР_";
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
-            string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
+            string[] splittedDirectionName = worksheetTitle.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
             else if (profile.Contains("логика"))
@@ -266,13 +155,68 @@ namespace WorkPrograms
             return abbreviation;
         }
 
-        private static string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
+        Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle)
+        {
+            var dic = new Dictionary<string, string>();
+            dic.Add("$studyProgram$", GetStudyProgram(worksheetTitle));
+            dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
+            dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
+            dic.Add("$standart$", GetStandart(worksheetTitle));
+            dic.Add("$protocol$", GetProtocol(worksheetTitle));
+            dic.Add("$edForm$", GetEdForm(worksheetTitle));
+            dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle));
+            return dic;
+        }
+
+
+
+        string GetSubjectName(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[3][index].Value.Trim(' ');
+
+        string GetCreditUnits(Excel.Worksheet worksheetPlan, int index)
+        {
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
+                return worksheetPlan.Cells[8][index].Value.Trim(' ');
+            else
+                return "";
+        }
+
+        string GetStudyHours(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
+
+        string GetSumIndependentWork(Excel.Worksheet worksheetPlan, int index)
+        {
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
+                return worksheetPlan.Cells[14][index].Value.Trim(' ');
+            else
+                return "";
+        }
+
+        string GetInteractiveWatch(Excel.Worksheet worksheetPlan, int index)
+        {
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
+                return worksheetPlan.Cells[16][index].Value.Trim(' ');
+            else
+                return "";
+        }
+
+        string GetSubjectCompetencies(Excel.Worksheet worksheetPlan, int index, int lastColumn) => worksheetPlan.Cells[lastColumn + 2][index].Value.Trim(' ');
+
+        string GetSubgectIndex(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[2][index].Value.Trim(' ');
+
+        string GetCourseWork(Excel.Worksheet worksheetPlan, int index)
+        {
+            if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
+                return worksheetPlan.Cells[7][index].Value.Trim(' ');
+            else
+                return "-";
+        }
+
+        string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
         {
             string subsectionName = "";
             string blockCode1 = "";
             string blockCode2 = "";
             string[] s = subjectIndex.Split('.');
-            subjectIndexDecoding = "";
+            string subjectIndexDecoding = "";
             int i = index;
             if (s[0].ToLower() != blockCode1 || s[1].ToLower() != blockCode2)
             {
@@ -299,69 +243,235 @@ namespace WorkPrograms
             return subjectIndexDecoding;
         }
 
-        public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
+        List<int> CreateSemesters(Excel.Worksheet worksheetPlan, int index, int lastColumn)
         {
-            // берём информацию из листа Титул
-            int lastColumn = TotalSizeColumn(worksheetPlan);
-            ClearData();
-            studyProgram = worksheetTitle.Cells[6][14].Value.Trim(' ').Replace("  ", " ").Split()[2];
-            subjectName = worksheetPlan.Cells[3][index].Value.Trim(' ');
-            string[] separators = new string[] {"Направленность программы", "Направление подготовки", "Профиль", 
-                "Профиль:", "Профили", "Направление"};
-            var s0 = worksheetTitle.Cells[2][18].Value; //.Split(disciplineSplitArr);
-            direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
-            try
+            var list = new List<int>();
+            for (int i = 18, number = 1; i < lastColumn - 3; i += 7)
             {
-                profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value))
+                    list.Add(number);
+                number++;
             }
-            catch
-            {
-                profile = "";
-            }
-            directionAbbreviation = SelectAbbreviation();
-            var s1 = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
-            standard = s1[1].Trim(' ') + " г. " + s1[0].Trim(' ');
-            var s2 = worksheetTitle.Cells[1][13].Value.Split(new string[] { "Протокол", "от" }, StringSplitOptions.RemoveEmptyEntries);
-            protocol = s2[1].Trim(' ') + " г. " + s2[0].Trim(' ');
-            startYear = worksheetTitle.Cells[20][29].Value.Trim(' ');
-            var s3 = worksheetTitle.Cells[1][31].Value.Split(':');
-            edForm = s3[1].Trim(' ') + " " + s3[0];
-            // берём информацию из листа План
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
-                creditUnits = int.Parse(worksheetPlan.Cells[8][index].Value.Trim(' '));
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[7][index].Value))
-                courseWork = worksheetPlan.Cells[7][index].Value.Trim(' ');
-            else
-                courseWork = "-";
-            studyHours = worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[14][index].Value))
-                sumIndependentWork = worksheetPlan.Cells[14][index].Value.Trim(' ');
-            if (!string.IsNullOrEmpty(worksheetPlan.Cells[16][index].Value))
-                interactiveWatch = worksheetPlan.Cells[16][index].Value.Trim(' ');
-            subjectCompetencies = worksheetPlan.Cells[lastColumn + 2][index].Value.Trim(' ');
-            subjectIndex = worksheetPlan.Cells[2][index].Value.Trim(' ');
-            subjectIndexDecoding = DecodeSubjectIndex(worksheetPlan, index);
+            return list;
+        }
 
-            CreateSemesters(worksheetPlan, index);
-            FillDictionary(worksheetPlan, index);
-            CreateIndependentWorkBySemester(worksheetPlan, index);
-            CreateConsulting();
-            CreateCourses(worksheetPlan, index);
-            CreateTeats(worksheetPlan, index);
-            CreateSemesters();
-            CountSumLecturesAndPractices(worksheetPlan, index);
-            CreateTypesOfLessons();
-            if(studyProgram== "аспирантуры")
+        Dictionary<string, string> FillDictionary(Excel.Worksheet worksheetPlan, int index, List<int> semestersList, string[] keys)
+        {
+            var dic = new Dictionary<string, string>();
+            foreach (var item in semestersList)
+            {
+                int a = item - 1;
+                for (int i = 0; i < 6; i++)
+                {
+                    string s3 = worksheetPlan.Cells[(a * 7 + 17 + i + 1)][index].Value;
+                    if (s3 != null)
+                    {
+                        if (!dic.ContainsKey(keys[i]))
+                            dic.Add(keys[i], s3);
+                        else
+                            dic[keys[i]] += "/" + s3;
+                    }
+                    else if (i == 5)
+                    {
+                        if (!dic.ContainsKey(keys[i]))
+                            dic.Add(keys[i], "-");
+                        else
+                            dic[keys[i]] += "/-";
+                    }
+                }
+                for (int i = 0; i < 6; i++)
+                    if (!dic.ContainsKey(keys[i]))
+                        dic[keys[i]] = "-";
+            }
+            return dic;
+        }
+
+        void GetDataFromSemesters(Dictionary<string, string> dic, Excel.Worksheet worksheetPlan, int index, List<int> semestersList)
+        {
+            var keysTemporaryDic = new string[] 
+            { 
+                "$auditoryLessons$", 
+                "$lectures$", 
+                "$laboratoryExercises$",
+                "$workshops$", 
+                "$independentWorkBySemester$", 
+                "$exam$" 
+            };
+            var temporaryDic = FillDictionary(worksheetPlan, index, semestersList, keysTemporaryDic);
+            foreach (var item in temporaryDic)
+                dic.Add(item.Key, item.Value);
+        }
+
+        string GetIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
+        {
+            string s = "";
+            int count = 1;
+            for (int i = 17; i < lastColumn - 3; i += 7)
+            {
+                int lec = Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                int lab = Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
+                int pra = Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
+                if (semestersList.Contains(count))
+                {
+                    if (lec + pra + lab != 0)
+                        s += (lec + pra + lab) + "/";
+                    else
+                        s += "-/";
+                }
+                count++;
+            }
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            return s;
+        }
+
+        string CreateConsulting(string exam)
+        {
+            var ss = "";
+            string[] s = exam.Split('/');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != "-")
+                    ss += "+/";
+                else
+                    ss += "-/";
+            }
+            if (ss.Length != 0)
+                ss = ss.Remove(ss.Length - 1);
+            return ss;
+        }
+
+        string CreateCourses(Excel.Worksheet worksheetPlan, int index, int lastColumn)
+        {
+            string s = "";
+            for (int i = 18, number = 1; i < lastColumn - 3; i += 14)
+            {
+                if (!string.IsNullOrEmpty(worksheetPlan.Cells[i][index].Value) ||
+                    !string.IsNullOrEmpty(worksheetPlan.Cells[i + 7][index].Value))
+                    s += number + "/";
+                number++;
+            }
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            return s;
+        }
+
+        string CreateTests(Excel.Worksheet worksheetPlan, int index, List<int> semestersList)
+        {
+            string ss = "";
+            string GradedTest = worksheetPlan.Cells[6][index].Value;
+            string testCopy = worksheetPlan.Cells[5][index].Value;
+            if (testCopy != null && GradedTest != null)
+            {
+                if (testCopy.CompareTo(GradedTest) == -1)
+                    ss = testCopy + GradedTest;
+                else
+                    ss = GradedTest + testCopy;
+            }
+            else
+                ss = GradedTest + testCopy;
+            string s = "";
+            for (int i = 0, j = 0; i < semestersList.Count; i++)
+                if (j < test.Length)
+                {
+                    if (semestersList[i] == ss[j])
+                    {
+                        s += "+/";
+                        j++;
+                    }
+                    else
+                        s += "-/";
+                }
+                else
+                    s += "-/";
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            return s;
+        }
+
+        string CreateSemesters(List<int> semestersList)
+        {
+            string s = "";
+            for (int i = 0; i < semestersList.Count; i++)
+                s += semestersList[i] + "/";
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            return s;
+        }
+
+        string[] CountSumLecturesAndPractices(Excel.Worksheet worksheetPlan, int index, int lastColumn)
+        {
+            int sumLectures = 0;
+            int sumLaboratoryExercises = 0;
+            int sumWorkshops = 0;
+            for (int i = 17; i < lastColumn - 3; i += 7)
+            {
+                sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
+                sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
+                sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
+            }
+            return new string[] { sumLectures.ToString(), sumLaboratoryExercises.ToString(), sumWorkshops.ToString() };
+        }
+
+        string CreateTypesOfLessons(string sumLectures, string sumWorkshops, string sumLaboratoryExercises)
+        {
+            string s = "";
+            var list = new List<string>();
+            if (sumLectures != "0")
+                list.Add("лекционных");
+            if (sumWorkshops != "0")
+                list.Add("практических");
+            if (sumLaboratoryExercises != "0")
+                list.Add("лабораторных");
+            if (list.Count == 1)
+                s = list[0];
+            else if (list.Count == 2)
+                s = list[0] + ", " + list[1];
+            else if (list.Count == 3)
+                s = list[0] + ", " + list[1] + " и " + list[2];
+            if (s.Length != 0)
+                s = s.Remove(s.Length - 1);
+            return s;
+        }
+
+        Dictionary<string, string> PrepareDataFromSheetPlan(Excel.Worksheet worksheetPlan, int index, int lastColumn)
+        {
+            //dic.Add("$$",);
+            var dic = new Dictionary<string, string>();
+            dic.Add("$subjectName$", GetSubjectName(worksheetPlan, index));
+            dic.Add("$creditUnits$", GetCreditUnits(worksheetPlan, index));
+            dic.Add("$studyHours$", GetStudyHours(worksheetPlan, index));
+            dic.Add("$sumIndependentWork$", GetSumIndependentWork(worksheetPlan, index));
+            dic.Add("$interactiveWatch$", GetInteractiveWatch(worksheetPlan, index));
+            dic.Add("$subjectCompetencies$", GetSubjectCompetencies(worksheetPlan, index, lastColumn));
+            dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
+            dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
+            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index));
+            var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
+            GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
+            dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
+            dic.Add("$consulting$", CreateConsulting(dic["exam"]));
+            dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
+            dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
+            dic.Add("$semesters$", CreateSemesters(semestersList));
+            var sumLecturesAndPractices = CountSumLecturesAndPractices(worksheetPlan, index, lastColumn);
+            dic.Add("$sumLectures$", sumLecturesAndPractices[0]);
+            dic.Add("$sumLaboratoryExercises$", sumLecturesAndPractices[1]);
+            dic.Add("$sumWorkshops$", sumLecturesAndPractices[2]);
+            dic.Add("$typesOfLessons$", CreateTypesOfLessons(dic["$sumLectures$"], dic["$sumLaboratoryExercises$"], dic["$sumWorkshops$"]));
+            /*if (dic["$studyProgram$"] == "аспирантуры")
             {
                 courses = semesters;
                 semesters = "-";
-            }
+            }*/
+            return dic;
         }
+
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
         {
             // Закидываем в словарь компетенции из листа "Компетенции".
             var dic = new Dictionary<string, string>();
-            int lastRow = TotalSizeRow(worksheet);
+            int lastRow = TotalSize(worksheet)[0];
             for (int i = 3; i < lastRow; i++)
             {
                 if (!string.IsNullOrEmpty(worksheet.Cells[2][i].Value))
@@ -390,7 +500,7 @@ namespace WorkPrograms
             }
             return resultList;
         }
-
+        /*
         public static int TotalSizeRow(Excel.Worksheet worksheet)
         {
             // Находим кол-во строк.
@@ -403,27 +513,20 @@ namespace WorkPrograms
             // Находим кол-во столбцов.
             var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
             return lastCell.Column;
-        }
+        }*/
 
-
-        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Находит последние строку и столбец в листе Excel файла
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns>{последняя строка, последний столбец }</returns>
+        public static int[] TotalSize(Excel.Worksheet worksheet)
         {
-            try
-            {
-                DialogResult res = openFileDialogSelectFile.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile);
-                    buttonOpenFolder.Enabled = true;
-                }
-                else
-                    throw new Exception("Файл не выбран");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Находим кол-во строк.
+            var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
+            return new int[] { lastCell.Row,  lastCell.Column};
         }
+
 
         public static string RemoveExtraChars(string s)
         {
@@ -442,6 +545,7 @@ namespace WorkPrograms
 
         private void WriteInFile()
         {
+            //string startYear = worksheetTitle.Cells[20][29].Value.Trim(' '); // Это в название
             string subjectInPath = RemoveExtraChars(subjectName);
             filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
             var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
@@ -473,21 +577,72 @@ namespace WorkPrograms
             resultDoc.FillPattern(competenciesDic, replaceableStrings, namesOfReplaceableStrings, semesterData, isInteractiveWatch);
         }
 
+
+        /// <summary>
+        /// Выбор Excel файла с учебным планом, и выбор нужных страниц 
+        /// </summary>
+        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
+                if (res == DialogResult.OK) //Если файл выбран
+                {
+                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile); //Выбор нужных листов
+                    buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
+                }
+                else
+                    throw new Exception("Файл не выбран");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Выбор папки создания шаблонов рабочих программ, и сохранение путя
+        /// </summary>
+        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult res = folderBrowserDialogChooseFolder.ShowDialog(); //Выбор папки
+                if (res == DialogResult.OK) //Если папка выбрана
+                {
+                    labelNameOfFolder.Text = "Загрузка..."; // изменение лейбла состояния
+                    filePath = folderBrowserDialogChooseFolder.SelectedPath; // сохранение путя
+                    labelNameOfFolder.Text = filePath; //изменение лейбла на путь
+                    buttonGenerate.Enabled = true; //Разблокировка кнопки для свормировывания шаблонов
+                }
+                else
+                    throw new Exception("Путь не выбран");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Создание шаблонов
+        /// </summary>
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
             try
             {
-                labelLoading.Visible = true;
-                labelLoading.Text = "Загрузка...";             
-                int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
-                int lastColumn = TotalSizeColumn(_Excel.worksheetWorkPlanPlan);
-                progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
-                for (int i = 6; i <= lastRow; i++)
+
+                labelLoading.Visible = true; // лейбл состояния стал виден
+                labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
+                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
+                int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
+                MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
+                for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
                 {
-                    if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn+1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                    if (IsDiscipline(i, lastColumn))
                     {
-                        PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
+                        PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i, lastColumn);
                         WriteInFile();
                         progressBar1.Value++;
                     }
@@ -502,37 +657,20 @@ namespace WorkPrograms
             }
         }
 
-        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Возвращает true если это дисциплина, иначе возвращает falce
+        /// </summary>
+        /// <param name="index"> номер строки </param>
+        public bool IsDiscipline(int index, int lastColumn) =>
+             _Excel.worksheetWorkPlanPlan.Cells[lastColumn - 1][index].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
+
+        public void MaxValueOfProgressBar(Excel.Worksheet worksheet, int lastRow, int lastColumn)
         {
-            try
-            {
-                DialogResult res = folderBrowserDialogChooseFolder.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    labelNameOfFolder.Text = "Загрузка...";
-                    filePath = folderBrowserDialogChooseFolder.SelectedPath;
-                    labelNameOfFolder.Text = filePath;
-                    buttonGenerate.Enabled = true;
-                }
-                else
-                    throw new Exception("Путь не выбран");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
-        {
-            int lastRow = TotalSizeRow(worksheet);
-            int lastColumn = TotalSizeColumn(worksheet);
             int maxValueOfProgressBar = 0;
             for (int i = 6; i <= lastRow; i++)
-            {
-                if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn+1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                if (IsDiscipline(i, lastColumn))
                     maxValueOfProgressBar++;
-            }
-            return maxValueOfProgressBar;
+            progressBar1.Maximum = maxValueOfProgressBar;
         }
 
         void Reset()
