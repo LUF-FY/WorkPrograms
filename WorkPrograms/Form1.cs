@@ -12,80 +12,15 @@ namespace WorkPrograms
 {
     public partial class WorkPrograms : Form
     {
-        static string filePath = "";
-
-        static string direction = "";
-        static string profile = "";
-        static string standard = "";
-        static string protocol = "";
-        static string subjectName = "";
-        static int creditUnits = 0;
-        static string studyHours = "";
-        static string test = "";
-        public static string subjectCompetencies = "";
-        static string subjectIndex = "";
-        static string subjectIndexDecoding = "";
-        static string directionAbbreviation = "";
-        static string startYear = "";
-        static string edForm = "";
-        static string interactiveWatch = ""; 
-        static int sumLectures = 0;
-        static int sumWorkshops = 0;
-        public static int sumLaboratoryExercises = 0;
-        static string sumIndependentWork = "";
-        static string blockName = "";
-        static string studyProgram = "";
-
-        static string courseWork = "";
-        static string consulting = "";
-        static string typesOfLessons = "";
-        static List<int> semestersList = new List<int>();
-        static string semesters = "";
-        static string courses = "";
-        static Dictionary<string, string> semesterData = new Dictionary<string, string>();
-        static string[] keysForSemesterData = new string[]
-        {
-            "",
-            "$auditoryLessons$",
-            "$lectures$",
-            "$laboratoryExercises$",
-            "$workshops$",
-            "$independentWorkBySemester$",
-            "$exam$"
-        };
-
-        //public static int maxValueOfProgressBar=0;
+        string filePath = "";
+        public string subjectCompetencies = "";
+        public int sumLaboratoryExercises = 0;
+        string blockName = "";
 
         public WorkPrograms()
         {
             InitializeComponent();
         }
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         string GetStudyProgram(Excel.Worksheet worksheetTitle)
         {
@@ -128,23 +63,23 @@ namespace WorkPrograms
             return s[1].Trim(' ') + " " + s[0];
         }
 
-        string GetDirectionAbbreviation(Excel.Worksheet worksheetTitle)
+        string GetDirectionAbbreviation(Excel.Worksheet worksheetTitle, Dictionary<string, string> dic)
         {
             //Создаем аббревиатуры направлений.
             string directionName = worksheetTitle.Cells[2][18].Value;
             string abbreviation = "";
-            if (studyProgram == "магистратуры")
+            if (dic["$studyProgram$"] == "магистратуры")
                 abbreviation = "МАГИ_";
-            else if (studyProgram == "аспирантуры")
+            else if (dic["$studyProgram$"] == "аспирантуры")
                 abbreviation = "АСПИР_";
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = worksheetTitle.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
-            else if (profile.Contains("логика"))
+            else if (dic["$profile$"].Contains("логика"))
                 abbreviation += "МЛ";
-            else if (profile.Contains("уравнения"))
+            else if (dic["$profile$"].Contains("уравнения"))
                 abbreviation += "ДУ";
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
@@ -164,7 +99,7 @@ namespace WorkPrograms
             dic.Add("$standart$", GetStandart(worksheetTitle));
             dic.Add("$protocol$", GetProtocol(worksheetTitle));
             dic.Add("$edForm$", GetEdForm(worksheetTitle));
-            dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle));
+            dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle, dic));
             return dic;
         }
 
@@ -210,7 +145,7 @@ namespace WorkPrograms
                 return "-";
         }
 
-        string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
+        string DecodeSubjectIndex(Excel.Worksheet worksheet, int index, string subjectIndex)
         {
             string subsectionName = "";
             string blockCode1 = "";
@@ -372,7 +307,7 @@ namespace WorkPrograms
                 ss = GradedTest + testCopy;
             string s = "";
             for (int i = 0, j = 0; i < semestersList.Count; i++)
-                if (j < test.Length)
+                if (j < ss.Length)
                 {
                     if (semestersList[i] == ss[j])
                     {
@@ -447,7 +382,7 @@ namespace WorkPrograms
             dic.Add("$subjectCompetencies$", GetSubjectCompetencies(worksheetPlan, index, lastColumn));
             dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
-            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index));
+            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
@@ -484,7 +419,7 @@ namespace WorkPrograms
             return dic;
         }
 
-        private static List<string> SelectCompetencies(Excel.Worksheet worksheet)
+        private List<string> SelectCompetencies(Excel.Worksheet worksheet)
         {
             // Ищем в листе "Компетенции" нужные компетенции и закидываем в список.
             var resultList = new List<string>();
