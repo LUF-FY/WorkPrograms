@@ -434,7 +434,8 @@ namespace WorkPrograms
             return s;
         }
 
-        Dictionary<string, string> PrepareDataFromSheetPlan(Excel.Worksheet worksheetPlan, int index, int lastColumn)
+        Dictionary<string, string> PrepareDataFromSheetPlan
+            (Excel.Worksheet worksheetPlan, int index, int lastColumn, Dictionary<string, string> titleDic)
         {
             //dic.Add("$$",);
             var dic = new Dictionary<string, string>();
@@ -459,11 +460,11 @@ namespace WorkPrograms
             dic.Add("$sumLaboratoryExercises$", sumLecturesAndPractices[1]);
             dic.Add("$sumWorkshops$", sumLecturesAndPractices[2]);
             dic.Add("$typesOfLessons$", CreateTypesOfLessons(dic["$sumLectures$"], dic["$sumLaboratoryExercises$"], dic["$sumWorkshops$"]));
-            /*if (dic["$studyProgram$"] == "аспирантуры")
+            if (titleDic["$studyProgram$"] == "аспирантуры")
             {
-                courses = semesters;
-                semesters = "-";
-            }*/
+                dic["$courses$"] = dic["$semesters$"];
+                dic["$semesters$"] = "-";
+            }
             return dic;
         }
 
@@ -500,20 +501,7 @@ namespace WorkPrograms
             }
             return resultList;
         }
-        /*
-        public static int TotalSizeRow(Excel.Worksheet worksheet)
-        {
-            // Находим кол-во строк.
-            var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
-            return lastCell.Row;
-        }
-
-        public static int TotalSizeColumn(Excel.Worksheet worksheet)
-        {
-            // Находим кол-во столбцов.
-            var lastCell = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);
-            return lastCell.Column;
-        }*/
+        
 
         /// <summary>
         /// Находит последние строку и столбец в листе Excel файла
