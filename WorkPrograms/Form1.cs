@@ -360,6 +360,8 @@ namespace WorkPrograms
             {
                 courses = semesters;
                 semesters = "-";
+                director = "Б.В. Туаева";
+                position = "Проректор по научной деятельности";
             }
             else if (studyProgram == "магистратуры")
             {
