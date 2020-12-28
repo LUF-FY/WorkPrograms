@@ -100,6 +100,18 @@ namespace WorkPrograms
             dic.Add("$protocol$", GetProtocol(worksheetTitle));
             dic.Add("$edForm$", GetEdForm(worksheetTitle));
             dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle, dic));
+            dic.Add("$director$", "А.М. Дигурова");
+            dic.Add("$position$", "Проректор по УР");
+            if (dic["$studyProgram$"] == "аспирантуры")
+            {
+                dic["$director$"] = "Б.В. Туаева";
+                dic["$position$"] = "Проректор по научной деятельности";
+            }
+            else if (dic["$studyProgram$"] == "магистратуры")
+            {
+                dic["$director$"] = "Л.А. Агузарова";
+                dic["$position$"] = "Первый проректор";
+            }
             return dic;
         }
 
