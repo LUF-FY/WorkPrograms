@@ -71,7 +71,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectFile.cs" />
     <Compile Include="_Excel.cs" />
     <Compile Include="_Word.cs" />
     <EmbeddedResource Include="Form1.resx">

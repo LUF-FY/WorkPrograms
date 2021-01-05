@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace WorkPrograms
 {
-    static class Program
+    class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.

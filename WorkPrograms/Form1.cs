@@ -523,7 +523,7 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
                 if (res == DialogResult.OK) //Если файл выбран
                 {
-                    SelectFile.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile); //Выбор нужных листов
+                    _Excel.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile); //Выбор нужных листов
                     buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
                 }
                 else
@@ -573,11 +573,12 @@ namespace WorkPrograms
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
                 int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
+                Dictionary<string, string> dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);
                 for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
                 {
                     if (IsDiscipline(i, lastColumn))
                     {
-                        PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i, lastColumn);
+                        Dictionary<string, string> dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, i, lastColumn, dicTitle);
                         WriteInFile();
                         progressBar1.Value++;
                     }
