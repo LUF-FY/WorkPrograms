@@ -35,6 +35,8 @@ namespace WorkPrograms
         static string sumIndependentWork = "";
         static string blockName = "";
         static string studyProgram = "";
+        static string director = "А.М. Дигурова";
+        static string position = "Проректор по УР";
 
         static string courseWork = "";
         static string consulting = "";
@@ -313,7 +315,10 @@ namespace WorkPrograms
             direction = s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[0].Trim(' ', ',', ':');
             try
             {
-                profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+                if(studyProgram == "аспирантуры")
+                    profile = "Направленность: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
+                else
+                    profile = "Профиль: " + s0.Split(separators, StringSplitOptions.RemoveEmptyEntries)[1].Trim(' ');
             }
             catch
             {
@@ -352,10 +357,17 @@ namespace WorkPrograms
             CreateSemesters();
             CountSumLecturesAndPractices(worksheetPlan, index);
             CreateTypesOfLessons();
-            if(studyProgram== "аспирантуры")
+            if (studyProgram == "аспирантуры")
             {
                 courses = semesters;
                 semesters = "-";
+                director = "Б.В. Туаева";
+                position = "Проректор по научной деятельности";
+            }
+            else if (studyProgram == "магистратуры")
+            {
+                director = "Л.А. Агузарова";
+                position = "Первый проректор";
             }
         }
         private static Dictionary<string, string> CreateCompetenciesDic(Excel.Worksheet worksheet)
@@ -457,7 +469,7 @@ namespace WorkPrograms
                 studyHours, courses, semesters, sumIndependentWork.ToString(),
                 typesOfLessons, test, consulting, courseWork,
                 competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch,
-                subjectIndex, subjectIndexDecoding
+                subjectIndex, subjectIndexDecoding, director, position, studyProgram
             };
             string[] namesOfReplaceableStrings = new string[]
             {
@@ -466,7 +478,7 @@ namespace WorkPrograms
                 nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
                 nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
                 nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch),
-                nameof(subjectIndex), nameof(subjectIndexDecoding)
+                nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position), nameof(studyProgram)
             };
             bool isInteractiveWatch = true;
             if (string.IsNullOrEmpty(interactiveWatch))
