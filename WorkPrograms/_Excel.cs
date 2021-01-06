@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 
@@ -18,16 +16,13 @@ namespace WorkPrograms
         public static Excel.Worksheet worksheetWorkPlanPlan = null;
         public static Excel.Worksheet worksheetWorkPlanTitlePage = null;
 
-        public static void SelectExcelWorkPlanFile(OpenFileDialog SelectFile, Label NameOfExcelFile)/*, ComboBox comboBox1*/
-        {
-            NameOfExcelFile.Text = "Загрузка...";
-            string xlPath = SelectFile.FileName;
+        public static void SelectExcelWorkPlanFile(string xlPath)/*, ComboBox comboBox1*/
+        {            
             xlApp = new Excel.Application();
             xlWorkPlan = xlApp.Workbooks.Open(xlPath);
             worksheetWorkPlanComp = xlWorkPlan.Worksheets["Компетенции"];
             worksheetWorkPlanPlan = xlWorkPlan.Worksheets["План"];
-            worksheetWorkPlanTitlePage = xlWorkPlan.Worksheets["Титул"];
-            NameOfExcelFile.Text = Path.GetFileNameWithoutExtension(xlPath);
+            worksheetWorkPlanTitlePage = xlWorkPlan.Worksheets["Титул"];            
         }
 
         public static void ClearExcel()

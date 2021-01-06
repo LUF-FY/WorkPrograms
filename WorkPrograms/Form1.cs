@@ -512,6 +512,14 @@ namespace WorkPrograms
             resultDoc.FillPattern(competenciesDic, replaceableStrings, namesOfReplaceableStrings, semesterData, isInteractiveWatch);
         }
 
+        void SelectExcelFile(OpenFileDialog SelectFile)
+        {
+            labelNameOfWorkPlanFile.Text = "Загрузка...";
+            string xlPath = SelectFile.FileName;
+            _Excel.SelectExcelWorkPlanFile(xlPath);
+            labelNameOfWorkPlanFile.Text = Path.GetFileNameWithoutExtension(xlPath);
+        }
+
 
         /// <summary>
         /// Выбор Excel файла с учебным планом, и выбор нужных страниц 
@@ -523,7 +531,7 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
                 if (res == DialogResult.OK) //Если файл выбран
                 {
-                    _Excel.SelectExcelWorkPlanFile(openFileDialogSelectFile, labelNameOfWorkPlanFile); //Выбор нужных листов
+                     //Выбор нужных листов
                     buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
                 }
                 else
