@@ -219,12 +219,12 @@ namespace WorkPrograms
                 list.Add("лекционных");
             if (sumWorkshops!=0)
                 list.Add("практических");
-            if (semesterData.ContainsKey(keysForSemesterData[3]))
+            if (sumLaboratoryExercises != 0)
                 list.Add("лабораторных");
             if (list.Count==1)
                 typesOfLessons = list[0];
             else if (list.Count == 2)
-                typesOfLessons = list[0] + ", " + list[1];
+                typesOfLessons = list[0] + " и " + list[1];
             else if (list.Count == 3)
                 typesOfLessons = list[0] + ", " + list[1] +" и "+list[2];
         }
