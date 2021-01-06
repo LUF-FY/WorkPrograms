@@ -69,6 +69,7 @@ namespace WorkPrograms
             test = "";
             sumLectures = 0;
             sumWorkshops = 0;
+            sumLaboratoryExercises = 0;
             typesOfLessons = "";
             consulting = "";
             interactiveWatch = "";
