@@ -321,7 +321,7 @@ namespace WorkPrograms
             for (int i = 0, j = 0; i < semestersList.Count; i++)
                 if (j < ss.Length)
                 {
-                    if (semestersList[i] == ss[j])
+                    if (semestersList[i].ToString() == ss[j].ToString())
                     {
                         s += "+/";
                         j++;
@@ -373,7 +373,7 @@ namespace WorkPrograms
             if (list.Count == 1)
                 s = list[0];
             else if (list.Count == 2)
-                s = list[0] + ", " + list[1];
+                s = list[0] + " и " + list[1];
             else if (list.Count == 3)
                 s = list[0] + ", " + list[1] + " и " + list[2];
             if (s.Length != 0)
