@@ -16,7 +16,7 @@ namespace WorkPrograms
         public static Excel.Worksheet worksheetWorkPlanPlan = null;
         public static Excel.Worksheet worksheetWorkPlanTitlePage = null;
 
-        public static void SelectExcelWorkPlanFile(string xlPath)/*, ComboBox comboBox1*/
+        public static void SelectExcelWorkPlanFile(string xlPath)
         {            
             xlApp = new Excel.Application();
             xlWorkPlan = xlApp.Workbooks.Open(xlPath);
@@ -25,12 +25,16 @@ namespace WorkPrograms
             worksheetWorkPlanTitlePage = xlWorkPlan.Worksheets["Титул"];            
         }
 
-        public static void ClearExcel()
+        public static void QuitAndClearExcel()
         {
-            Marshal.ReleaseComObject(xlWorkPlan);
-            Marshal.ReleaseComObject(worksheetWorkPlanComp);
-            Marshal.ReleaseComObject(worksheetWorkPlanPlan);
-            Marshal.ReleaseComObject(xlApp);
+            if (xlApp != null)
+            {
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlWorkPlan);
+                Marshal.ReleaseComObject(worksheetWorkPlanComp);
+                Marshal.ReleaseComObject(worksheetWorkPlanPlan);
+                Marshal.ReleaseComObject(xlApp);
+            }
         }
     }
 }
