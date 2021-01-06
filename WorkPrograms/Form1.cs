@@ -31,7 +31,7 @@ namespace WorkPrograms
         static string interactiveWatch = ""; 
         static int sumLectures = 0;
         static int sumWorkshops = 0;
-        public static int sumLaboratoryExercises = 0;
+        public static int sumLabs = 0;
         static string sumIndependentWork = "";
         static string blockName = "";
         static string studyProgram = "";
@@ -71,7 +71,7 @@ namespace WorkPrograms
             test = "";
             sumLectures = 0;
             sumWorkshops = 0;
-            sumLaboratoryExercises = 0;
+            sumLabs = 0;
             typesOfLessons = "";
             consulting = "";
             interactiveWatch = "";
@@ -207,7 +207,7 @@ namespace WorkPrograms
             for (int i = 17; i < lastColoumn - 3; i+=7)
             {
                 sumLectures += Convert.ToInt32(worksheetPlan.Cells[i + 2][index].Value);
-                sumLaboratoryExercises += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
+                sumLabs += Convert.ToInt32(worksheetPlan.Cells[i + 3][index].Value);
                 sumWorkshops += Convert.ToInt32(worksheetPlan.Cells[i + 4][index].Value);
             }        
         }
@@ -219,7 +219,7 @@ namespace WorkPrograms
                 list.Add("лекционных");
             if (sumWorkshops!=0)
                 list.Add("практических");
-            if (sumLaboratoryExercises != 0)
+            if (sumLabs != 0)
                 list.Add("лабораторных");
             if (list.Count==1)
                 typesOfLessons = list[0];
@@ -468,8 +468,8 @@ namespace WorkPrograms
                 standard, protocol, creditUnits.ToString(),
                 studyHours, courses, semesters, sumIndependentWork.ToString(),
                 typesOfLessons, test, consulting, courseWork,
-                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch,
-                subjectIndex, subjectIndexDecoding, director, position, studyProgram
+                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), sumLabs.ToString(),
+                interactiveWatch, subjectIndex, subjectIndexDecoding, director, position, studyProgram
             };
             string[] namesOfReplaceableStrings = new string[]
             {
@@ -477,7 +477,7 @@ namespace WorkPrograms
                 nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
                 nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
                 nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
-                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch),
+                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(sumLabs), nameof(interactiveWatch),
                 nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position), nameof(studyProgram)
             };
             bool isInteractiveWatch = true;

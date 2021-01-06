@@ -24,38 +24,64 @@ namespace WorkPrograms
                     s = "$" + namesOfReplaceableStrings[i] + "$";
                     s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
                 }
-                else if (namesOfReplaceableStrings[i] == "sumWorkshops")
+                else if (namesOfReplaceableStrings[i] == "studyProgram")
                 {
-                    if (int.Parse(replaceableStrings[i]) == 0 && WorkPrograms.sumLaboratoryExercises != 0)
-                    {
-                        document.ReplaceText("$labOrPract$", "лаб");
-                        s2 = WorkPrograms.sumLaboratoryExercises.ToString();
-                    }
-                    else
-                        document.ReplaceText("$labOrPract$", "пр");
+                    SetStudyProgramTables(document, replaceableStrings[i]);
                 }
                 document.ReplaceText(s, s2);
             }
+            if (!isInteractiveWatch)
+            {
+                DeleteTable(3, document);
+            }
+            FillSemesterData(semesterData, document);
+            CreateTable(competenciesDic, document);
+            document.SaveAs(path);
+        }
 
-            foreach(var el in semesterData)
+        private void SetStudyProgramTables(DocX document, string replaceableString)
+        {            
+            if (replaceableString != "бакалавриата")
+            {
+                document.ReplaceTextWithObject("$table5$", document.Tables[6]);
+                if (replaceableString == "магистратуры")
+                {
+                    document.ReplaceText("$школьного курса$", "бакалавриата");
+                    document.ReplaceText("Таблица 8.1", "");
+                    DeleteTable(4, document);
+                }
+                else if (replaceableString == "аспирантуры")
+                {
+                    document.ReplaceText("$школьного курса$", "бакалавриата, магистратуры или специалитета");
+                }
+            }
+            else
+            {
+                document.ReplaceTextWithObject("$table5$", document.Tables[5]);
+                document.ReplaceText("$школьного курса$", "школьного курса");
+            }
+            DeleteTable(6, document);
+            DeleteTable(5, document);
+        }
+
+        private void FillSemesterData(Dictionary<string, string> semesterData, DocX document)
+        {
+            foreach (var el in semesterData)
             {
                 if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
             }
+        }
 
-            CreateTable(competenciesDic, document);
-
-            if (!isInteractiveWatch)
-            {
-                Xceed.Document.NET.Table delTable = document.Tables[3];
-                delTable.Remove();
-            }
-            document.SaveAs(path);
+        private void DeleteTable(int number, DocX document)
+        {
+            var delTable = document.Tables[number];
+            delTable.Remove();
         }
 
         private void CreateTable(Dictionary<string, string> competenciesDic, DocX document)
         {
-            Xceed.Document.NET.Table compTable = document.Tables[1];
+            var compTable = document.Tables[1];
             var compList = WorkPrograms.subjectCompetencies.Split(';', ' ').ToList();
             foreach (var item in compList)
             {
