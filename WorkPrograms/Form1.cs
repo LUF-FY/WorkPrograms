@@ -180,7 +180,7 @@ namespace WorkPrograms
             for (int i = 0, j = 0; i < semestersList.Count; i++)
                 if (j < test.Length)
                 {
-                    if (semestersList[i] == test[j])
+                    if (semestersList[i].ToString() == test[j].ToString())
                     {
                         s += "+/";
                         j++;
