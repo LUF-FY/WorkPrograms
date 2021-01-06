@@ -531,7 +531,7 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
                 if (res == DialogResult.OK) //Если файл выбран
                 {
-                     //Выбор нужных листов
+                    SelectExcelFile(openFileDialogSelectFile); //Выбор нужных листов
                     buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
                 }
                 else
