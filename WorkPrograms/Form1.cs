@@ -500,6 +500,7 @@ namespace WorkPrograms
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 await Task.Run(() =>
                 {
+                    
                     for (int i = 6; i <= lastRow; i++)
                     {
                         if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
