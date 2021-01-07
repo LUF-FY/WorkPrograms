@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using Xceed.Words.NET;
 using System.IO;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WorkPrograms
 {
@@ -488,25 +490,28 @@ namespace WorkPrograms
             resultDoc.FillPattern(competenciesDic, replaceableStrings, namesOfReplaceableStrings, semesterData, isInteractiveWatch);
         }
 
-        private void buttonGenerate_Click(object sender, EventArgs e)
+        private async void ButtonGenerate_ClickAsync(object sender, EventArgs e)
         {
             //Создаем файлы .            
             try
             {
                 labelLoading.Visible = true;
-                labelLoading.Text = "Загрузка...";             
+                labelLoading.Text = "Загрузка...";
                 int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
                 int lastColumn = TotalSizeColumn(_Excel.worksheetWorkPlanPlan);
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
-                for (int i = 6; i <= lastRow; i++)
+                await Task.Run(() =>
                 {
-                    if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn+1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                    for (int i = 6; i <= lastRow; i++)
                     {
-                        PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
-                        WriteInFile();
-                        progressBar1.Value++;
+                        if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
+                        {
+                            PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
+                            WriteInFile();
+                            progressBar1.Value++;
+                        }
                     }
-                }
+                });
                 labelLoading.Text = "Загрузка завершена";
                 MessageBox.Show("Загрузка завершена");
                 Reset();
@@ -517,10 +522,12 @@ namespace WorkPrograms
             }
         }
 
-        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        private  void buttonOpenFolder_Click(object sender, EventArgs e)
         {
+            
             try
             {
+               
                 DialogResult res = folderBrowserDialogChooseFolder.ShowDialog();
                 if (res == DialogResult.OK)
                 {
@@ -531,11 +538,13 @@ namespace WorkPrograms
                 }
                 else
                     throw new Exception("Путь не выбран");
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
         static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
         {
