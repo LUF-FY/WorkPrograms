@@ -606,8 +606,11 @@ namespace WorkPrograms
                         if (IsDiscipline(i, lastColumn))
                         {
                             var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, i, lastColumn, dicTitle);
-                            WriteInFile();
-                            progressBar1.Value++;
+                            WriteInFile(dicTitle, dicPlan);
+                            if (InvokeRequired)
+                                this.Invoke(new Action(() => { progressBar1.Value++; }));
+                            else
+                                progressBar1.Value++;
                         }
                     }
                 });
