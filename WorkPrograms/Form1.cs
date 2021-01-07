@@ -502,19 +502,22 @@ namespace WorkPrograms
                 progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 await Task.Run(() =>
                 {
-                    
-                    for (int i = 6; i <= lastRow; i++)
+                    for (int i = 6; i <= 10; i++)
                     {
                         if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                         {
                             PrepareData(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanTitlePage, i);
                             WriteInFile();
-                            progressBar1.Value++;
-                        }
+                            if (InvokeRequired)
+                                Invoke(new Action(() => { progressBar1.Value++; }));
+                            else
+                                 progressBar1.Value++;
+            }
                     }
                 });
                 labelLoading.Text = "Загрузка завершена";
                 MessageBox.Show("Загрузка завершена");
+                labelNameOfLastFile.Text = labelNameOfWorkPlanFile.Text;
                 Reset();
             }
             catch (Exception ex)
@@ -559,6 +562,7 @@ namespace WorkPrograms
             }
             return maxValueOfProgressBar;
         }
+        delegate int Operation(Excel.Worksheet worksheet);
 
         void Reset()
         {
@@ -568,5 +572,6 @@ namespace WorkPrograms
             labelNameOfFolder.Text = "Папка не выбрана";
             labelNameOfWorkPlanFile.Text = "Файл не выбран";
         }
+       
     }
 }

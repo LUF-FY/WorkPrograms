@@ -43,8 +43,8 @@ namespace WorkPrograms
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelLastFile = new System.Windows.Forms.Label();
+            this.labelNameOfLastFile = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -158,32 +158,33 @@ namespace WorkPrograms
             this.label2.TabIndex = 8;
             this.label2.Text = "Выберите папку создания рабочих программ";
             // 
-            // label3
+            // labelLastFile
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(472, 252);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 17);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Последний выбранный файл";
+            this.labelLastFile.AutoSize = true;
+            this.labelLastFile.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelLastFile.Location = new System.Drawing.Point(451, 251);
+            this.labelLastFile.Name = "labelLastFile";
+            this.labelLastFile.Size = new System.Drawing.Size(226, 17);
+            this.labelLastFile.TabIndex = 9;
+            this.labelLastFile.Text = "Последний обработанный файл";
             // 
-            // label4
+            // labelNameOfLastFile
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(475, 291);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "label4";
+            this.labelNameOfLastFile.AutoSize = true;
+            this.labelNameOfLastFile.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNameOfLastFile.Location = new System.Drawing.Point(451, 281);
+            this.labelNameOfLastFile.Name = "labelNameOfLastFile";
+            this.labelNameOfLastFile.Size = new System.Drawing.Size(37, 15);
+            this.labelNameOfLastFile.TabIndex = 10;
+            this.labelNameOfLastFile.Text = "..........";
             // 
             // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(689, 329);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelNameOfLastFile);
+            this.Controls.Add(this.labelLastFile);
             this.Controls.Add(this.labelLoading);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -217,8 +218,8 @@ namespace WorkPrograms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Label labelLoading;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelNameOfLastFile;
+        private System.Windows.Forms.Label labelLastFile;
     }
 }
 
