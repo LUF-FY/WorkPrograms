@@ -252,16 +252,18 @@ namespace WorkPrograms
             if (studyProgram == "магистратуры")
                 abbreviation = "МАГИ_";
             else if (studyProgram == "аспирантуры")
+            {
                 abbreviation = "АСПИР_";
+                if (profile.Contains("логика"))
+                    abbreviation += "МЛ";
+                else if (profile.Contains("уравнения"))
+                    abbreviation += "ДУ";
+            }               
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
-            else if (profile.Contains("логика"))
-                abbreviation += "МЛ";
-            else if (profile.Contains("уравнения"))
-                abbreviation += "ДУ";
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
             else if (splittedDirectionName.Contains("Информатика"))
@@ -497,12 +499,12 @@ namespace WorkPrograms
             {
                 labelLoading.Visible = true;
                 labelLoading.Text = "Загрузка...";
-                int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
-                int lastColumn = TotalSizeColumn(_Excel.worksheetWorkPlanPlan);
-                progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
                 await Task.Run(() =>
                 {
-                    for (int i = 6; i <= 10; i++)
+                    int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
+                    int lastColumn = TotalSizeColumn(_Excel.worksheetWorkPlanPlan);
+                    progressBar1.Maximum = MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan);
+                    for (int i = 6; i <= lastRow; i++)
                     {
                         if (_Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][i].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][i].Value != null)
                         {
