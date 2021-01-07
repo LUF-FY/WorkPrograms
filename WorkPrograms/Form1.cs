@@ -404,9 +404,9 @@ namespace WorkPrograms
             dic.Add("$semesters$", CreateSemesters(semestersList));
             var sumLecturesAndPractices = CountSumLecturesAndPractices(worksheetPlan, index, lastColumn);
             dic.Add("$sumLectures$", sumLecturesAndPractices[0]);
-            dic.Add("$sumLaboratoryExercises$", sumLecturesAndPractices[1]);
+            dic.Add("$sumLabs$", sumLecturesAndPractices[1]);
             dic.Add("$sumWorkshops$", sumLecturesAndPractices[2]);
-            dic.Add("$typesOfLessons$", CreateTypesOfLessons(dic["$sumLectures$"], dic["$sumLaboratoryExercises$"], dic["$sumWorkshops$"]));
+            dic.Add("$typesOfLessons$", CreateTypesOfLessons(dic["$sumLectures$"], dic["$sumLabs$"], dic["$sumWorkshops$"]));
             if (titleDic["$studyProgram$"] == "аспирантуры")
             {
                 dic["$courses$"] = dic["$semesters$"];
