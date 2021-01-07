@@ -11,8 +11,7 @@ namespace WorkPrograms
     {
         public string path;
 
-        public void FillPattern(Dictionary<string, string> competenciesDic, string[] replaceableStrings,
-            string[] namesOfReplaceableStrings, Dictionary<string, string> semesterData, bool isInteractiveWatch)
+        public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
         {
             DocX document = DocX.Load("WordPattern.docx");
             for (int i = 0; i < replaceableStrings.Count(); i++)
