@@ -23,6 +23,11 @@ namespace WorkPrograms
             InitializeComponent();
         }
 
+        string GetStartYear(Excel.Worksheet worksheetTitle)
+        {
+            var s = worksheetTitle.Cells[20][29].Value;
+            return s.Trim(' ');
+        }
         string GetStudyProgram(Excel.Worksheet worksheetTitle)
         {
             var s = worksheetTitle.Cells[6][14].Value;
@@ -98,6 +103,7 @@ namespace WorkPrograms
         Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle)
         {
             var dic = new Dictionary<string, string>();
+            dic.Add("$startYear$", GetStartYear(worksheetTitle));
             dic.Add("$studyProgram$", GetStudyProgram(worksheetTitle));
             dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
             dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
@@ -468,26 +474,25 @@ namespace WorkPrograms
         }
 
 
-        public static string RemoveExtraChars(string s)
+        public static string RemoveExtraChars(string subjectName)
         {
             //Удаляем лишние символы из названий предметов.
-            string str = null;
-            foreach (var item in s)
+            var s = "";
+            foreach (var item in subjectName)
             {
                 if (item == ':' || item == '\\' || item == '|' || item == '/' || 
                         item == '*' || item == '?' || item == '"' || item == '>' || item == '<')
-                    str += ' ';
+                    s += ' ';
                 else
-                    str += item;
+                    s += item;
             }
-            return str;
+            return s;
         }
 
-        private void WriteInFile()
+        private void WriteInFile(Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
         {
-            //string startYear = worksheetTitle.Cells[20][29].Value.Trim(' '); // Это в название
-            string subjectInPath = RemoveExtraChars(subjectName);
-            filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + subjectIndex + "_" + subjectInPath + "_" + directionAbbreviation + "_" + startYear;
+            var fileName = dicPlan["$subjectIndex$"] + "_" + RemoveExtraChars(dicPlan["$subjectName$"]) + "_" + dicTitle["$directionAbbreviation$"] + "_" + dicTitle["$startYear$"];
+            filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + fileName;
             var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
             resultDoc.path = filePath;
