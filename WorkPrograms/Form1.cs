@@ -103,7 +103,7 @@ namespace WorkPrograms
             dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
             dic.Add("$standart$", GetStandart(worksheetTitle));
             dic.Add("$protocol$", GetProtocol(worksheetTitle));
-            dic.Add("$edForm$", GetEdForm(worksheetTitle));
+            dic.Add("$edForm$", GetEdForm(worksheetTitle, dic["$studyProgram$"]));
             dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle, dic));
             dic.Add("$director$", "А.М. Дигурова");
             dic.Add("$position$", "Проректор по УР");
