@@ -81,16 +81,18 @@ namespace WorkPrograms
             if (dic["$studyProgram$"] == "магистратуры")
                 abbreviation = "МАГИ_";
             else if (dic["$studyProgram$"] == "аспирантуры")
+            {
                 abbreviation = "АСПИР_";
+                if (dic["$profile$"].Contains("логика"))
+                    abbreviation += "МЛ";
+                else if (dic["$profile$"].Contains("уравнения"))
+                    abbreviation += "ДУ";
+            }
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = worksheetTitle.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
-                abbreviation += "ПМ";
-            else if (dic["$profile$"].Contains("логика"))
-                abbreviation += "МЛ";
-            else if (dic["$profile$"].Contains("уравнения"))
-                abbreviation += "ДУ";
+                abbreviation += "ПМ";            
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
             else if (splittedDirectionName.Contains("Информатика"))
