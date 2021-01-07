@@ -488,24 +488,24 @@ namespace WorkPrograms
             var resultDoc = new _Word();
             resultDoc.path = filePath;
             var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
-            var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp); 
+            var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
             string[] replaceableStrings = new string[]
             {
                 subjectName, direction, profile,
                 standard, protocol, creditUnits.ToString(),
                 studyHours, courses, semesters, sumIndependentWork.ToString(),
                 typesOfLessons, test, consulting, courseWork,
-                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), interactiveWatch,
-                subjectIndex, subjectIndexDecoding
+                competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), sumLabs.ToString(),
+                interactiveWatch, subjectIndex, subjectIndexDecoding, director, position, studyProgram
             };
             string[] namesOfReplaceableStrings = new string[]
             {
                 nameof(subjectName), nameof(direction), nameof(profile),
                 nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
                 nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
-                nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies), 
-                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(interactiveWatch),
-                nameof(subjectIndex), nameof(subjectIndexDecoding)
+                nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies),
+                nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(sumLabs), nameof(interactiveWatch),
+                nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position), nameof(studyProgram)
             };
             bool isInteractiveWatch = true;
             if (string.IsNullOrEmpty(interactiveWatch))
