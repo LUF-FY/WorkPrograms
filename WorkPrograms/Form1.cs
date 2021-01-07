@@ -14,7 +14,7 @@ namespace WorkPrograms
     {
         string filePath = "";
         public string subjectCompetencies = "";
-        public int sumLaboratoryExercises = 0;
+        //public int sumLaboratoryExercises = 0;
         string blockName = "";
 
         public WorkPrograms()
