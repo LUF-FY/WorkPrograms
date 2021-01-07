@@ -58,9 +58,13 @@ namespace WorkPrograms
             return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
         }
 
-        string GetEdForm(Excel.Worksheet worksheetTitle)
+        string GetEdForm(Excel.Worksheet worksheetTitle, string studyProgram)
         {
-            var s = worksheetTitle.Cells[1][31].Value.Split(':');
+            var s = new string[2];
+            if (studyProgram == "аспирантуры")
+                s = worksheetTitle.Cells[1][30].Value.Split(':');
+            else
+                s = worksheetTitle.Cells[1][31].Value.Split(':');
             return s[1].Trim(' ') + " " + s[0];
         }
 
