@@ -252,16 +252,18 @@ namespace WorkPrograms
             if (studyProgram == "магистратуры")
                 abbreviation = "МАГИ_";
             else if (studyProgram == "аспирантуры")
+            {
                 abbreviation = "АСПИР_";
+                if (profile.Contains("логика"))
+                    abbreviation += "МЛ";
+                else if (profile.Contains("уравнения"))
+                    abbreviation += "ДУ";
+            }               
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
             string[] splittedDirectionName = _Excel.worksheetWorkPlanTitlePage.Cells[2][18].Value.Split(' ');
             if (splittedDirectionName.Contains("Прикладная"))
                 abbreviation += "ПМ";
-            else if (profile.Contains("логика"))
-                abbreviation += "МЛ";
-            else if (profile.Contains("уравнения"))
-                abbreviation += "ДУ";
             else if (splittedDirectionName.Contains("Педагогическое"))
                 abbreviation += "ПОМИ";
             else if (splittedDirectionName.Contains("Информатика"))
