@@ -102,6 +102,11 @@ namespace WorkPrograms
             return abbreviation;
         }
 
+        /// <summary>
+        /// Собирает информацию с титульного листа
+        /// </summary>
+        /// <param name="worksheetTitle"> Титульный лист </param>
+        /// <returns> Словарь <string, string></returns>
         Dictionary<string, string> PrepareDataFromSheetTitle(Excel.Worksheet worksheetTitle)
         {
             var dic = new Dictionary<string, string>();
@@ -595,12 +600,12 @@ namespace WorkPrograms
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
                 await Task.Run(() =>
                 {
-                    Dictionary<string, string> dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);
+                    var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
                     for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
-                            Dictionary<string, string> dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, i, lastColumn, dicTitle);
+                            var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, i, lastColumn, dicTitle);
                             WriteInFile();
                             progressBar1.Value++;
                         }
