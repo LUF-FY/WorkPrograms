@@ -363,6 +363,8 @@ namespace WorkPrograms
                 semesters = "-";
                 director = "Б.В. Туаева";
                 position = "Проректор по научной деятельности";
+                var s4 = worksheetTitle.Cells[1][30].Value.Split(':');
+                edForm = s4[1].Trim(' ') + " " + s4[0];
             }
             else if (studyProgram == "магистратуры")
             {
