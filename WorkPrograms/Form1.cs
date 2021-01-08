@@ -14,7 +14,6 @@ namespace WorkPrograms
     {
         string filePath = "";
         public static string subjectCompetencies = "";
-        //public int sumLaboratoryExercises = 0;
         string blockName = "";
 
         public WorkPrograms()
@@ -678,7 +677,12 @@ namespace WorkPrograms
             buttonOpenFolder.Enabled = false;
         }
 
-        
-        
+        string stopWord = "";
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogRes = MessageBox.Show("Прекратить формирование файлов?", "", MessageBoxButtons.OKCancel);
+            if (dialogRes == DialogResult.OK)
+                stopWord = "АНАНАС";           
+        }
     }
 }
