@@ -58,8 +58,8 @@ namespace WorkPrograms
                 document.ReplaceTextWithObject("$table5$", document.Tables[5]);
                 document.ReplaceText("$школьного курса$", "школьного курса");
             }
-            DeleteTable(6, document);
-            DeleteTable(5, document);
+            DeleteTable(document.Tables.Count - 2, document);
+            DeleteTable(document.Tables.Count - 1, document);
         }
 
         private void FillDic(Dictionary<string, string> dic, DocX document)
