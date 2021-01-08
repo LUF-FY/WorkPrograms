@@ -14,7 +14,7 @@ namespace WorkPrograms
     public partial class WorkPrograms : Form
     {
         string filePath = "";
-        public string subjectCompetencies = "";
+        public static string subjectCompetencies = "";
         //public int sumLaboratoryExercises = 0;
         string blockName = "";
 
@@ -409,7 +409,8 @@ namespace WorkPrograms
             dic.Add("$studyHours$", GetStudyHours(worksheetPlan, index));
             dic.Add("$sumIndependentWork$", GetSumIndependentWork(worksheetPlan, index));
             dic.Add("$interactiveWatch$", GetInteractiveWatch(worksheetPlan, index));
-            dic.Add("$subjectCompetencies$", GetSubjectCompetencies(worksheetPlan, index, lastColumn));
+            subjectCompetencies = GetSubjectCompetencies(worksheetPlan, index, lastColumn);
+            dic.Add("$competencies$", SelectCompetencies(worksheetPlan, subjectCompetencies));
             dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
             dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
@@ -449,7 +450,7 @@ namespace WorkPrograms
             return dic;
         }
 
-        private List<string> SelectCompetencies(Excel.Worksheet worksheet)
+        private string SelectCompetencies(Excel.Worksheet worksheet, string subjectCompetencies)
         {
             // Ищем в листе "Компетенции" нужные компетенции и закидываем в список.
             var resultList = new List<string>();
@@ -464,7 +465,8 @@ namespace WorkPrograms
                         resultList.Add($"{item}" + " -" + dic[item]);
                 }
             }
-            return resultList;
+            var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
+            return competencies;
         }
         
 
@@ -500,12 +502,12 @@ namespace WorkPrograms
         {
             var fileName = dicPlan["$subjectIndex$"] + "_" + RemoveExtraChars(dicPlan["$subjectName$"]) + "_" + dicTitle["$directionAbbreviation$"] + "_" + dicTitle["$startYear$"];
             filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + fileName;
-            var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
+            //var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
             resultDoc.path = filePath;
-            var competencies = "\t" + string.Join(";\n\t", resultList) + ".";
             var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
-            dicPlan.Add("$competencies$", competencies);
+            //var competencies = SelectCompetencies(competenciesDic);
+            //dicPlan.Add("$competencies$", competencies);
             //string[] replaceableStrings = new string[]
             //{
             //    subjectName, direction, profile,

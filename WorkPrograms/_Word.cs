@@ -18,11 +18,7 @@ namespace WorkPrograms
             //{
             //    string s = "$" + namesOfReplaceableStrings[i] + "$";
             //    string s2 = replaceableStrings[i];
-            //    if (namesOfReplaceableStrings[i] == "creditUnits")
-            //    {
-            //        s = "$" + namesOfReplaceableStrings[i] + "$";
-            //        s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
-            //    }
+            
             //    else if (namesOfReplaceableStrings[i] == "studyProgram")
             //    {
             //        SetStudyProgramTables(document, replaceableStrings[i]);
@@ -35,7 +31,6 @@ namespace WorkPrograms
             //}
             FillDic(dicTitle, document);
             FillDic(dicPlan, document);
-            
             CreateTable(competenciesDic, document);
             document.SaveAs(path);
         }
@@ -45,11 +40,13 @@ namespace WorkPrograms
             if (replaceableString != "бакалавриата")
             {
                 document.ReplaceTextWithObject("$table5$", document.Tables[6]);
+                document.ReplaceText("Таблица 8.1", "");
+                document.ReplaceText("Критерии оценивания представлены в таблице 8.1", "");
+                document.ReplaceText("Методика формирования результирующей оценки", "");
+                DeleteTable(4, document);
                 if (replaceableString == "магистратуры")
                 {
-                    document.ReplaceText("$школьного курса$", "бакалавриата");
-                    document.ReplaceText("Таблица 8.1", "");
-                    DeleteTable(4, document);
+                    document.ReplaceText("$школьного курса$", "бакалавриата");                    
                 }
                 else if (replaceableString == "аспирантуры")
                 {
@@ -69,13 +66,16 @@ namespace WorkPrograms
         {
             foreach (var el in dic)
             {
-                if (namesOfReplaceableStrings[i] == "creditUnits")
+                if (el.Key == "$creditUnits$")
                 {
-                    s = "$" + namesOfReplaceableStrings[i] + "$";
-                    s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
+                    document.ReplaceText(el.Key, ChangeDeclination(Convert.ToInt32(el.Value)));
                 }
-                if (el.Key != "")
-                document.ReplaceText(el.Key, el.Value);
+                else if (el.Key == "$studyProgram$")
+                {
+                    SetStudyProgramTables(document, el.Value);
+                }
+                else if (el.Key != "")
+                    document.ReplaceText(el.Key, el.Value);
             }
         }
 
