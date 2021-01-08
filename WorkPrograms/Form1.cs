@@ -337,7 +337,7 @@ namespace WorkPrograms
             for (int i = 0, j = 0; i < semestersList.Count; i++)
                 if (j < ss.Length)
                 {
-                    if (semestersList[i].ToString() == ss[j].ToString())
+                    if (semestersList[i].ToString() == ss[j].ToString() || (semestersList[i]==10 && ss[j] == 'A'))
                     {
                         s += "+/";
                         j++;
