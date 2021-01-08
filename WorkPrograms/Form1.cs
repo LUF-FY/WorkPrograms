@@ -40,7 +40,7 @@ namespace WorkPrograms
         string[] GetDirectionAndProfile(Excel.Worksheet worksheetTitle)
         {
             string[] separators = new string[] {"Направленность программы", "Направление подготовки", "Профиль",
-                "Профиль:", "Профили", "Направление"}; //разделители направления и профиля
+                "Профиль:", "Профили", "Направление", "Программа"}; //разделители направления и профиля
             var directionAndProfile = worksheetTitle.Cells[2][18].Value.Split(separators, StringSplitOptions.RemoveEmptyEntries); //Сплит по разделителям
             var direction = directionAndProfile[0].Trim(' ', ',', ':'); //Получить направление
             string profile = "";
@@ -49,7 +49,7 @@ namespace WorkPrograms
             return new string[] { direction, profile };
         }
 
-        string GetStandart(Excel.Worksheet worksheetTitle)
+        string GetStandard(Excel.Worksheet worksheetTitle)
         {
             var s = worksheetTitle.Cells[20][31].Value.Split(new string[] { "от" }, StringSplitOptions.RemoveEmptyEntries);
             return s[1].Trim(' ') + " г. " + s[0].Trim(' ');
@@ -112,7 +112,7 @@ namespace WorkPrograms
             dic.Add("$studyProgram$", GetStudyProgram(worksheetTitle));
             dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
             dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
-            dic.Add("$standard$", GetStandart(worksheetTitle));
+            dic.Add("$standard$", GetStandard(worksheetTitle));
             dic.Add("$protocol$", GetProtocol(worksheetTitle));
             dic.Add("$edForm$", GetEdForm(worksheetTitle, dic["$studyProgram$"]));
             dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle, dic));
