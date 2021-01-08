@@ -400,7 +400,7 @@ namespace WorkPrograms
         }
 
         Dictionary<string, string> PrepareDataFromSheetPlan
-            (Excel.Worksheet worksheetPlan, int index, int lastColumn, Dictionary<string, string> titleDic)
+            (Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetPlanComp, int index, int lastColumn, Dictionary<string, string> titleDic)
         {
             //dic.Add("$$",);
             var dic = new Dictionary<string, string>();
@@ -413,7 +413,7 @@ namespace WorkPrograms
             dic.Add("$competencies$", SelectCompetencies(worksheetPlan, subjectCompetencies));
             dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
-            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
+            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlanComp, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
@@ -608,7 +608,7 @@ namespace WorkPrograms
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
-                            var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, i, lastColumn, dicTitle);
+                            var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
                             WriteInFile(dicTitle, dicPlan);
                             if (InvokeRequired)
                                 this.Invoke(new Action(() => { progressBar1.Value++; }));
