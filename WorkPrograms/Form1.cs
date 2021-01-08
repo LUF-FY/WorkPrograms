@@ -377,7 +377,7 @@ namespace WorkPrograms
             return new string[] { sumLectures.ToString(), sumLaboratoryExercises.ToString(), sumWorkshops.ToString() };
         }
 
-        string CreateTypesOfLessons(string sumLectures, string sumWorkshops, string sumLaboratoryExercises)
+        string CreateTypesOfLessons(string sumLectures, string sumLaboratoryExercises, string sumWorkshops)
         {
             string s = "";
             var list = new List<string>();
@@ -393,8 +393,6 @@ namespace WorkPrograms
                 s = list[0] + " и " + list[1];
             else if (list.Count == 3)
                 s = list[0] + ", " + list[1] + " и " + list[2];
-            if (s.Length != 0)
-                s = s.Remove(s.Length - 1);
             return s;
         }
 
@@ -609,7 +607,7 @@ namespace WorkPrograms
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= 12; i++) // цикл проходящий по всем строкам
+                    for (int i = 34; i <= lastRow; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
