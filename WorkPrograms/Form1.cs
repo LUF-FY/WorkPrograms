@@ -592,7 +592,7 @@ namespace WorkPrograms
         /// Создание шаблонов
         /// </summary>
         /// 
-        //int a = 0;
+        
         private async void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
@@ -609,7 +609,7 @@ namespace WorkPrograms
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= 12; i++) // цикл проходящий по всем строкам
+                    for (int i = 6; i <= lastRow && stopWord==""; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
@@ -623,10 +623,18 @@ namespace WorkPrograms
                         }
                     }
                 });
-                labelLoading.Text = "Загрузка завершена";
-                MessageBox.Show("Загрузка завершена");
-                labelNameOfLastFile.Text = labelNameOfWorkPlanFile.Text;
-                Reset();
+                if (stopWord == "")
+                {
+                    labelLoading.Text = "Загрузка завершена";
+                    MessageBox.Show("Загрузка завершена");
+                    labelNameOfLastFile.Text = labelNameOfWorkPlanFile.Text;
+                    Reset();
+                }
+                else
+                {
+                    Reset();
+                }
+               
             }
             catch (Exception ex)
             {
@@ -665,11 +673,11 @@ namespace WorkPrograms
             buttonOpenExcel.Enabled = false;
             buttonOpenFolder.Enabled = false;
         }
-        
 
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    a++;
-        //}
+        string stopWord = "";
+        private void button1_Click(object sender, EventArgs e)
+        {
+            stopWord="АНАНАС";
+        }
     }
 }
