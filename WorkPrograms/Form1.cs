@@ -602,6 +602,7 @@ namespace WorkPrograms
             //Создаем файлы .            
             try
             {
+                stopWord = "";
                 ButtonDisEnabled();
                 stopWord = "";
                 labelLoading.Visible = true; // лейбл состояния стал виден
