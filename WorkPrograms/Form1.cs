@@ -400,7 +400,7 @@ namespace WorkPrograms
         }
 
         Dictionary<string, string> PrepareDataFromSheetPlan
-            (Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetPlanComp, int index, int lastColumn, Dictionary<string, string> titleDic)
+            (Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetComp, int index, int lastColumn, Dictionary<string, string> titleDic)
         {
             //dic.Add("$$",);
             var dic = new Dictionary<string, string>();
@@ -410,10 +410,10 @@ namespace WorkPrograms
             dic.Add("$sumIndependentWork$", GetSumIndependentWork(worksheetPlan, index));
             dic.Add("$interactiveWatch$", GetInteractiveWatch(worksheetPlan, index));
             subjectCompetencies = GetSubjectCompetencies(worksheetPlan, index, lastColumn);
-            dic.Add("$competencies$", SelectCompetencies(worksheetPlan, subjectCompetencies));
+            dic.Add("$competencies$", SelectCompetencies(worksheetComp, subjectCompetencies));
             dic.Add("$subjectIndex$", GetSubgectIndex(worksheetPlan, index));
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
-            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlanComp, index, dic["$subjectIndex$"]));
+            dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
