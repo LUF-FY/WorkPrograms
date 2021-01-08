@@ -597,13 +597,12 @@ namespace WorkPrograms
             try
             {
                 ButtonDisEnabled();
+                stopWord = "";
                 labelLoading.Visible = true; // лейбл состояния стал виден
                 labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
                 int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
-                CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-                CancellationToken token = cancelTokenSource.Token;
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
@@ -640,6 +639,13 @@ namespace WorkPrograms
             }
         }
 
+        string stopWord = "";
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            stopWord = "АНАНАС";
+        }
+
         /// <summary>
         /// Возвращает true если это дисциплина, иначе возвращает falce
         /// </summary>
@@ -672,10 +678,7 @@ namespace WorkPrograms
             buttonOpenFolder.Enabled = false;
         }
 
-        string stopWord = "";
-        private void button1_Click(object sender, EventArgs e)
-        {
-            stopWord="АНАНАС";
-        }
+        
+        
     }
 }
