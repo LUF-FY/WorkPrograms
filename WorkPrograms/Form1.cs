@@ -85,6 +85,7 @@ namespace WorkPrograms
                     abbreviation += "МЛ";
                 else if (dic["$profile$"].Contains("уравнения"))
                     abbreviation += "ДУ";
+                return abbreviation;
             }
             if (directionName.Contains("  "))
                 directionName = directionName.Replace("  ", " ");
