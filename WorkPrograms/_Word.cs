@@ -14,17 +14,12 @@ namespace WorkPrograms
         public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
         {
             DocX document = DocX.Load("WordPattern.docx");
-            //for (int i = 0; i < replaceableStrings.Count(); i++)
-            //{
-            //    string s = "$" + namesOfReplaceableStrings[i] + "$";
-            //    string s2 = replaceableStrings[i];
-            
-            //    document.ReplaceText(s, s2);
-            //}
-            //if (!isInteractiveWatch)
-            //{
-            //    DeleteTable(3, document);
-            //}
+            if (dicPlan["$exam$"] == "-")
+                document.ReplaceText("$testOrExam$", "зачёту");
+            else if (dicPlan["$test$"] == "-")
+                document.ReplaceText("$testOrExam$", "экзамену");
+            else
+                document.ReplaceText("$testOrExam$", "зачёту/экзамену");
             FillDic(dicTitle, document);
             FillDic(dicPlan, document);
             CreateTable(competenciesDic, document);
@@ -74,6 +69,11 @@ namespace WorkPrograms
                 else if (el.Key == "$interactiveWatch$" && el.Value == "")
                 {
                     DeleteTable(3, document);
+                }
+                else if (el.Key == "$profile$" && el.Value == "")
+                {
+                    document.ReplaceText("$profile$, ", "");
+                    document.ReplaceText(el.Key, el.Value);
                 }
                 else if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
