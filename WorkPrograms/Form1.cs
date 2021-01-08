@@ -266,7 +266,7 @@ namespace WorkPrograms
                 dic.Add(item.Key, item.Value);
         }
 
-        string GetIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
+        string GetAuditoryLessons(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
         {
             string s = "";
             int count = 1;
@@ -377,7 +377,7 @@ namespace WorkPrograms
             return new string[] { sumLectures.ToString(), sumLaboratoryExercises.ToString(), sumWorkshops.ToString() };
         }
 
-        string CreateTypesOfLessons(string sumLectures, string sumWorkshops, string sumLaboratoryExercises)
+        string CreateTypesOfLessons(string sumLectures, string sumLaboratoryExercises, string sumWorkshops)
         {
             string s = "";
             var list = new List<string>();
@@ -393,8 +393,6 @@ namespace WorkPrograms
                 s = list[0] + " и " + list[1];
             else if (list.Count == 3)
                 s = list[0] + ", " + list[1] + " и " + list[2];
-            if (s.Length != 0)
-                s = s.Remove(s.Length - 1);
             return s;
         }
 
@@ -415,7 +413,7 @@ namespace WorkPrograms
             dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
-            dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
+            dic["$auditoryLessons$"] = GetAuditoryLessons(worksheetPlan, index, lastColumn, semestersList);
             dic.Add("$consulting$", CreateConsulting(dic["$exam$"]));
             dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
             dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
