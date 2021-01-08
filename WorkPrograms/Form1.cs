@@ -607,7 +607,7 @@ namespace WorkPrograms
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 34; i <= lastRow; i++) // цикл проходящий по всем строкам
+                    for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
