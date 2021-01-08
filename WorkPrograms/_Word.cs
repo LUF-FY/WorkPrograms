@@ -72,6 +72,7 @@ namespace WorkPrograms
                 }
                 else if (el.Key == "$studyProgram$")
                 {
+                    document.ReplaceText(el.Key, el.Value);
                     SetStudyProgramTables(document, el.Value);
                 }
                 else if (el.Key != "")
