@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WorkPrograms
 {
@@ -67,6 +68,7 @@ namespace WorkPrograms
 
         public static void ClearData()
         {
+            // Обнуляем переменные
             semesterData.Clear();
             semestersList.Clear();
             courses = "";
@@ -81,6 +83,7 @@ namespace WorkPrograms
 
         public static void CreateSemesters(Excel.Worksheet worksheetPlan, int index)
         {
+            //Страшна вырубай
             int lastColoumn = TotalSizeColumn(worksheetPlan);
             for (int i = 18, number = 1; i < lastColoumn - 3; i += 7)
             {
@@ -92,6 +95,7 @@ namespace WorkPrograms
 
         public static void FillDictionary(Excel.Worksheet worksheetPlan, int index)
         {
+            // Кровосося
             foreach (var item in semestersList)
             {
                 int a = item - 1;
@@ -121,6 +125,7 @@ namespace WorkPrograms
 
         public static void CreateIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index)
         {
+            // Не шарю
             string s = ""; 
             int count = 1;
             int lastColoumn = TotalSizeColumn(worksheetPlan);
@@ -146,6 +151,7 @@ namespace WorkPrograms
 
         public static void CreateCourses(Excel.Worksheet worksheetPlan, int index)
         {
+            // Не в курсах
             /*int a = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(semesters[semesters.Length - 1].ToString()) / 2));
             int b = Convert.ToInt32(Math.Floor(Convert.ToDouble(semesters[0].ToString()) / 2));
             for (int i = b; i <= a; i++)
@@ -167,6 +173,7 @@ namespace WorkPrograms
 
         public static void CreateTeats(Excel.Worksheet worksheetPlan, int index)
         {
+            // Без понятия
             string GradedTest = worksheetPlan.Cells[6][index].Value;
             string testCopy = worksheetPlan.Cells[5][index].Value;
             if (testCopy != null && GradedTest != null)
@@ -197,6 +204,7 @@ namespace WorkPrograms
 
         public static void CreateSemesters()
         {
+            // Не шарю, но что-то с семестрами
             string s = "";
             for (int i = 0; i < semestersList.Count; i++)
                 s += semestersList[i] + "/";
@@ -205,6 +213,7 @@ namespace WorkPrograms
 
         public static void CountSumLecturesAndPractices(Excel.Worksheet worksheetPlan, int index)
         {
+            // Солнышко мое вставай
             int lastColoumn = TotalSizeColumn(worksheetPlan);
             for (int i = 17; i < lastColoumn - 3; i+=7)
             {
@@ -216,6 +225,7 @@ namespace WorkPrograms
 
         public static void CreateTypesOfLessons() 
         {
+            // Не в теме
             var list = new List<string>();
             if (sumLectures!=0)
                 list.Add("лекционных");
@@ -233,6 +243,7 @@ namespace WorkPrograms
 
         public static void CreateConsulting()
         {
+            // Не шарю
             string[] s = semesterData[keysForSemesterData[6]].Split('/');
             for (int i = 0; i < s.Length; i++)
             {
@@ -275,6 +286,7 @@ namespace WorkPrograms
 
         private static string DecodeSubjectIndex(Excel.Worksheet worksheet, int index)
         {
+            // Без понятия что это
             string subsectionName = "";
             string blockCode1 = "";
             string blockCode2 = "";
@@ -308,7 +320,7 @@ namespace WorkPrograms
 
         public static void PrepareData(Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetTitle, int index)
         {
-            // берём информацию из листа Титул
+            // Берём информацию из листа Титул
             int lastColumn = TotalSizeColumn(worksheetPlan);
             ClearData();
             studyProgram = worksheetTitle.Cells[6][14].Value.Trim(' ').Replace("  ", " ").Split()[2];
@@ -425,10 +437,11 @@ namespace WorkPrograms
         }
 
 
-        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        private  void buttonOpenExcel_Click(object sender, EventArgs e)
         {
+            // Выбираем нужный Excel Файл
             try
-            {
+            {      
                 DialogResult res = openFileDialogSelectFile.ShowDialog();
                 if (res == DialogResult.OK)
                 {
@@ -437,6 +450,7 @@ namespace WorkPrograms
                 }
                 else
                     throw new Exception("Файл не выбран");
+               
             }
             catch (Exception ex)
             {
@@ -446,7 +460,7 @@ namespace WorkPrograms
 
         public static string RemoveExtraChars(string s)
         {
-            //Удаляем лишние символы из названий предметов.
+            // Удаляем лишние символы из названий предметов.
             string str = null;
             foreach (var item in s)
             {
@@ -494,9 +508,11 @@ namespace WorkPrograms
 
         private async void ButtonGenerate_ClickAsync(object sender, EventArgs e)
         {
-            //Создаем файлы .            
+            // Генерируем Word файлы            
             try
             {
+                LableDisenable();
+                
                 labelLoading.Visible = true;
                 labelLoading.Text = "Загрузка...";
                 int lastRow = TotalSizeRow(_Excel.worksheetWorkPlanPlan);
@@ -530,10 +546,9 @@ namespace WorkPrograms
 
         private  void buttonOpenFolder_Click(object sender, EventArgs e)
         {
-            
+            // Выбираем папку для создания рабочих программ(место сохранения вордовсих файлов)
             try
             {
-               
                 DialogResult res = folderBrowserDialogChooseFolder.ShowDialog();
                 if (res == DialogResult.OK)
                 {
@@ -554,6 +569,7 @@ namespace WorkPrograms
         }
         static public int MaxValueOfProgressBar(Excel.Worksheet worksheet)
         {
+            //Ищем максимальное значение прогресс бара
             int lastRow = TotalSizeRow(worksheet);
             int lastColumn = TotalSizeColumn(worksheet);
             int maxValueOfProgressBar = 0;
@@ -568,12 +584,29 @@ namespace WorkPrograms
 
         void Reset()
         {
+            // Подготавливаем переменные для повторного использования программы
             progressBar1.Value = 0;
             progressBar1.Maximum = 0;
             labelLoading.Text = "Ожидание";
             labelNameOfFolder.Text = "Папка не выбрана";
+            buttonOpenExcel.Enabled = true;
             labelNameOfWorkPlanFile.Text = "Файл не выбран";
         }
-       
+        void LableDisenable()
+        {
+            // Запрещаем доступ к кнопакм во время выполнения программы
+            buttonOpenExcel.Enabled = false;
+            buttonOpenFolder.Enabled = false;
+            buttonGenerate.Enabled = false;
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                Invoke(new Action(() => { System.Threading.Thread.CurrentThread.Abort(); }));
+            else
+                System.Threading.Thread.CurrentThread.Abort();
+            Reset();
+        }
     }
 }
