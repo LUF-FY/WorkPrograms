@@ -589,7 +589,13 @@ namespace WorkPrograms
         /// Создание шаблонов
         /// </summary>
         /// 
-        
+        string stopWord = "";
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogRes = MessageBox.Show("Прекратить формирование файлов?", "", MessageBoxButtons.OKCancel);
+            if (dialogRes == DialogResult.OK)
+                stopWord = "АНАНАС";
+        }
         private async void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
@@ -638,12 +644,9 @@ namespace WorkPrograms
             }
         }
 
-        string stopWord = "";
+       
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            stopWord = "АНАНАС";
-        }
+       
 
         /// <summary>
         /// Возвращает true если это дисциплина, иначе возвращает falce
@@ -677,12 +680,6 @@ namespace WorkPrograms
             buttonOpenFolder.Enabled = false;
         }
 
-        string stopWord = "";
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogRes = MessageBox.Show("Прекратить формирование файлов?", "", MessageBoxButtons.OKCancel);
-            if (dialogRes == DialogResult.OK)
-                stopWord = "АНАНАС";           
-        }
+        
     }
 }
