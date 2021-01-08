@@ -19,10 +19,6 @@ namespace WorkPrograms
             //    string s = "$" + namesOfReplaceableStrings[i] + "$";
             //    string s2 = replaceableStrings[i];
             
-            //    else if (namesOfReplaceableStrings[i] == "studyProgram")
-            //    {
-            //        SetStudyProgramTables(document, replaceableStrings[i]);
-            //    }
             //    document.ReplaceText(s, s2);
             //}
             //if (!isInteractiveWatch)
@@ -74,6 +70,10 @@ namespace WorkPrograms
                 {
                     document.ReplaceText(el.Key, el.Value);
                     SetStudyProgramTables(document, el.Value);
+                }
+                else if (el.Key == "$interactiveWatch$" && el.Value == "")
+                {
+                    DeleteTable(3, document);
                 }
                 else if (el.Key != "")
                     document.ReplaceText(el.Key, el.Value);
