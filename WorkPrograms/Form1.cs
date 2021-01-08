@@ -596,6 +596,7 @@ namespace WorkPrograms
             //Создаем файлы .            
             try
             {
+                stopWord = "";
                 ButtonDisEnabled();
                 labelLoading.Visible = true; // лейбл состояния стал виден
                 labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
