@@ -632,7 +632,7 @@ namespace WorkPrograms
         /// </summary>
         /// <param name="index"> номер строки </param>
         public bool IsDiscipline(int index, int lastColumn) =>
-             _Excel.worksheetWorkPlanPlan.Cells[lastColumn - 1][index].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
+             _Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][index].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
 
         public void MaxValueOfProgressBar(Excel.Worksheet worksheet, int lastRow, int lastColumn)
         {
