@@ -267,7 +267,7 @@ namespace WorkPrograms
                 dic.Add(item.Key, item.Value);
         }
 
-        string GetIndependentWorkBySemester(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
+        string GetAuditoryLessons(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
         {
             string s = "";
             int count = 1;
@@ -416,7 +416,7 @@ namespace WorkPrograms
             dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
-            dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
+            dic["$auditoryLessons$"] = GetAuditoryLessons(worksheetPlan, index, lastColumn, semestersList);
             dic.Add("$consulting$", CreateConsulting(dic["$exam$"]));
             dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
             dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
@@ -604,7 +604,7 @@ namespace WorkPrograms
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
+                    for (int i = 13; i <= lastRow; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
