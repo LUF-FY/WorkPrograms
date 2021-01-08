@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
-using Xceed.Words.NET;
-using System.IO;
-using System.Drawing;
-using System.Threading.Tasks;
 
 namespace WorkPrograms
 {
+
     public partial class WorkPrograms : Form
     {
         string filePath = "";
@@ -544,14 +543,16 @@ namespace WorkPrograms
         /// <summary>
         /// Выбор Excel файла с учебным планом, и выбор нужных страниц 
         /// </summary>
-        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        private  void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             try
             {
                 DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
                 if (res == DialogResult.OK) //Если файл выбран
                 {
-                    SelectExcelFile(openFileDialogSelectFile); //Выбор нужных листов
+ 
+                     SelectExcelFile(openFileDialogSelectFile); //Выбор нужных листов
+               
                     buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
                 }
                 else
@@ -590,24 +591,29 @@ namespace WorkPrograms
         /// <summary>
         /// Создание шаблонов
         /// </summary>
+        /// 
+        //int a = 0;
         private async void buttonGenerate_Click(object sender, EventArgs e)
         {
             //Создаем файлы .            
             try
             {
-
+                ButtonDisEnabled();
                 labelLoading.Visible = true; // лейбл состояния стал виден
                 labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
                 int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
+                CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+                CancellationToken token = cancelTokenSource.Token;
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= lastRow; i++) // цикл проходящий по всем строкам
+                    for (int i = 6; i <= 12; i++) // цикл проходящий по всем строкам
                     {
                         if (IsDiscipline(i, lastColumn))
                         {
+                            
                             var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
                             WriteInFile(dicTitle, dicPlan);
                             if (InvokeRequired)
@@ -619,6 +625,7 @@ namespace WorkPrograms
                 });
                 labelLoading.Text = "Загрузка завершена";
                 MessageBox.Show("Загрузка завершена");
+                labelNameOfLastFile.Text = labelNameOfWorkPlanFile.Text;
                 Reset();
             }
             catch (Exception ex)
@@ -650,6 +657,19 @@ namespace WorkPrograms
             labelLoading.Text = "Ожидание";
             labelNameOfFolder.Text = "Папка не выбрана";
             labelNameOfWorkPlanFile.Text = "Файл не выбран";
+            buttonOpenExcel.Enabled = true;
         }
+        void ButtonDisEnabled()
+        {
+            buttonGenerate.Enabled = false;
+            buttonOpenExcel.Enabled = false;
+            buttonOpenFolder.Enabled = false;
+        }
+        
+
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    a++;
+        //}
     }
 }

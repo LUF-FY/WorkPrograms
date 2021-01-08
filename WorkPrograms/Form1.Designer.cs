@@ -43,6 +43,9 @@ namespace WorkPrograms
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.labelLastFile = new System.Windows.Forms.Label();
+            this.labelNameOfLastFile = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,9 +99,8 @@ namespace WorkPrograms
             this.labelLoading.Name = "labelLoading";
             this.labelLoading.Size = new System.Drawing.Size(70, 16);
             this.labelLoading.TabIndex = 3;
-
-            this.labelLoading.Visible = false;
             this.labelLoading.Text = "Ожидание";
+            this.labelLoading.Visible = false;
             // 
             // buttonOpenFolder
             // 
@@ -157,11 +159,45 @@ namespace WorkPrograms
             this.label2.TabIndex = 8;
             this.label2.Text = "Выберите папку создания рабочих программ";
             // 
+            // labelLastFile
+            // 
+            this.labelLastFile.AutoSize = true;
+            this.labelLastFile.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelLastFile.Location = new System.Drawing.Point(434, 244);
+            this.labelLastFile.Name = "labelLastFile";
+            this.labelLastFile.Size = new System.Drawing.Size(226, 17);
+            this.labelLastFile.TabIndex = 9;
+            this.labelLastFile.Text = "Последний обработанный файл\r\n";
+            // 
+            // labelNameOfLastFile
+            // 
+            this.labelNameOfLastFile.AutoSize = true;
+            this.labelNameOfLastFile.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNameOfLastFile.Location = new System.Drawing.Point(434, 277);
+            this.labelNameOfLastFile.Name = "labelNameOfLastFile";
+            this.labelNameOfLastFile.Size = new System.Drawing.Size(118, 15);
+            this.labelNameOfLastFile.TabIndex = 10;
+            this.labelNameOfLastFile.Text = "Файл не обработан";
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(23, 261);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(140, 31);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Прекратить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 251);
+            this.ClientSize = new System.Drawing.Size(683, 311);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.labelNameOfLastFile);
+            this.Controls.Add(this.labelLastFile);
             this.Controls.Add(this.labelLoading);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -195,6 +231,9 @@ namespace WorkPrograms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Label labelLoading;
+        private System.Windows.Forms.Label labelNameOfLastFile;
+        private System.Windows.Forms.Label labelLastFile;
+        private System.Windows.Forms.Button button1;
     }
 }
 
