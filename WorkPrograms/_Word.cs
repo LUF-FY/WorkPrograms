@@ -14,26 +14,28 @@ namespace WorkPrograms
         public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
         {
             DocX document = DocX.Load("WordPattern.docx");
-            for (int i = 0; i < replaceableStrings.Count(); i++)
-            {
-                string s = "$" + namesOfReplaceableStrings[i] + "$";
-                string s2 = replaceableStrings[i];
-                if (namesOfReplaceableStrings[i] == "creditUnits")
-                {
-                    s = "$" + namesOfReplaceableStrings[i] + "$";
-                    s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
-                }
-                else if (namesOfReplaceableStrings[i] == "studyProgram")
-                {
-                    SetStudyProgramTables(document, replaceableStrings[i]);
-                }
-                document.ReplaceText(s, s2);
-            }
-            if (!isInteractiveWatch)
-            {
-                DeleteTable(3, document);
-            }
-            FillSemesterData(semesterData, document);
+            //for (int i = 0; i < replaceableStrings.Count(); i++)
+            //{
+            //    string s = "$" + namesOfReplaceableStrings[i] + "$";
+            //    string s2 = replaceableStrings[i];
+            //    if (namesOfReplaceableStrings[i] == "creditUnits")
+            //    {
+            //        s = "$" + namesOfReplaceableStrings[i] + "$";
+            //        s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
+            //    }
+            //    else if (namesOfReplaceableStrings[i] == "studyProgram")
+            //    {
+            //        SetStudyProgramTables(document, replaceableStrings[i]);
+            //    }
+            //    document.ReplaceText(s, s2);
+            //}
+            //if (!isInteractiveWatch)
+            //{
+            //    DeleteTable(3, document);
+            //}
+            FillDic(dicTitle, document);
+            FillDic(dicPlan, document);
+            
             CreateTable(competenciesDic, document);
             document.SaveAs(path);
         }
@@ -63,12 +65,17 @@ namespace WorkPrograms
             DeleteTable(5, document);
         }
 
-        private void FillSemesterData(Dictionary<string, string> semesterData, DocX document)
+        private void FillDic(Dictionary<string, string> dic, DocX document)
         {
-            foreach (var el in semesterData)
+            foreach (var el in dic)
             {
+                if (namesOfReplaceableStrings[i] == "creditUnits")
+                {
+                    s = "$" + namesOfReplaceableStrings[i] + "$";
+                    s2 = ChangeDeclination(Convert.ToInt32(replaceableStrings[i]));
+                }
                 if (el.Key != "")
-                    document.ReplaceText(el.Key, el.Value);
+                document.ReplaceText(el.Key, el.Value);
             }
         }
 
