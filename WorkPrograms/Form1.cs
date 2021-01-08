@@ -140,7 +140,7 @@ namespace WorkPrograms
             if (!string.IsNullOrEmpty(worksheetPlan.Cells[8][index].Value))
                 return worksheetPlan.Cells[8][index].Value.Trim(' ');
             else
-                return "";
+                return "0";
         }
 
         string GetStudyHours(Excel.Worksheet worksheetPlan, int index) => worksheetPlan.Cells[11][index].Value.Trim(' ') + " час.";
