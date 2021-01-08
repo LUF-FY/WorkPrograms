@@ -417,7 +417,7 @@ namespace WorkPrograms
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$independentWorkBySemester$"] = GetIndependentWorkBySemester(worksheetPlan, index, lastColumn, semestersList);
-            dic.Add("$consulting$", CreateConsulting(dic["exam"]));
+            dic.Add("$consulting$", CreateConsulting(dic["$exam$"]));
             dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
             dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
             dic.Add("$semesters$", CreateSemesters(semestersList));
