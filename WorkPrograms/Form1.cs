@@ -114,7 +114,7 @@ namespace WorkPrograms
             dic.Add("$studyProgram$", GetStudyProgram(worksheetTitle));
             dic.Add("$direction$", GetDirectionAndProfile(worksheetTitle)[0]);
             dic.Add("$profile$", GetDirectionAndProfile(worksheetTitle)[1]);
-            dic.Add("$standart$", GetStandart(worksheetTitle));
+            dic.Add("$standard$", GetStandart(worksheetTitle));
             dic.Add("$protocol$", GetProtocol(worksheetTitle));
             dic.Add("$edForm$", GetEdForm(worksheetTitle, dic["$studyProgram$"]));
             dic.Add("$directionAbbreviation$", GetDirectionAbbreviation(worksheetTitle, dic));
