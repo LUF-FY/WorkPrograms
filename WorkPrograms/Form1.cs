@@ -412,11 +412,11 @@ namespace WorkPrograms
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
             dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
+            dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$auditoryLessons$"] = GetAuditoryLessons(worksheetPlan, index, lastColumn, semestersList);
             dic.Add("$consulting$", CreateConsulting(dic["$exam$"]));
             dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
-            dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
             dic.Add("$semesters$", CreateSemesters(semestersList));
             var sumLecturesAndPractices = CountSumLecturesAndPractices(worksheetPlan, index, lastColumn);
             dic.Add("$sumLectures$", sumLecturesAndPractices[0]);
