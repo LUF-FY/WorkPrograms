@@ -45,7 +45,7 @@ namespace WorkPrograms
             var direction = directionAndProfile[0].Trim(' ', ',', ':'); //Получить направление
             string profile = "";
             if (directionAndProfile.Length > 1)
-                profile = "Профиль: " + directionAndProfile[1].Trim(' '); //Получить профиль, если он есть
+                profile = "Профиль: " + directionAndProfile[1].Trim(' ', ':'); //Получить профиль, если он есть
             return new string[] { direction, profile };
         }
 
