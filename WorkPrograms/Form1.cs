@@ -219,7 +219,8 @@ namespace WorkPrograms
             return list;
         }
 
-        Dictionary<string, string> FillDictionary(Excel.Worksheet worksheetPlan, int index, List<int> semestersList, string[] keys)
+        Dictionary<string, string> FillDictionary
+            (Excel.Worksheet worksheetPlan, int index, List<int> semestersList, string[] keys)
         {
             var dic = new Dictionary<string, string>();
             foreach (var item in semestersList)
@@ -266,7 +267,8 @@ namespace WorkPrograms
                 dic.Add(item.Key, item.Value);
         }
 
-        string GetAuditoryLessons(Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
+        string GetAuditoryLessons
+            (Excel.Worksheet worksheetPlan, int index, int lastColumn, List<int> semestersList)
         {
             string s = "";
             int count = 1;
@@ -397,9 +399,9 @@ namespace WorkPrograms
         }
 
         Dictionary<string, string> PrepareDataFromSheetPlan
-            (Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetComp, int index, int lastColumn, Dictionary<string, string> titleDic)
+            (Excel.Worksheet worksheetPlan, Excel.Worksheet worksheetComp, 
+            int index, int lastColumn, Dictionary<string, string> titleDic)
         {
-            //dic.Add("$$",);
             var dic = new Dictionary<string, string>();
             dic.Add("$subjectName$", GetSubjectName(worksheetPlan, index));
             dic.Add("$creditUnits$", GetCreditUnits(worksheetPlan, index));
@@ -630,7 +632,8 @@ namespace WorkPrograms
         /// </summary>
         /// <param name="index"> номер строки </param>
         public bool IsDiscipline(int index, int lastColumn) =>
-             _Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][index].Value != null || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
+             _Excel.worksheetWorkPlanPlan.Cells[lastColumn + 1][index].Value != null 
+            || _Excel.worksheetWorkPlanPlan.Cells[10][index].Value != null;
 
         public void MaxValueOfProgressBar(Excel.Worksheet worksheet, int lastRow, int lastColumn)
         {
