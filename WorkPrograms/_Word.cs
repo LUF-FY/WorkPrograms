@@ -13,21 +13,18 @@ namespace WorkPrograms
 
         public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
         {
+            // Заполнение шаблона Word.
             DocX document = DocX.Load("WordPattern.docx");
-            if (dicPlan["$exam$"] == "-")
-                document.ReplaceText("$testOrExam$", "зачёту");
-            else if (dicPlan["$test$"] == "-")
-                document.ReplaceText("$testOrExam$", "экзамену");
-            else
-                document.ReplaceText("$testOrExam$", "зачёту/экзамену");
-            FillDic(dicTitle, document);
-            FillDic(dicPlan, document);
+            ReplaceTestOrExam(dicPlan, document);
+            ReplaceFromDic(dicTitle, document);
+            ReplaceFromDic(dicPlan, document);
             CreateTable(competenciesDic, document);
             document.SaveAs(path);
         }
 
         private void SetStudyProgramTables(DocX document, string replaceableString)
         {
+            // Изменение шаблона в зависимости от программы обучения(бакалавриат/магистратура/аспирантура).
             if (replaceableString != "бакалавриата")
             {
                 document.ReplaceTextWithObject("$table5$", document.Tables[6]);
@@ -37,7 +34,7 @@ namespace WorkPrograms
                 DeleteTable(4, document);
                 if (replaceableString == "магистратуры")
                 {
-                    document.ReplaceText("$школьного курса$", "бакалавриата");                    
+                    document.ReplaceText("$школьного курса$", "бакалавриата");
                 }
                 else if (replaceableString == "аспирантуры")
                 {
@@ -53,8 +50,20 @@ namespace WorkPrograms
             DeleteTable(document.Tables.Count - 1, document);
         }
 
-        private void FillDic(Dictionary<string, string> dic, DocX document)
+        private void ReplaceTestOrExam(Dictionary<string, string> dicPlan, DocX document)
         {
+            // Выбор зачет/экзамен.
+            if (dicPlan["$exam$"] == "-")
+                document.ReplaceText("$testOrExam$", "зачёту");
+            else if (dicPlan["$test$"] == "-")
+                document.ReplaceText("$testOrExam$", "экзамену");
+            else
+                document.ReplaceText("$testOrExam$", "зачёту/экзамену");
+        }
+
+        private void ReplaceFromDic(Dictionary<string, string> dic, DocX document)
+        {
+            // Замена кодовых слов на нужные значения из словаря.
             foreach (var el in dic)
             {
                 if (el.Key == "$creditUnits$")
@@ -76,18 +85,22 @@ namespace WorkPrograms
                     document.ReplaceText(el.Key, el.Value);
                 }
                 else if (el.Key != "")
+                {
                     document.ReplaceText(el.Key, el.Value);
+                }
             }
         }
 
         private void DeleteTable(int number, DocX document)
         {
+            // Удаление таблицы из шаблона.
             var delTable = document.Tables[number];
             delTable.Remove();
         }
 
         private void CreateTable(Dictionary<string, string> competenciesDic, DocX document)
         {
+            // Создание таблицы с компетенциями.
             var compTable = document.Tables[1];
             var compList = WorkPrograms.subjectCompetencies.Split(';', ' ').ToList();
             foreach (var item in compList)
@@ -110,7 +123,7 @@ namespace WorkPrograms
 
         private string ChangeDeclination(int creditUnits)
         {
-
+            // Склонение зачетных ед.
             string s = $"{creditUnits} зачётных единиц.";
             if (creditUnits % 10 == 1) s = $"{creditUnits} зачётная единица.";
             if (creditUnits % 10 >= 2 && creditUnits % 10 <= 4) s = $"{creditUnits} зачётные единицы.";

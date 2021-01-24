@@ -45,7 +45,7 @@ namespace WorkPrograms
             var direction = directionAndProfile[0].Trim(' ', ',', ':'); //Получить направление
             string profile = "";
             if (directionAndProfile.Length > 1)
-                profile = "Профиль: " + directionAndProfile[1].Trim(' '); //Получить профиль, если он есть
+                profile = "Профиль: " + directionAndProfile[1].Trim(' ', ':'); //Получить профиль, если он есть
             return new string[] { direction, profile };
         }
 
@@ -412,11 +412,11 @@ namespace WorkPrograms
             dic.Add("$courseWork$", GetCourseWork(worksheetPlan, index));
             dic.Add("$subjectIndexDecoding$", DecodeSubjectIndex(worksheetPlan, index, dic["$subjectIndex$"]));
             var semestersList = CreateSemesters(worksheetPlan, index, lastColumn);
+            dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
             GetDataFromSemesters(dic, worksheetPlan, index, semestersList);
             dic["$auditoryLessons$"] = GetAuditoryLessons(worksheetPlan, index, lastColumn, semestersList);
             dic.Add("$consulting$", CreateConsulting(dic["$exam$"]));
             dic.Add("$courses$", CreateCourses(worksheetPlan, index, lastColumn));
-            dic.Add("$test$", CreateTests(worksheetPlan, index, semestersList));
             dic.Add("$semesters$", CreateSemesters(semestersList));
             var sumLecturesAndPractices = CountSumLecturesAndPractices(worksheetPlan, index, lastColumn);
             dic.Add("$sumLectures$", sumLecturesAndPractices[0]);
@@ -499,33 +499,9 @@ namespace WorkPrograms
         {
             var fileName = dicPlan["$subjectIndex$"] + "_" + RemoveExtraChars(dicPlan["$subjectName$"]) + "_" + dicTitle["$directionAbbreviation$"] + "_" + dicTitle["$startYear$"];
             filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + fileName;
-            //var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
             resultDoc.path = filePath;
             var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
-            //var competencies = SelectCompetencies(competenciesDic);
-            //dicPlan.Add("$competencies$", competencies);
-            //string[] replaceableStrings = new string[]
-            //{
-            //    subjectName, direction, profile,
-            //    standard, protocol, creditUnits.ToString(),
-            //    studyHours, courses, semesters, sumIndependentWork.ToString(),
-            //    typesOfLessons, test, consulting, courseWork,
-            //    competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), sumLabs.ToString(),
-            //    interactiveWatch, subjectIndex, subjectIndexDecoding, director, position, studyProgram
-            //};
-            //string[] namesOfReplaceableStrings = new string[]
-            //{
-            //    nameof(subjectName), nameof(direction), nameof(profile),
-            //    nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
-            //    nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
-            //    nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies),
-            //    nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(sumLabs), nameof(interactiveWatch),
-            //    nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position), nameof(studyProgram)
-            //};
-            //bool isInteractiveWatch = true;
-            //if (string.IsNullOrEmpty(interactiveWatch))
-            //    isInteractiveWatch = false;
             resultDoc.FillPattern(competenciesDic, dicTitle, dicPlan);
         }
 
@@ -612,20 +588,19 @@ namespace WorkPrograms
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
                 await Task.Run(() =>
                 {
-                    var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= lastRow && stopWord==""; i++) // цикл проходящий по всем строкам
-                    {
+                    var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);
+                    //Создание словаря с информацией из титульного листа
+                    for (int i = 6; i <= lastRow && stopWord==""; i++) // цикл проходящий по всем строкам                    
                         if (IsDiscipline(i, lastColumn))
-                        {
-                            
-                            var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
+                        {                            
+                            var dicPlan = PrepareDataFromSheetPlan
+                            (_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
                             WriteInFile(dicTitle, dicPlan);
                             if (InvokeRequired)
                                 this.Invoke(new Action(() => { progressBar1.Value++; }));
                             else
                                 progressBar1.Value++;
                         }
-                    }
                 });
                 if (stopWord == "")
                 {
