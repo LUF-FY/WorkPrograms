@@ -569,7 +569,7 @@ namespace WorkPrograms
         /// </summary>
         /// 
         string stopWord = "";
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonStop_Click(object sender, EventArgs e)
         {
             DialogResult dialogRes = MessageBox.Show("Прекратить формирование файлов?", "", MessageBoxButtons.OKCancel);
             if (dialogRes == DialogResult.OK)
