@@ -583,8 +583,8 @@ namespace WorkPrograms
                 stopWord = "";
                 labelLoading.Visible = true; // лейбл состояния стал виден
                 labelLoading.Text = "Загрузка..."; // изменение лейбла состояния
-                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
-                int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
+                int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний строку листа, Excel файла
+                int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю столбик листа, Excel файла
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
                 await Task.Run(() =>
                 {
