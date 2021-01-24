@@ -11,7 +11,8 @@ namespace WorkPrograms
     {
         public string path;
 
-        public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, Dictionary<string, string> dicPlan)
+        public void FillPattern(Dictionary<string, string> competenciesDic, Dictionary<string, string> dicTitle, 
+            Dictionary<string, string> dicPlan)
         {
             // Заполнение шаблона Word.
             DocX document = DocX.Load("WordPattern.docx");
