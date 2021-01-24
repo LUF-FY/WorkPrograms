@@ -526,9 +526,7 @@ namespace WorkPrograms
                 DialogResult res = openFileDialogSelectFile.ShowDialog(); //Выбор файла 
                 if (res == DialogResult.OK) //Если файл выбран
                 {
- 
                      SelectExcelFile(openFileDialogSelectFile); //Выбор нужных листов
-               
                     buttonOpenFolder.Enabled = true; //Разблокировка кнопки выбора папки
                 }
                 else
@@ -609,13 +607,8 @@ namespace WorkPrograms
                     labelLoading.Text = "Загрузка завершена";
                     MessageBox.Show("Загрузка завершена");
                     labelNameOfLastFile.Text = labelNameOfWorkPlanFile.Text;
-                    Reset();
                 }
-                else
-                {
-                    Reset();
-                }
-               
+                Reset();
             }
             catch (Exception ex)
             {
