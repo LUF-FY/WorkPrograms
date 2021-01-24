@@ -45,7 +45,7 @@ namespace WorkPrograms
             this.label2 = new System.Windows.Forms.Label();
             this.labelLastFile = new System.Windows.Forms.Label();
             this.labelNameOfLastFile = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -179,23 +179,23 @@ namespace WorkPrograms
             this.labelNameOfLastFile.TabIndex = 10;
             this.labelNameOfLastFile.Text = "Файл не обработан";
             // 
-            // button1
+            // buttonStop
             // 
-            this.button1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(23, 261);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 31);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Прекратить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonStop.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonStop.Location = new System.Drawing.Point(23, 261);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(140, 31);
+            this.buttonStop.TabIndex = 11;
+            this.buttonStop.Text = "Прекратить";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // WorkPrograms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(683, 311);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.labelNameOfLastFile);
             this.Controls.Add(this.labelLastFile);
             this.Controls.Add(this.labelLoading);
@@ -233,7 +233,7 @@ namespace WorkPrograms
         public System.Windows.Forms.Label labelLoading;
         private System.Windows.Forms.Label labelNameOfLastFile;
         private System.Windows.Forms.Label labelLastFile;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonStop;
     }
 }
 
