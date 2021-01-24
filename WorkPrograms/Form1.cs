@@ -484,10 +484,10 @@ namespace WorkPrograms
         {
             //Удаляем лишние символы из названий предметов.
             var s = "";
+            var extraChars = new char[9] {':','\\','|','/','*','?','"','>','<' };
             foreach (var item in subjectName)
             {
-                if (item == ':' || item == '\\' || item == '|' || item == '/' || 
-                        item == '*' || item == '?' || item == '"' || item == '>' || item == '<')
+                if (extraChars.Contains(item))
                     s += ' ';
                 else
                     s += item;
