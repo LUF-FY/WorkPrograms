@@ -499,33 +499,9 @@ namespace WorkPrograms
         {
             var fileName = dicPlan["$subjectIndex$"] + "_" + RemoveExtraChars(dicPlan["$subjectName$"]) + "_" + dicTitle["$directionAbbreviation$"] + "_" + dicTitle["$startYear$"];
             filePath = folderBrowserDialogChooseFolder.SelectedPath + "\\" + fileName;
-            //var resultList = SelectCompetencies(_Excel.worksheetWorkPlanComp);
             var resultDoc = new _Word();
             resultDoc.path = filePath;
             var competenciesDic = CreateCompetenciesDic(_Excel.worksheetWorkPlanComp);
-            //var competencies = SelectCompetencies(competenciesDic);
-            //dicPlan.Add("$competencies$", competencies);
-            //string[] replaceableStrings = new string[]
-            //{
-            //    subjectName, direction, profile,
-            //    standard, protocol, creditUnits.ToString(),
-            //    studyHours, courses, semesters, sumIndependentWork.ToString(),
-            //    typesOfLessons, test, consulting, courseWork,
-            //    competencies, edForm, sumLectures.ToString(), sumWorkshops.ToString(), sumLabs.ToString(),
-            //    interactiveWatch, subjectIndex, subjectIndexDecoding, director, position, studyProgram
-            //};
-            //string[] namesOfReplaceableStrings = new string[]
-            //{
-            //    nameof(subjectName), nameof(direction), nameof(profile),
-            //    nameof(standard), nameof(protocol),nameof(creditUnits), nameof(studyHours),
-            //    nameof(courses), nameof(semesters), nameof(sumIndependentWork),nameof(typesOfLessons),
-            //    nameof(test), nameof(consulting), nameof(courseWork), nameof(competencies),
-            //    nameof(edForm), nameof(sumLectures), nameof(sumWorkshops), nameof(sumLabs), nameof(interactiveWatch),
-            //    nameof(subjectIndex), nameof(subjectIndexDecoding), nameof(director), nameof(position), nameof(studyProgram)
-            //};
-            //bool isInteractiveWatch = true;
-            //if (string.IsNullOrEmpty(interactiveWatch))
-            //    isInteractiveWatch = false;
             resultDoc.FillPattern(competenciesDic, dicTitle, dicPlan);
         }
 
@@ -603,8 +579,6 @@ namespace WorkPrograms
                 int lastRow = TotalSize(_Excel.worksheetWorkPlanPlan)[0]; // Найти последний столбик листа, Excel файла
                 int lastColumn = TotalSize(_Excel.worksheetWorkPlanPlan)[1]; // Найти последнюю строку листа, Excel файла
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
-                CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-                CancellationToken token = cancelTokenSource.Token;
                 await Task.Run(() =>
                 {
                     var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
