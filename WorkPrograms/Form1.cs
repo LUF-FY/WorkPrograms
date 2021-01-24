@@ -581,20 +581,19 @@ namespace WorkPrograms
                 MaxValueOfProgressBar(_Excel.worksheetWorkPlanPlan, lastRow, lastColumn); // Найти максимум прогресс бара
                 await Task.Run(() =>
                 {
-                    var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);//Создание словаря с информацией из титульного листа
-                    for (int i = 6; i <= lastRow && stopWord==""; i++) // цикл проходящий по всем строкам
-                    {
+                    var dicTitle = PrepareDataFromSheetTitle(_Excel.worksheetWorkPlanTitlePage);
+                    //Создание словаря с информацией из титульного листа
+                    for (int i = 6; i <= lastRow && stopWord==""; i++) // цикл проходящий по всем строкам                    
                         if (IsDiscipline(i, lastColumn))
-                        {
-                            
-                            var dicPlan = PrepareDataFromSheetPlan(_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
+                        {                            
+                            var dicPlan = PrepareDataFromSheetPlan
+                            (_Excel.worksheetWorkPlanPlan, _Excel.worksheetWorkPlanComp, i, lastColumn, dicTitle);
                             WriteInFile(dicTitle, dicPlan);
                             if (InvokeRequired)
                                 this.Invoke(new Action(() => { progressBar1.Value++; }));
                             else
                                 progressBar1.Value++;
                         }
-                    }
                 });
                 if (stopWord == "")
                 {
